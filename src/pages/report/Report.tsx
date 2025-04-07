@@ -10,6 +10,8 @@ import './Report.scss'
 import Questionnaire from '../questionnaire/Questionnaire';
 import MeterCard from '../../component/cards/MeterCard';
 import CircularChart from '../../component/circlepercentagechart/CircleChart';
+import SectionB from './SectionB';
+import SectionC from './SectionC';
 const Report: React.FC = () => {
   const columns = [
     {
@@ -298,6 +300,13 @@ const Report: React.FC = () => {
           {addData === "section_a" &&
             <Questionnaire />
           }
+                {addData === "section_b" &&
+            <SectionB/>
+          }
+                          {addData === "section_c" &&
+            <SectionC/>
+          }
+
         </div>
       }
     </div>
