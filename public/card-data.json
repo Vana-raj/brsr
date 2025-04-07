@@ -1,0 +1,31 @@
+{
+    "data": [
+      {
+        "key": "service",
+        "supplier": "Green Field Material Handling",
+        "industry": "Automobile",
+        "service": ["Samson material handeling","Samson solar power Samson", "agro equipment", "Samson agro biotech"],
+        "product":"",
+        "location": "Plot No. N-49/1, MIDC, Additional Ambernath Indl. Area, Ambernath (E), Thane - 421506, Maharashtra, India.",
+       "certification":["Environment management system- ISO 14001:2004","Health & safety management system- OHSAS 18001:2007","Quantity management system- ISO9001:2008"],
+        "riskScore": 84,
+        "riskLevel": "Low",
+        "compliance": "Compliant",
+        "category": "Safety Material"
+      },
+      {
+        "key": "product",
+        "supplier": "V.K. Fasteners Private Limited",
+        "industry": "Automobile",
+        "service": "",
+        "product": ["HEX HEAD FLANGE SCREW/BOLT", "Cross pan/flat screw", "Hex nut", "U blot"],
+        "location": "No. 79, Valmiki Street Thiruvanmiyur, Chennai - 600 041Tamil Nadu, India",
+        "certification":["Management system certificate- ISO 9001:2015", "EU certificate of Quality system approval- 0343/PED/MUM/2210015/2", "Certificate of quality system approval- 0038/UK/PER/MUM/2210015/4"],
+        "riskScore": 73,
+        "riskLevel": "Medium",
+        "compliance": "Compliant",
+        "category": "Safety Material"
+      }
+      
+    ]
+  }

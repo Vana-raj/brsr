@@ -1,0 +1,62 @@
+@import '../../style/utils/Variables.scss';
+
+.performance-navbar-tabs {
+  .ant-tabs-nav {
+    padding: 0 15px 0 15px;
+    border-radius: 5px;
+    .ant-tabs-tab {
+      position: relative;
+      color: $textColor; 
+      &:hover {
+        color: $primary; 
+      }
+  
+      &::after {
+        content: "";
+        display: block;
+        width: 0;
+        height: 3px;
+        transition: width 0.3s ease;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+      }
+  
+      &:hover::after {
+        width: 100%; 
+      }
+  
+      &.ant-tabs-tab-active {
+        color: $primary; 
+  
+        &::after {
+          width: 100%; 
+        }
+      }
+    }
+  
+    .active-tab {
+color: $textColor;
+    }
+    .ant-tabs-tab-btn {
+      display: $flex;
+      gap: 3px;
+      color: $textColor;
+  
+        div {
+          color: $primary;
+        }   
+
+        a {
+          color: $textColor;
+          font-weight: $bold;
+          font-size: 14px;
+
+        }
+    }
+  
+    .ant-tabs-ink-bar {
+      background-color: $primary; 
+    }
+  }
+}

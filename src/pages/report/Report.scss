@@ -1,0 +1,153 @@
+@import '../../style/utils/Variables.scss';
+
+.main-report {
+padding: $commonPadding;
+.back-btn {
+    cursor: pointer;
+    color: $primary;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    align-self: center;
+}
+.rpt-btn {
+    display: flex;
+    justify-content: end;
+}
+    .report-table{
+        margin-top: 15px;
+    }
+
+    .section-container {
+        margin: 0 auto;
+      
+        .progress-header {
+          display: flex;
+          margin-bottom: 20px;
+          justify-content: space-between;
+          align-items: center;
+      
+          .xbrl-header {
+            color: #1d1d1d;
+          }
+      
+          .overall-progress {
+                display: flex;
+                gap: 2px;
+                justify-content: center;
+                width: 70%;
+                flex-direction: column;
+            
+      
+            span {
+              color: #1890ff;
+              font-weight: 500;
+              font-size: 13px;
+            }
+          }
+        }
+      
+        .top-sections {
+          display: flex;
+          width: 100%;
+          gap: 80px;
+          justify-content: space-between;
+          .section-cards {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 40px;
+            width: 70%;
+        
+            .section-card {
+              padding: 10px;
+              border: $border;
+              border-radius: 8px;
+              background: white;
+              width: $fullWidth;
+              cursor: pointer;
+  
+              &.selected {
+                border: 2px solid $primary;
+                background-color: #daf5e9;
+                cursor: none;
+  
+              }
+              
+              &.faded {
+                opacity: 0.8;
+                background-color: $cleanWhite;
+                cursor: pointer;
+                border: $border;
+              }
+        
+              .section-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 12px;
+                font-size: 16px; 
+                font-weight: $bold;
+        
+                h2 {
+                  margin: 0;
+                  font-size: 16px;
+                  color: #1d1d1d;
+                }
+        
+                span {
+                  color: #1890ff;
+                  font-weight: 500;
+                }
+              }
+        
+              p {
+                color: #666;
+                margin-bottom: 20px;
+                font-size: 14px; 
+                font-weight: $bold;
+              }
+        
+              .add-data-btn {
+                margin-top: 19px !important;
+                padding: 0;
+                color: #1890ff;
+              }
+            }
+          }
+          .progress-cards {
+            width: 30%;
+
+.progress-card {
+  padding: 8px;
+  border: $border;
+  border-radius: 10px;
+  background: white;
+  width: $fullWidth;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .xbrl-header {
+    color: #1d1d1d;
+    font-size: 16px; 
+    font-weight: $bold;
+  }
+}
+          }
+        }
+      
+        .attach-xbrl {
+          text-align: center;
+          border: 2px solid #1890ff;
+          padding: 2px 5px 5px 5px;
+          align-content: center;
+          border-radius: 5px;
+          cursor: pointer;
+
+          .header-attach {
+            color: $secondary;
+          }
+        }
+      }
+}
+

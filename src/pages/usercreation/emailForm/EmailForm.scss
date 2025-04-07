@@ -1,0 +1,24 @@
+@import '../../../style/utils/Variables.scss';
+
+.email-main {
+    padding: $commonPadding;
+    .ant-btn {
+    width: 85px;
+    }
+
+}
+
+.ant-form-item {
+    .ant-col {
+        .ant-switch {
+            background: $white !important;
+          }
+          .ant-switch-checked {
+            background: $primary !important;
+          }
+        label {
+            color: $textColor;
+            font-size: 14px;
+        }
+    }
+} 

@@ -1,0 +1,84 @@
+@import '../../../style/utils/Variables.scss';
+
+
+@media (max-width: 480px) {
+  body {
+    background-color: $white;
+  }
+
+  .bench-flex {
+    display: $flex;
+    justify-content: center !important;
+    flex-wrap: wrap;
+    gap: 30px;
+  }
+}
+.bench-flex {
+  display: $flex;
+  justify-content: space-between;
+}
+span {
+  font-weight: $bold;
+}
+.benchmark-sustainability {
+  padding: 20px;
+  width: 78%;
+  color: $textColor;
+  border: $border;
+  background: $cleanWhite;
+  border-radius: $commonRadius;
+
+  .bench {
+    color: $textColor;
+    font-size: 20px;
+    font-weight: $bold;
+  }
+
+  .subtitle {
+    margin-bottom: 20px;
+    color: $textColor;
+  }
+
+  .tabs-container {
+    .ant-tabs-nav {
+      margin-bottom: 20px;
+      color: $textColor;
+    }
+
+    .ant-tabs-tab {
+      font-weight: $bold;
+
+      &.ant-tabs-tab-active {
+        .ant-tabs-tab-btn {
+          color: darken($textColor, 20%);
+
+        }
+      }
+
+      &:hover {
+        .ant-tabs-tab-btn {
+          color: darken($textColor, 20%);
+        }
+      }
+    }
+  }
+
+  .benchmark-table {
+    .ant-table {
+      background: $cleanWhite;
+      border-radius: 8px;
+    }
+
+    .ant-progress {
+      width: fit-content;
+    }
+  }
+
+  .progress-card {
+    .ant-progress-circle {
+      margin: 0 0;
+    }
+  }
+}
+
+

@@ -1,0 +1,21 @@
+@import '../../style/utils/Variables.scss';
+
+.user-management {
+    .header {
+      display: $flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+
+      .header-title {
+        font-size: 20px;
+        font-weight: $bold;
+        color: $textColor;
+      }
+    }
+  
+    .ant-table {
+      margin-top: 20px;
+    }
+  }
+  

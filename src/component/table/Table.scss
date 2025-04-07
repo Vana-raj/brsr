@@ -1,0 +1,179 @@
+@import '../../style/utils/Variables.scss';
+
+@media (max-width: 480px) {
+
+  .custom-table-container {
+    padding: 20px;
+    padding-left: 0px;
+    background-color: $bgColor;
+
+  }  
+
+  .search-bar{
+    display: $flex;
+    min-width:  $fullWidth;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+}
+.custom-table-container {
+  padding-left: 0px;
+  background-color: $bgColor;
+
+  .table-title {
+    font-size: 16px;
+    font-weight: $bold;
+    color: $primary;
+    margin-bottom: 16px;
+    display: $flex;
+    justify-self: flex-start;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .title-count {
+    font-size: 16px;
+    font-weight: $bold;
+    color: $textColor;
+  }
+.search-dot {
+  display: flex;
+
+}
+  .search-bar{
+    display: $flex;
+    min-width:  $fullWidth;
+    justify-content: space-between;
+  }
+
+  .custom-table {
+    border: none;
+    padding-top:$commonPadding;
+
+    .ant-table {
+      border: none;
+    }
+
+    .ant-table-container {
+      overflow-x: auto; 
+    }
+    
+    .ant-table-row-cell {
+      background: $white;
+      transition: background-color 0.9s ease;
+
+      &:hover {
+        background-color: $error;
+      }
+    }
+    
+    
+    .ant-table-cell {
+      padding: 12px;
+      font-size: 14px;
+      color: $textColor;
+      background-color: $bgColor;
+      &:first-child {
+        font-weight: $bold;
+      }
+    }
+
+    .ant-table-thead > tr > th {
+      background-color: $bgColor;
+      border-bottom: none;
+      font-weight: 700;
+      font-size: 14px;
+      color: $textColor;
+      text-align: left;
+
+      &:first-child {
+      font-weight: 700;
+
+      }
+    }
+
+    .ant-table-tbody > tr > td {
+      border-bottom: $border;
+      padding: 12px;
+    }
+
+    .ant-pagination {
+      justify-content: center;
+    }
+    .risk-high {
+      color: $primary;
+      font-weight: $bold;
+    }
+
+    .risk-medium {
+      color: $warning;
+      font-weight: $bold;
+    }
+
+    .risk-low {
+      color: $error;
+      font-weight: $bold;
+    }
+
+  }
+
+
+
+  .custom-sort-icon {
+    color: $secondary; 
+    font-size: 14px; 
+    margin-left: 5px;
+    transition: transform 0.2s;
+
+    &.active {
+      color: $primary; 
+      transform: scale(1.2);
+    }
+  }
+
+  .ant-table-column-sorter {
+    &:hover .custom-sort-icon {
+      color: $primary; 
+    }
+  }
+
+  .display-add-delete {
+    display: flex;  
+    gap: 15%;
+  }
+
+  .display-add-delete{
+  .color-delete {
+    .ant-btn-icon
+    {
+      color: $error;
+    }
+  }
+}
+
+.three-dot {
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: $bold;
+  color: $textColor;
+  align-self: center;
+  padding: 5px;
+}
+
+.add-user {
+  display: flex;
+  gap: 5px;
+  cursor: pointer;
+  color: $textColor;
+  font-weight: $bold;
+}
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.add-useritem {
+  width: max-content;
+}
+}
+

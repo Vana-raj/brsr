@@ -1,0 +1,49 @@
+.circular-chart-container {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  
+  canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .circular-chart-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 70%;
+    
+    .remaining-percentage {
+      font-size: 24px;
+      font-weight: bold;
+      color: #09B96D;
+      line-height: 1;
+      display: block;
+      margin-bottom: 2px;
+    }
+    
+    .middle-percentage {
+      font-size: 14px;
+      color: #ec70b4;
+      line-height: 1;
+      margin: 2px 0;
+      font-weight: bold;
+
+    }
+    
+    .completed-percentage {
+      font-size: 12px;
+      color: #0058EA;
+      line-height: 1;
+      display: block;
+      margin-top: 2px;
+    }
+  }
+}

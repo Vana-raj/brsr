@@ -1,0 +1,62 @@
+@import '../../style/utils/Variables.scss';
+
+.custom-modal .ant-modal {
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: $cleanWhite;
+  padding: 20px;
+  transition: all 0.3s ease-out;
+}
+
+.custom-modal .ant-modal-header {
+  background-color: $secondary;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 12px 12px 0 0;
+}
+
+.custom-modal .ant-modal-title {
+  color: #fff;
+}
+
+.custom-modal .ant-modal-body {
+  background-color: #f4f4f4;
+  padding: 20px;
+  font-size: 16px;
+  color: $textColor;
+}
+
+.custom-modal .ant-modal-footer {
+  background-color: #f9f9f9;
+  padding: 12px 20px;
+  display: $flex;
+  justify-content: flex-end;
+}
+
+.custom-modal .ant-btn-primary {
+  background-color: $secondary;
+  border-color: $secondary;
+  color: white;
+}
+
+.custom-modal .ant-btn-primary:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
+}
+
+.custom-modal .ant-btn {
+  margin-left: 10px;
+}
+
+.modal {
+  justify-items: center;
+
+  .ant-modal-content {
+    width: fit-content;
+  }
+
+  .ant-modal-title {
+    padding-right: 20px;
+  }
+}

@@ -1,0 +1,97 @@
+@import '../../style/utils/Variables.scss';
+.shareIcon {
+    background:$cleanWhite;
+     padding: $commonPadding;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: $bold;
+    color: $textColor;
+    align-items: center;
+    display: $flex;
+    gap: 5px;
+    position: relative; 
+    border: none;
+  
+    .share-options {
+      position: absolute;
+      top: 40px; 
+      left: 0;
+      background: $cleanWhite;
+      border: $border;
+      border-radius: 8px;
+       padding: $commonPadding;
+      display: $flex;
+      flex-direction: column;
+      gap: $commonGap;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+      button {
+        display: $flex;
+        align-items: center;
+        gap: $commonGap;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        color: $textColor;
+  
+        &:hover {
+          color: $secondary;
+        }
+      }
+    }
+  }
+
+
+.modal-content {
+    text-align: center;
+    color: $textColor;
+    
+    .modal-header {
+      display: $flex;
+      justify-content: space-between;
+      font-size: 14px;
+      font-weight: $bold;
+      gap: $commonGap;
+      border-bottom: $border;
+
+
+      .share {
+        align-self: center;
+      }
+
+      .copy-link {
+        cursor: pointer;
+        color: $secondary;
+        text-decoration: none;
+        display: $flex;
+        align-items: center;
+        font-size: 11px;
+        gap: 5px; 
+        background: none;
+        padding: 8px;
+        border-radius: 4px;
+        border: none;
+      }
+      
+      .icon {
+        font-size: 16px;
+      }
+      
+    }
+}
+
+
+.share-email {
+  padding-top: 8px;
+  display: $flex;
+
+  .react-share__ShareButton {
+    display: flex !important;
+    align-items: center;
+    gap: $commonGap;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+  }
+}
+

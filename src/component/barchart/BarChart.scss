@@ -1,0 +1,27 @@
+@import '../../style/utils/Variables.scss';
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  max-height: max-content;
+}
+
+  
+  .risk-high {
+    color: $primary;
+  }
+  
+  .risk-medium {
+    color: $warning;
+  }
+  
+  .risk-low {
+    color: $error;
+  }
+  
+  .icon-flex {
+    display: $flex;
+    gap: 5px;
+    justify-content: space-evenly;
+  }
+  

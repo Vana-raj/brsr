@@ -1,0 +1,533 @@
+@import '../../../style/utils/Variables.scss';
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+
+
+@media (max-width: 768px) {
+
+  body {
+    background-color: $white;
+  }
+
+  .governance-content-location {
+    color: $textColor;
+    font-size: 16px;
+    font-weight: $bold;
+    width: $fullWidth;
+  }
+
+  .goverance-flex {
+    display: $flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+  }
+
+  .governance-main {
+    border: $border;
+    display: $flex;
+    justify-content: space-between;
+    gap: $commonGap;
+    border-radius: $commonRadius;
+    margin-top: 20px;
+    padding: 30px;
+    color: $textColor;
+    background: $cleanWhite;
+    width: $fullWidth;
+    height: max-content;
+
+
+    .governance-overview {
+      width: 231px;
+      height: 168px;
+      border-radius: $commonRadius;
+      border: $border;
+      color: $textColor;
+      background: $lightGrey;
+
+
+    }
+
+    .doc-certi {
+      padding: 20px;
+      padding-right: 0px;
+    }
+  }
+
+}
+
+@media (max-width: 480px) {
+
+  body {
+    background-color: $white;
+  }
+
+  .governance-content-location {
+    color: $textColor;
+    font-size: 16px;
+    font-weight: $bold;
+    width: $fullWidth;
+  }
+
+ .governance-main-prod {
+   border: $border;
+   justify-content: space-between;
+    display: $flex;
+    gap: $commonGap;
+    flex-wrap: wrap;
+    border-radius: $commonRadius;
+    margin-top: 15px;
+    padding: 30px;
+    background: $cleanWhite;
+    color: $textColor;
+  
+  
+  
+    .governance-overview {
+      border-radius: $commonRadius;
+      align-content: center;
+      text-align: center;
+      padding: $commonPadding;
+      color: $textColor;
+      background: $lightGrey;
+      border: $border;
+      height: 168px;
+  
+      .over-title {
+        font-size: 20px;
+        font-weight: $bold;
+        color: $secondary;
+  
+      }
+  
+      .text-bottom {
+        padding-bottom: 8px;
+        color: $textColor;
+        font-weight: $bold;
+  
+      }
+    }
+  
+    .governance-content {
+      width: 231px;
+      border-radius: $commonRadius;
+      color: $textColor;
+  
+  
+      .con-title {
+        color: $textColor;
+        font-size: 20px;
+        font-weight: $bold;
+        padding-bottom: 15px;
+  
+  
+      }
+  
+  
+      .governance-con-start {
+        display: $flex;
+        justify-content: space-between;
+        color: $textColor;
+  
+      }
+    }
+  }
+
+  .goverance-flex {
+    display: $flex !important;
+    justify-content: space-between !important;
+    flex-wrap: wrap !important;
+    flex-direction: column-reverse;
+  }
+  .direction-card {
+    width: $fullWidth;
+    display: $flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding-bottom: 120px;
+  }
+
+  .governance-main {
+    border: $border;
+    display: $flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border-radius: $commonRadius;
+    padding: 30px;
+     background: $cleanWhite;
+    color: $textColor;
+    width: $fullWidth;
+    height: fit-content ;
+
+
+
+    .governance-overview {
+      width: 231px;
+      height: 168px;
+      border-radius: $commonRadius;
+      border: $border;
+      color: $textColor;
+      background: $lightGrey;
+
+
+    }
+
+    .doc-certi {
+      padding: 20px;
+      padding-right: 0px;
+    }
+  }
+
+}
+
+.goverance-flex {
+  display: $flex;
+  justify-content: space-between;
+}
+
+.governance-main {
+  border: $border;
+  display: $flex;
+  justify-content: space-between;
+  gap: $commonGap;
+  border-radius: $commonRadius;
+  margin-top: 20px;
+  padding: 30px;
+   background: $cleanWhite;
+  color: $textColor;
+  width: $fullWidth;
+
+
+
+  .governance-overview {
+    width: 231px;
+    height: 168px;
+    border-radius: $commonRadius;
+    border: $border;
+    text-align: center;
+    align-content: center;
+    padding: $commonPadding;
+    color: $textColor;
+    background: $lightGrey;
+
+
+    .over-title {
+      font-size: 20px;
+      font-weight: $bold;
+      color:  $secondary;
+
+    }
+
+    .text-bottom {
+      padding-bottom: 8px;
+      color: $textColor;
+      font-weight: $bold;
+
+    }
+  }
+
+  .governance-content {
+  width: -webkit-fill-available;
+
+    border-radius: $commonRadius;
+    color: $textColor;
+
+
+    .con-title {
+      padding-bottom: 15px;
+      color: $textColor;
+      font-size: 20px;
+      font-weight: $bold;
+
+
+    }
+
+
+    .governance-con-start {
+      width: 30%;
+      display: $flex;
+      justify-content: space-between;
+      color: $textColor;
+
+    }
+
+  }
+
+}
+
+.doc-certi {
+  padding: 19px;
+  padding-right: 0px;
+}
+
+.direction-card {
+  width: $fullWidth;
+}
+
+.governance-content-prod {
+  border-radius: $commonRadius;
+  color: $textColor;
+
+
+  .con-title {
+    padding-bottom: 15px;
+    color: $textColor;
+    font-size: 20px;
+    font-weight: $bold;
+
+
+  }
+}
+
+.prod-space {
+  padding-bottom: 30px;
+}
+
+.prod-head {
+  color: $textColor;
+  font-size: 20px;
+  font-weight: $bold;
+  padding-bottom: 20px;
+}
+
+.prd-main {
+  padding: 5px;
+  padding-right: 0px;
+  width: $fullWidth
+}
+
+
+.governance-main-prod {
+  border: $border;
+  display: $flex;
+  justify-content: space-between;
+  gap: $commonGap;
+  border-radius: $commonRadius;
+  margin-top: 15px;
+  padding: 30px;
+   background: $cleanWhite;
+  color: $textColor;
+
+
+
+  .governance-overview {
+    width: 231px;
+    height: 168px;
+    border-radius: $commonRadius;
+    border: $border;
+    text-align: center;
+    align-content: center;
+    padding: $commonPadding;
+    color: $textColor;
+    background: $lightGrey;
+
+    .over-title {
+      font-size: 20px;
+      font-weight: $bold;
+      color:  $secondary;
+
+    }
+
+    .text-bottom {
+      padding-bottom: 8px;
+      color: $textColor;
+      font-weight: $bold;
+
+    }
+  }
+
+  .governance-content {
+    width: 231px;
+    border-radius: $commonRadius;
+    color: $textColor;
+
+
+    .con-title {
+      padding-bottom: 15px;
+      color: $textColor;
+      font-size: 20px;
+      font-weight: $bold;
+
+
+    }
+
+
+    .governance-con-start {
+      display: $flex;
+      justify-content: space-between;
+      color: $textColor;
+
+    }
+  }
+
+}
+
+
+.governance-main-item {
+  border: $border;
+  border-radius: $commonRadius;
+  margin-top: 15px;
+  padding: 30px;
+  background: $cleanWhite;
+  color: $textColor;
+
+  .product-item {
+  border: $border;
+  border-radius: $commonRadius;
+  background: $cleanWhite;
+  color: $textColor;
+  padding: $commonPadding;
+  margin-bottom: 20px;
+  font-size: 14px;
+  display: flex;
+  gap: 30px;
+
+  .product-item-un {
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .product-item-address {
+    padding-bottom: 20px;
+    font-size: 14px;
+
+  }
+  }
+}
+.governance-content-location {
+  color: $textColor;
+  font-size: 16px;
+  font-weight: $bold;
+  width: $fullWidth;
+
+  .location-head {
+    font-weight: $bold;
+    font-size: 20px;
+    padding-bottom: 50px;
+  }
+
+  .governance-con-start-loc {
+    display: $flex;
+    align-items: baseline;
+    gap: 20px;
+  }
+
+
+  .location-field {
+    font-weight: $bold;
+    font-size: 18px;
+    padding-bottom: 10px;
+  }
+
+}
+
+
+.con-title-com {
+  padding-bottom: 15px;
+  color: $textColor;
+  font-size: 20px;
+  font-weight: $bold;
+  width: max-content;
+}
+
+.company-bold  {
+    font-weight: $bold;
+    font-size: 18px;
+    padding-bottom: 20px;
+  }
+
+  .governance-con-start-com {
+  padding-bottom: 20px;
+  }
+
+  .prod-list {
+    padding-bottom: 30px;
+    font-weight: $bold;
+    font-size: 15px;
+  }
+
+  .parah-com {
+    letter-spacing: 0.5px;
+  }
+
+  .location-main {
+    width: $fullWidth;
+  }
+
+
+  .product-item-content {
+    width: 60%;
+  }
+
+  .product-item-details {
+    width: 40%;
+    font-size: 14px;
+    padding: $commonPadding;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .app-details {
+display:ruby-text;
+justify-content: space-between;
+align-self: start;
+.prod-application {
+  padding-left: 1px;
+  }
+  }
+
+  .meterial-details {
+display:ruby-text;
+justify-content: space-between;
+align-self: start;
+
+.prod-material {
+padding-left: 21px;
+}
+  }
+
+  .name-details {
+display:ruby-text;
+justify-content: space-between;
+align-self: start;
+.prod-name {
+  padding-left: 36px;
+}
+  }
+
+  .product-item-img {
+    img {
+      border-radius: 5px;
+    }
+  }
+.certification-main {
+  width: -webkit-fill-available;
+
+}
+
+  .certificate-div {
+    display: flex;
+    justify-content: space-around;
+    gap: 30px;
+  }
+
+  .certificate-certi {
+    width: 150%;
+padding-bottom: 10px;
+  }
+
+  .certificate-name {
+    width: 150%;
+  }
+
+  .governance-items {
+    width:20%
+  }

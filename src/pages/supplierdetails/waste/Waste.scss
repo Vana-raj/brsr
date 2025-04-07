@@ -1,0 +1,67 @@
+@import '../../../style/utils/Variables.scss';
+
+@media (max-width: 480px) {
+    body {
+      background-color: $white;
+    }
+    .waste-main {
+        padding: 15px;
+        display: $flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    
+        .circle-chart {
+            width: 100%;
+            border: $border;
+            border-radius: $commonRadius;
+            background: $cleanWhite;
+            height: auto;
+
+
+
+            .waste-chart {
+                width: 100% !important;
+                height: 100%;
+                align-content: center;
+                text-align: -webkit-center;
+                padding: 20px;
+                .doughnut-main {
+                    width: 100%;
+                }
+            }
+        }
+    
+       
+    }
+}
+.waste-main {
+    padding: 15px;
+    display: $flex;
+    justify-content: center;
+    gap: 15px;
+
+    .circle-chart {
+        width: 100%;
+        border: $border;
+        border-radius: 10px;
+        background: $cleanWhite;
+        align-content: center;
+
+        .waste-title {
+            padding: 0px 0px 5% 10px;
+            color: $textColor;
+            font-size: 20px;
+            
+          }
+
+        .waste-chart {
+            width: 50%;
+            justify-self: center;
+        }
+    }
+
+    .certificate-new {
+        padding: 0;
+    }
+}

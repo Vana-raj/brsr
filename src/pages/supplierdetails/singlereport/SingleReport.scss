@@ -1,0 +1,62 @@
+@import '../../../style/utils/Variables.scss';
+
+@media (max-width: 480px) {
+    body {
+      background-color: $white;
+    }
+    .single-report {
+        display: $flex;
+        flex-wrap: wrap;
+        justify-content: center !important;
+        gap: 30px   ;
+    }
+
+    .report-main {
+       width: $fullWidth !important;
+   }
+
+   .report-chart {
+    display: $flex;
+    flex-wrap: wrap;
+    gap: 15px;
+
+}
+}
+
+.single-report {
+    display: $flex;
+    justify-content: space-between;
+}
+
+.report-main {
+     padding: $commonPadding;
+    width: 78%;
+    background: $cleanWhite;
+    border: $border;
+    padding: 50px;
+    border-radius: $commonRadius;
+}
+
+.report-chart {
+    display: $flex;
+    gap: 15px;
+    padding-bottom: 50px;
+    width: 100%;
+
+}
+
+.report-emissionchart {
+width:$fullWidth;
+border: $border;
+border-radius: $commonRadius;
+padding: 5px;
+}
+
+.report-multichart {
+width: $fullWidth;
+
+}
+
+.certificate-new {
+    padding: $commonPadding;
+}

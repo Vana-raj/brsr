@@ -1,0 +1,177 @@
+@import '../../../style/utils/Variables.scss';
+
+@media (max-width: 768px) {
+
+  body {
+    background-color: $white;
+  }
+
+  .overview-main {
+    display: $flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding-top: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  body {
+    background-color: $white;
+
+  }
+
+  .overview-main {
+    display: $flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding-top: 20px;
+    justify-content: center;
+  }
+
+  .overview-top {
+    display: $flex;
+    flex-wrap: wrap;
+    gap: 15px;
+
+    >div {
+      width: 300px;
+      display: $flex !important;
+      flex-wrap: wrap !important;
+      justify-content: center;
+
+    }
+
+
+  }
+
+  .overview-card {
+    background: #fff;
+    border: $border;
+    border-radius: $commonRadius;
+    padding: $commonPadding;
+    text-align: center;
+    width: $fullWidth;
+
+
+   h4 {
+      font-size: 16px;
+      font-weight: $bold;
+      margin-bottom: $commonPadding;
+    }
+
+   p {
+      color: $secondary;
+      font-size: 16px;
+      font-weight: 400;
+
+    }
+
+    .overview-card-content {
+      display: $flex;
+      text-align: end;
+      font-size: 18px;
+      font-weight: 400;
+      color: $textColor;
+      justify-content: space-between;
+    }
+
+    .con-btn {
+      display: grid;
+    }
+
+    .mini-text {
+      text-align: end;
+      font-size: 14px;
+      font-weight: $bold;
+      color: $textColor;
+      padding-top: 4px;
+    }
+  }
+}
+
+.overview-main {
+  display: $flex;
+  flex-direction: row;
+  gap: 20px;
+  padding-top: 20px;
+
+  .overview-top {
+    display: $flex;
+    flex-wrap: wrap;
+    gap: 15px;
+
+    >div {
+      flex: 1;
+      border-radius: $commonRadius;
+    }
+
+
+  }
+
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $commonGap;
+    width: 50vw;
+    margin-left: 0px;
+
+    button {
+      padding: 8px 16px;
+      background-color: $primary;
+      color: $cleanWhite;
+      border: none;
+      border-radius: $commonRadius;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $primary;
+      }
+    }
+
+    .overview-card {
+      background: $cleanWhite;
+      border: $border;
+      border-radius: $commonRadius;
+      padding: $commonPadding;
+      text-align: center;
+
+
+      h4 {
+        font-size: 16px;
+        font-weight: $bold;
+        margin-bottom: 10px;
+      }
+
+      p {
+        color: $secondary;
+        font-size: 16px;
+        font-weight: 400;
+
+      }
+
+      .overview-card-content {
+        display: $flex;
+        text-align: end;
+        font-size: 18px;
+        font-weight: 400;
+        color: $textColor;
+        justify-content: space-between;
+      }
+
+      .con-btn {
+        display: grid;
+      }
+
+      .mini-text {
+        text-align: end;
+        font-size: 14px;
+        font-weight: $bold;
+        color: $textColor;
+        padding-top: 4px;
+      }
+    }
+
+  }
+
+}

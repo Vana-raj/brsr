@@ -1,0 +1,253 @@
+@import '../../style/utils/Variables.scss';
+body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  
+  @media (max-width: 768px) {
+    body {
+      background-color: $white;
+    }
+    .navbar {
+      display: $flex;
+      flex-wrap: wrap;
+      background: $grey;
+      border-radius: 25px;
+      align-items: center;
+      justify-content: space-between;
+      padding: $commonPadding;
+    }
+    .navbar ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: $flex;
+      flex-wrap: wrap;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    body {
+      background-color: $white;
+    }
+    .navbar {
+      display: $flex;
+      flex-wrap: wrap;
+      background: $grey;
+      border-radius: 25px;
+      align-items: center;
+      justify-content: space-between;
+       padding: $commonPadding;
+    }
+  
+    .navbar ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: $flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+
+    }
+  }
+.navbar {
+  background: $grey;
+  border-radius: 25px;
+  display: $flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $commonPadding;
+
+   .navbar-logo {
+   cursor: pointer;
+   }
+}
+
+
+.navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: $flex;
+}
+
+.navbar li {
+  margin: 10px;
+}
+
+.navbar a {
+  color: $textColor;
+  font-size: 16px;
+  font-weight: $bold;
+  line-height: 34px;
+  text-align: left;
+  text-decoration-skip-ink: none;
+}
+
+.navbar ul li a {
+  padding: 5px 10px;
+  text-decoration: none;
+  color: $textColor;
+  font-size: 16px;
+  font-weight: $bold;
+  line-height: 34px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+}
+
+.navbar ul li a.active {
+  background-color: $primary;
+  border-radius: $commonRadius;
+  color: $white;
+  padding: 5px 8px 8px 8px;
+  font-size: 16px;
+  font-weight: $bold;
+  line-height: 34px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+}
+
+.nav-profile-all {
+  display: $flex;
+  gap: $commonGap;
+  align-self: center;
+  align-items: center;
+ flex-wrap: wrap;
+}
+
+.nav-profile {
+  border-radius: $commonRadius;
+  background: $cleanWhite;
+  display: $flex;
+  gap: $commonGap;
+  align-self: center;
+  padding: 7px;
+}
+
+.nav-profile-pic {
+  border-radius: 50%;
+  align-self: center;
+}
+
+.profile-picture{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.flex {
+  display: $flex;
+  gap: $commonGap;
+  font-weight: $bold;
+}
+
+
+.settings-icon {
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  border-radius: $commonRadius;
+  z-index: 1000;
+  
+}
+
+.profile-content {
+  font-size: 13px;
+  display: grid;
+  color: $textColor;
+  cursor: pointer;
+
+  .supplier-name {
+    padding: $commonPadding;
+   border-bottom: #CCCCCC 0.1px solid;
+
+    
+
+  }
+
+  .supplier-name:hover {
+      background: $bgColor;
+      border-radius: 4px;
+    }
+  .user-name {
+    padding: $commonPadding;
+  
+  }
+
+  .user-name:hover {
+    background: $bgColor;
+    border-radius: 4px;
+  }
+  
+  .profile {
+    padding: $commonPadding;
+    border-bottom: #CCCCCC 0.1px solid;
+    border-top: #CCCCCC 0.1px solid;
+  
+  }
+
+  .profile:hover {
+    background: $bgColor;
+    border-radius: 4px;
+  }
+}
+
+
+
+.dropdown-item {
+  display: $flex;
+  align-items: center;
+  padding: $commonPadding;
+  cursor: pointer;
+
+}
+
+.dropdown-item:hover {
+  background: $bgColor;
+  border-radius: 4px;
+}
+
+.profile-details {
+  margin-left: 10px;
+  display: grid;
+}
+
+.profile-name {
+  font-weight: 700;
+  color: $textColor;
+  font-size: 16px;
+
+}
+
+.profile-role {
+  font-size: 14px;
+  color: $textColor;
+  font-weight: $bold;
+  text-align: left;
+}
+.profile-name-out {
+  font-weight: 600;
+  color: $textColor;
+  font-size: 14px;
+
+}
+
+.profile-role-out {
+  font-size: 11px;
+  color: $textColor;
+  font-weight: $bold;
+  text-align: right;
+}
+
+.logout {
+  color: $error;
+  display: $flex;
+  gap: $commonGap;
+  align-items: center;
+  font-size: 13px;
+}
+

@@ -1,0 +1,37 @@
+@import '../../style/utils/Variables.scss';
+.primary-button {
+  background-color: $primary; 
+  color: $white;
+  border-color: $primary; 
+  border-radius: $commonRadius;
+  
+  &:hover {
+      background-color: $primary !important; 
+      border-color: $primary !important; 
+  }
+
+  &:focus {
+      background-color: $primary; 
+      border-color: $primary; 
+  }
+}
+
+  
+
+  .outline-button {
+    background: $cleanWhite;
+    color: $textColor;
+    border-color: 1px solid $commonRadius;
+    border-radius: $commonRadius;
+    &:hover {
+      background: $cleanWhite !important;
+      color: $textColor !important;
+      border-color: $textColor !important;
+
+    }
+    &:focus {
+      background-color: $cleanWhite !important;
+      color: $textColor;
+    }
+  }
+  

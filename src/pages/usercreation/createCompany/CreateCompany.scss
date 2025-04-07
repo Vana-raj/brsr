@@ -1,0 +1,51 @@
+@import '../../../style/utils/Variables.scss';
+  
+  .create-company-form {
+    margin: 0 auto;
+
+    .form-row {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 16px;
+
+        .form-group {
+            flex: 1;
+        }
+    }
+
+    .form-group {
+        margin-bottom: 10px;
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input,
+        .ant-select {
+          width: 100%;
+          border-radius: 4px;
+        }
+
+        .ant-switch {
+          background: $white !important;
+        }
+        .ant-switch-checked {
+          background: $primary !important;
+        }
+        .ant-upload {
+          margin-top: 5px;
+        }
+    }
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 4px;
+      background:$primary;
+      color: $cleanWhite;
+      border: none;
+    }
+    
+}

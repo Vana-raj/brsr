@@ -1,0 +1,110 @@
+@import '../../../style/utils/Variables.scss';
+
+@media (max-width: 480px) {
+    .strategy-flex {
+        display: $flex;
+        justify-content: center !important;
+        flex-wrap: wrap;
+        gap: $commonGap;
+    }
+
+    .strategy-road-map { 
+        width: $fullWidth;
+    }
+}
+
+.strategy-flex {
+    display: $flex;
+    justify-content: space-between;
+    padding: 15px;
+    gap: $commonGap;
+}
+.strategy-road-map {
+    padding: 30px;
+    border:$border;
+    background: $cleanWhite;
+    border-radius: $commonRadius;
+    width: 78%;
+  
+    .title-section {
+      margin-bottom: 30px;
+  
+      h1 {
+        font-size: 24px;
+        font-weight: $bold;
+        color: $textColor;
+      }
+  
+      p {
+        font-size: 16px;
+        color: $textColor;
+        margin-top: 8px;
+      }
+    }
+  
+    .content-section {
+      display: $flex;
+      flex-wrap: wrap;
+      gap: 20px;
+  
+      .timeline-section {
+        flex: 1;
+        min-width: 300px;
+        border-right: $border;
+
+  
+        h2 {
+          font-size: 20px;
+          font-weight: $bold;
+          margin-bottom: 10px;
+          text-align: center;
+          color: $textColor;
+
+        }
+  
+        .ant-timeline {
+          padding-left: 20px;
+          color: $textColor;
+
+          .ant-timeline-item-tail {
+            background: #5BBCFF;
+          }
+          .ant-timeline-item-head-blue {
+           background: $primary;
+           border: $border;
+          }
+        }
+      }
+  
+      .strategy-cards {
+        flex: 2;
+        min-width: 50%;
+  
+        h2 {
+          font-size: 22px;
+          font-weight: $bold;
+          margin-bottom: 20px;
+          color: $textColor;
+
+        }
+  
+        .cards-container {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 16px;
+  
+          .card-div {
+            border: $border;
+            background: $cleanWhite;
+            border-radius: $commonRadius;
+            padding: $commonRadius;
+            color: $textColor;
+          }
+        }
+      }
+    }
+  }
+  
+  .certificate-new {
+    padding: 0;
+  }

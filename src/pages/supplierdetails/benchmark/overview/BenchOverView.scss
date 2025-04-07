@@ -1,0 +1,32 @@
+@import '../../../../style/utils/Variables.scss';
+
+.info-card {
+    margin-bottom: 20px;
+    padding: 20px;
+    background: $cleanWhite;
+    border-radius: 8px;
+    height: max-content;
+  }
+  
+  .details-card {
+    padding: 20px;
+    background: $cleanWhite;
+    border-radius: 8px;
+    
+    .goal-section {
+      margin-bottom: 20px;
+  
+      .section-header {
+        color: darken($textColor,40%);
+        font-weight: $bold;
+        font-size: 18px;
+        margin-bottom: 8px;
+      }
+  
+      p {
+        color: $textColor;
+        line-height: 1.6;
+      }
+    }
+  }
+  

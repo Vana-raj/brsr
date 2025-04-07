@@ -1,0 +1,118 @@
+@import '../../style/utils/Variables.scss';
+
+.custom-card {
+  .ant-card {
+    border-radius: $commonRadius;
+    overflow: hidden;
+    margin: 8px; 
+    border: $border;
+    width: 260px; 
+    height: 120px; 
+
+    .card-content {
+      display: $flex;
+      align-items: center;
+      gap: 12px; 
+
+      .icon {
+        font-size: 24px; 
+        color: $secondary; 
+      }
+
+      .card-title {
+        margin: 0;
+        font-size: 14px; 
+        font-weight: $bold;
+        color: $title;
+      }
+
+      .card-value {
+        margin: 4px 0 0 0;
+        font-size: 18px; 
+        font-weight: $bold;
+        color: $title;
+      }
+    }
+
+   
+
+    .ant-card-footer {
+      text-align: right;
+      padding: 8px; 
+    }
+  }
+}
+
+.legend-content {
+  display: $flex;
+  flex-direction: column;
+  gap: 0px;
+  color: $textColor;
+  font-weight: 400;
+  background: $lightGrey;
+  padding: 0px;
+
+}
+.info-tool {
+  cursor: pointer;
+  width: 12px;
+  vertical-align:sub;
+  padding-left: 2px;
+}
+
+.legend-item {
+  display: $flex;
+  align-items: center;
+  gap: $commonGap;
+  color: $textColor;
+
+}
+
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  border-radius: 15%;
+
+}
+
+.legend-color.excellent {
+  background-color: $primary; 
+  display: $flex;
+  justify-content: space-around;
+}
+
+.legend-color.good {
+  background-color: $good; 
+}
+
+.legend-color.satisfactory {
+  background-color: $satisfactory; 
+}
+
+.legend-color.below-average {
+  background-color: $warning; 
+}
+
+.legend-color.requires-improvement {
+  background-color: $error; 
+}
+
+.ant-modal-title,
+.legend-item span {
+  color: $textColor;
+}
+
+.ant-tooltip-content {
+  .ant-tooltip-inner {
+border: $border;
+  }
+}
+
+.text-flex {
+  display: $flex;
+  justify-content: space-between;
+  width: $fullWidth; 
+  gap: $commonGap;
+}

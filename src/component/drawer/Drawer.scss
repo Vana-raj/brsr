@@ -1,0 +1,31 @@
+@import '../../style/utils/Variables.scss';
+.custom-drawer .ant-drawer-header {
+    background-color: $white;
+    border-bottom: $border;
+  }
+  
+  .custom-drawer .ant-drawer-title {
+    color: $textColor;
+    font-weight: $bold;
+  }
+  
+  .custom-drawer .ant-drawer-body {
+    background-color: $lightGrey;
+  }
+  
+  .custom-drawer .ant-drawer-close {
+    color: $secondary;
+  }
+  
+  .custom-drawer .custom-content {
+    padding: 20px;
+    font-size: 16px;
+    color: $textColor;
+  }
+  
+  .custom-drawer .custom-footer {
+    display: $flex;
+    justify-content: flex-end;
+    padding: 16px;
+  }
+  

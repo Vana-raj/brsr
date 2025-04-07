@@ -1,0 +1,27 @@
+
+@import '../../style/utils/Variables.scss';
+
+.emissions-chart-container {
+    width: $fullWidth;
+    height: $fullWidth;
+    padding: 2px;
+    margin: 0 auto;
+  
+    .chart-title {
+      font-size: 18px;
+      color: $primary; 
+     font-weight: $bold;
+      margin-bottom: 20px;
+      display: $flex;
+      justify-content: space-between;
+    }
+  }
+  
+  .chartjs-render-monitor {
+    canvas {
+      display: block;
+      max-width: $fullWidth;
+      height: $fullWidth;
+    }
+  }
+  

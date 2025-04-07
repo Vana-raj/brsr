@@ -1,0 +1,582 @@
+[
+  {
+    "type": "user",
+    "data": [
+      {
+        "name": "Active Suppliers",
+        "value": "232",
+        "icon": "UserOutlined"
+      },
+      {
+        "name": "Low Rated Suppliers",
+        "value": "35",
+        "icon": "SettingOutlined"
+      },
+      {
+        "name": "High Rated Suppliers",
+        "value": "194",
+        "icon": "CheckCircleOutlined"
+      },
+      {
+        "name": "Suppliers at Risk",
+        "value": "14",
+        "icon": "UserOutlined"
+      },
+      {
+        "name": "Audits Completed",
+        "value": "202",
+        "icon": "SettingOutlined"
+      },
+      {
+        "name": "On Time Delivery",
+        "value": "30",
+        "icon": "CheckCircleOutlined"
+      }
+    ]
+  },
+  {
+    "data": [
+      {
+        "key": "green",
+        "supplier": "Green Field Material Handling",
+        "industry": "Automobile",
+        "service": [
+          "Samson material handeling",
+          "Samson solar power Samson",
+          "agro equipment",
+          "Samson agro biotech"
+        ],
+        "product": "",
+        "website": "https://samsonmaterialhandling.com/",
+        "websiteName": "samsonmaterialhandling.com",
+        "companyId": "15468456",
+        "location": "Plot No. N-49/1, MIDC, Additional Ambernath Indl. Area, Ambernath (E), Thane - 421506, Maharashtra, India.",
+        "certification": [
+          {
+            "environment_management_system": "ISO 14001:2004"
+          },
+          {
+            "health&safety_management_system": "OHSAS 18001:2007"
+          },
+          {
+            "quantity_management_system": "ISO9001:2008"
+          }
+        ],
+        "riskScore": 84,
+        "riskLevel": "Low",
+        "compliance": "Compliant",
+        "category": "Safety Material",
+        "cyberRiskScore": 90,
+        "financialRiskScore": 40,
+        "healthScore": 60,
+        "environment": 79,
+        "social": 80,
+        "governance": 60,
+        "healthSafety": 90,
+        "status": true,
+        "email": "info@hararamagroup.com",
+        "contactUs": "+91 251 3217880 / +91 251 2621681",
+        "aboutUs": "Green Field Material Handling P. Ltd., An ISO 9001-2000 Certified Company, a group of companies founded in 1990, offering a wide range of products and services to industry in the specialized field of materials handling and lifting. The vital strength of the organization is the vast experience of our key person, for more than two decades, in the field of Material Handling and Critical Lifting, which has solved a lot of lifting problems in India and Overseas as well. Our accomplished engineering sales force could solve any sort of lifting problems. Advise and implement up-to-date, latest innovative designs and solutions to meet newer challenges. We sincerely attend to your requirement, small or large, from a single hook to a 50-meter long non-metallic sling. Our speciality is heavy-duty non-metallic sling, made of polyester. These are of two types: flat webbing sling with Eye-loop at the ends and Round (endless) slings. Both are available in different lengths and weight lifting capacities, ranging from 1 ton up to 300 tons. We also have various types of Hooks, D-Shackles, Bow Shackles, Multi-leg slings, Master Rings & Cargo lashings, Safety Harness, lifting beams, lifting clamps & crane weighing systems, etc. The Green Field's efficient personnel are always available to advise you on any type of problem in material handling and lifting."
+      },
+      {
+        "key": "fasteners",
+        "supplier": "V.K. Fasteners Private Limited",
+        "industry": "Automobile",
+        "service": "",
+        "product": [
+          "HEX HEAD FLANGE SCREW/BOLT",
+          "Cross pan/flat screw",
+          "Hex nut",
+          "U blot"
+        ],
+        "location": "No.79, Valmiki Street Thiruvanmiyur, Chennai - 600 041Tamil Nadu, India",
+        "certification": [
+          {
+            "environment_management_system": "ISO 9001:2015"
+          },
+          {
+            "eu_certificate_of_quality_system_approval": "0343/PED/MUM/2210015/2"
+          },
+          {
+            "quantity_management_system": "0038/UK/PER/MUM/2210015/4"
+          }
+        ],
+        "riskScore": 73,
+        "riskLevel": "Low",
+        "compliance": "Compliant",
+        "category": "Safety Material",
+        "cyberRiskScore": 41,
+        "financialRiskScore": 80,
+        "healthScore": 60,
+        "environment": 70,
+        "social": 79,
+        "governance": 55,
+        "healthSafety": 80,
+        "status": true,
+        "companyId": "15440456",
+        "website": "https://www.vkfasteners.co.in/",
+        "websiteName": "www.vkfasteners.co.in",
+        "email": "marketing1@vkf.co.in",
+        "contactUs": "+91 89259 50777",
+        "aboutUs": "VK Fasteners - Another MILESTONE of IGP Group, serving the industries more than 60 years. As a traditional family business the core values of optimization, reliability, continuity, and sustainability hold true for every business in IGP Family.Now VK Fasteners Private Limited, a group company of IGP is set at Chennai, Tamilnadu for manufacture of HIGH TENSILE FASTENERS AND PARTS to cater the need of automotive manufacturer through Cold Forging Process.Highly trained and experienced professional along with latest automatic imported bolt former with quality control equipment shall assure you ONTIME DELIVERY AND BEST QUALITY Plant has a installed capacity around 5000MTPA Plant is capable enough to produce all types of fasteners to national and international standards and to customer designed specification"
+      },
+      {
+        "key": "rahul",
+        "supplier": "Rahul Agencies",
+        "industry": "Automobile",
+        "service": "",
+        "product": [
+          "Epoxy adhesive",
+          "Steam solenoid servo valve",
+          "Flow control valve",
+          "Pneumatic cylinder",
+          "Pneumatic actuators",
+          "Solenoid coil",
+          "Auto drain valve",
+          "Pneumatic tubes",
+          "Air cylinders"
+        ],
+        "location": "Plot No. N-49/1, MIDC, Additional Ambernath Indl. Area, Ambernath (E), Thane - 421506, Maharashtra, India.",
+        "certification": "Power tool accessories & fasteners and hand tools",
+        "riskScore": 48,
+        "riskLevel": "Medium",
+        "compliance": "Compliant",
+        "category": "Adhesive",
+        "cyberRiskScore": 35,
+        "financialRiskScore": 52,
+        "healthScore": 60,
+        "environment": 40,
+        "social": 17,
+        "governance": 69,
+        "healthSafety": 34,
+        "companyId": "15110451",
+        "website": "https://rahulagencies.in/",
+        "websiteName": "rahulagencies.in",
+        "status": true,
+        "email": "mayur.rahulagencies@gmail.com",
+        "contactUs": "+91 9824138242",
+        "aboutUs": "Established as a Proprietor firm in the year 2019 at Vapi (Gujarat, India), we “Rahul Agencies” are a leading Distributor / Channel Partner of a wide ran of Solenoid Valves, Pneumatic Cylinder, etc. We procure these products from the most trusted and renowned vendors after stringent market analysis. Further, we offer these products at reasonable rates and deliver these within the promised time-frame. Under the headship of “Mr. Mayur Shah”, we have gained a huge clientele across the nation."
+      },
+      {
+        "key": "sonic",
+        "supplier": "Sonic Enterprises",
+        "industry": "Oil and Gas",
+        "service": "",
+        "product": [
+          "Pumps",
+          "fans",
+          "Room heater",
+          "Exhaust motors",
+          "Electric iron",
+          "Immersion rod"
+        ],
+        "location": "Meerut Road Industrial Area, Ghaziabad - 201003, Uttar Pradesh, India",
+        "certification": "",
+        "riskScore": 42,
+        "riskLevel": "Medium",
+        "compliance": "Non-Compliant",
+        "category": "Safety Material",
+        "cyberRiskScore": 50,
+        "financialRiskScore": 40,
+        "healthScore": 60,
+        "environment": 37,
+        "social": 31,
+        "governance": 49,
+        "healthSafety": 19,
+        "status": false,
+        "email": "sonic.surat@gmail.com",
+        "companyId": "10110411",
+        "website": "https://www.sonichomeappliances.com/",
+        "websiteName": "www.sonichomeappliances.com",
+        "contactUs": "+91 9998012325",
+        "aboutUs": "We “Sonic Enterprise” founded in the year 2005 are a renowned firm that is engaged in manufacturing a wide assortment of Kitchen Jali, PVC Curtain Bracket Holder, PVC Curtain Bracket, Wall Hanger, etc. We have a wide and well functional infrastructural unit that is situated at Rajkot (Gujarat, India) and helps us in making a remarkable collection of products as per the set industry standards. We are a Sole Proprietorship firm that is managed under the headship of “Mr. Mukesh” (Manager), and have achieved a significant position in this sector"
+      },
+      {
+        "key": "brijbasi",
+        "supplier": "Brijbasi Hi-Tech Udyog ltd",
+        "industry": "Automobile",
+        "service": "",
+        "product": [
+          "water tenders",
+          "water bousers",
+          "foam tenders",
+          "dcp tenders",
+          "rescue tenders",
+          "hi-tech foam tenders",
+          "crash fire tenders",
+          "defense vehicle",
+          "UHP system"
+        ],
+        "location": "A-28, Hauz Khas,New Delhi - 110016 India",
+        "certification": "",
+        "riskScore": 80,
+        "riskLevel": "Low",
+        "compliance": "Compliant",
+        "category": "Industrial Valves",
+        "cyberRiskScore": 30,
+        "financialRiskScore": 90,
+        "healthScore": 78,
+        "environment": 60,
+        "social": 72,
+        "governance": 79,
+        "healthSafety": 69,
+        "status": true,
+        "companyId": "10170417",
+        "website": "http://brijbasihitech.com/",
+        "websiteName": "brijbasihitech.com",
+        "email": "brijbasi11@gmail.com",
+        "contactUs": "011 2686 2057 / 2652 2074",
+        "aboutUs": "Brijbasi Hi Tech Udyog Ltd. (BHTUL). An ISO 9001-2000 company, is a pioneer in design, manufacture and supply of fire fighting vehicles and equipment in the Indian sub-continent. The company was established in 1971. Our Head Office is in New Delhi and branch offices in Mumbai, Chennai and Kolkata.Our primary production facility is located in Mathura, about 145 kilometers from New Delhi, and has an approved facility for testing and commissioning of fire vehicles by prestigious Government of India organizations such as Defence Institute for Fire Research, Engineers India Ltd., etc. We have also set up a new factory near Mumbai for further capacity expansion as well as for introducing new products and diversification.Brijbasi Hi Tech Udyog Ltd. employs over 150 people including trained and qualified people in engineering and management departments at its manufacturing facility at Mathura. The various departments of the company work hand in hand to assure a quality product, and make sure that the customer is satisfied with the product and the after sales service.Our innovative product development capabilities helped us secure our first big order for 60 Crash Fire Trucks for the Airports Authority of India during 1975. Since then, we have designed, developed and supplied more than 150 Fire Crash Tenders to Indian Air Force and to the Airport Authority. In addition, we have been awarded the biggest order for fabrication of 110 Crash Fire Tenders for Indian Air Force through Bharat Earth Movers Ltd., Bangalore."
+      },
+      {
+        "key": "general",
+        "supplier": "General Pumps Private Limited",
+        "industry": "Automobile",
+        "riskScore": 20,
+        "service": "",
+        "product": "",
+        "certification": "",
+        "location": "",
+        "riskLevel": "High",
+        "compliance": "Non-Compliant",
+        "category": "Drilling machine, Bolt cutter",
+        "cyberRiskScore": 72,
+        "financialRiskScore": 15,
+        "healthScore": 24,
+        "environment": 33,
+        "social": 21,
+        "governance": 11,
+        "healthSafety": 27,
+        "status": false,
+        "email": "bharath@genjunction.in",
+        "companyId": "10170019",
+        "website": "https://genpumps.com/",
+        "websiteName": "genpumps.com",
+        "contactUs": "+91 7845852171",
+        "aboutUs": "We're a retail and e commerce company based in South India, specializing in Power Tools, Cleaning Equipment, Automotive Tools, Survey Equipment, and Construction Equipment. We strive to provide our customers with world class products and services."
+      },
+      {
+        "key": "engineering",
+        "supplier": "S.B. Engineering Works",
+        "industry": "Oil and Gas",
+        "service": "",
+        "product": [
+          "heat transfer machine",
+          "coil winding machine",
+          "fully automatic paper plate machine",
+          "heat press machine"
+        ],
+        "location": "Plot-B-4, TV Compound, Near Alidhara Office, Road No.6, Dist,-udhana surat, surat, Aaradhna Society, Surat - 394210, Gujarat, India",
+        "certification": "",
+        "riskScore": 42,
+        "riskLevel": "Medium",
+        "compliance": "Non-Compliant",
+        "category": "Fasteners",
+        "cyberRiskScore": 50,
+        "financialRiskScore": 87,
+        "healthScore": 81,
+        "environment": 40,
+        "social": 36,
+        "governance": 40,
+        "healthSafety": 50,
+        "status": false,
+        "email": "info@sbeng.co.in",
+        "companyId": "18270015",
+        "website": "https://www.sbengineers.com/",
+        "websiteName": "www.sbengineers.com",
+        "contactUs": "08046077749",
+        "aboutUs": "Established in the year 2016 as a Sole Proprietorship firm at Surat (Gujarat, India), we “SB Engineering” are engaged in Manufacturing an extensive range of Coil Winding Machine, Face Mask, Thread Cutting Machine, Heat Press Machine, PLC Control Panel, Ultrasonic Hot Fixing Machine, etc. Using high-quality raw material and latest techniques, these products are manufactured as per set industry norms."
+      },
+      {
+        "key": "moveson",
+        "supplier": "Moveson Power solutions",
+        "industry": "Oil and Gas",
+        "riskScore": 85,
+        "service": "",
+        "product": "",
+        "location": "",
+        "certification": "",
+        "riskLevel": "Low",
+        "compliance": "Compliant",
+        "category": "Battery",
+        "cyberRiskScore": 33,
+        "financialRiskScore": 27,
+        "healthScore": 88,
+        "environment": 77,
+        "social": 80,
+        "governance": 73,
+        "healthSafety": 67,
+        "status": true,
+        "email": "Not Available",
+        "companyId": "12274013",
+        "website": "https://moveon.solutions/",
+        "websiteName": "moveon.solutions",
+        "contactUs": "Not Available",
+        "aboutUs": "Not Available"
+      },
+      {
+        "key": "gyandeep",
+        "supplier": "Gyandeep Electricals",
+        "industry": "Oil and Gas",
+        "service": "",
+        "product": [
+          " capacitors",
+          "measuring instruments",
+          "Ug cables",
+          "cable glands",
+          "electrical wires",
+          "motor terminal block",
+          "switch",
+          "textile machinery spares",
+          "motor terminal block & spares"
+        ],
+        "location": "Old no.130/ New, no.273, Thambu Chetty St, next to LAKSHMI VILAS BANK, Chennai, Tamil Nadu 600001",
+        "certification": "",
+        "riskScore": 35,
+        "riskLevel": "High",
+        "compliance": "Non-Compliant",
+        "category": "Electrical",
+        "cyberRiskScore": 40,
+        "financialRiskScore": 20,
+        "healthScore": 70,
+        "environment": 30,
+        "social": 28,
+        "governance": 31,
+        "healthSafety": 10,
+        "status": false,
+        "email": "g.electricals2000@gmail.com",
+        "companyId": "12994069",
+        "website": "https://www.justdial.com/jdmart/Chennai/Gyandeep-Electricals-Next-Lakshmi-Vilas-Bank-Near-High-Court-Parrys/044P4203524_BZDET/catalogue",
+        "websiteName": "Gyandeep-Electricals.in",
+        "contactUs": "08048370630",
+        "aboutUs": " Retailer of capacitors, electrical wire etc."
+      },
+      {
+        "key": "prarthana",
+        "supplier": "Prarthana Engineeing Services",
+        "industry": "Oil and Gas",
+        "service": "",
+        "product": "",
+        "location": "",
+        "certification": "",
+        "riskScore": 95,
+        "riskLevel": "Low",
+        "compliance": "Compliant",
+        "category": "Drill Bit and Fasteners",
+        "cyberRiskScore": 80,
+        "financialRiskScore": 70,
+        "healthScore": 80,
+        "environment": 92,
+        "social": 80,
+        "governance": 98,
+        "healthSafety": 90,
+        "status": true,
+        "email": "info.prarthanagroup@gmail.com",
+        "companyId": "12666057",
+        "website": "https://www.indiamart.com/prarthana-engineering-services/",
+        "websiteName": "prarthana.engineering.in",
+        "contactUs": "9825969396",
+        "aboutUs": "We are India's largest marketplace and a one-stop expert solution for all business needs, empowering 81 lakh suppliers by connecting them with ~20 crore buyers across the nation. At the heart of IndiaMART is our commitment to creating value for Indian business communities through strong network effects. We make business effortless for all by ensuring access to a wider market, technology, and finance."
+      }
+    ]
+  },
+  {
+    "data": [
+      {
+        "title": "Revenue",
+        "type": "revenue",
+        "description": "Total Revenue: $1.2M",
+        "buttonText": "View Details",
+        "growth": "8.5% (YoY)",
+        "lastMonth": "$100K"
+      },
+      {
+        "title": "Performance Feedback",
+        "type": "performancefeedback",
+        "description": "Average Rating: 4.5/5",
+        "buttonText": "View Feedbacks",
+        "positiveFeedback": "85%",
+        "customerComplaints": "12"
+      },
+      {
+        "title": "Audits Information",
+        "type": "auditsinformation",
+        "description": "Compliance Status: Passed",
+        "buttonText": "View Audit Reports",
+        "lastAudit": "Sep 2023",
+        "nextAuditDue": "Mar 2024"
+      },
+      {
+        "title": "Supplier Compliance",
+        "type": "suppliercompliance",
+        "description": "Compliance Score: 95%",
+        "buttonText": "View Compliance",
+        "issues": "3 Pending",
+        "lastReview": "1 Month Ago"
+      },
+      {
+        "title": "Order History",
+        "type": "orderhistory",
+        "description": "Total Orders: 520",
+        "buttonText": "Order History",
+        "completedOrders": "510",
+        "pendingOrders": "10"
+      },
+      {
+        "title": "Certifications",
+        "type": "certifications",
+        "description": "Total Certifications: 520",
+        "buttonText": "View Certifications",
+        "validCertifications": "04",
+        "expiredCertifications": "0"
+      }
+    ]
+  },
+  {
+    "data": [
+      {
+        "title": "Person hours worked",
+        "type": "personHoursWorked",
+        "supplier": "Total Revenue: $1.2M",
+        "industry": "View Details",
+        "riskScore": "8.5% (YoY)",
+        "riskLevel": "$100K",
+        "compliance": "$100K"
+      },
+      {
+        "title": "Fatalities",
+        "type": "fatalities",
+        "supplier": "Total Revenue: $1.2M",
+        "industry": "View Details",
+        "riskScore": "8.5% (YoY)",
+        "riskLevel": "$100K",
+        "compliance": "$100K"
+      },
+      {
+        "title": "Major  injuries",
+        "type": "majorInjuries",
+        "supplier": "Total Revenue: $1.2M",
+        "industry": "View Details",
+        "riskScore": "8.5% (YoY)",
+        "riskLevel": "$100K",
+        "compliance": "$100K"
+      },
+      {
+        "title": "Lost time accidents",
+        "type": "lostTimeAccidents",
+        "supplier": "Total Revenue: $1.2M",
+        "industry": "View Details",
+        "riskScore": "8.5% (YoY)",
+        "riskLevel": "$100K",
+        "compliance": "$100K"
+      },
+      {
+        "title": "Dangerous occurrences",
+        "type": "dangerousOccurrences",
+        "supplier": "Total Revenue: $1.2M",
+        "industry": "View Details",
+        "riskScore": "8.5% (YoY)",
+        "riskLevel": "$100K",
+        "compliance": "$100K"
+      },
+      {
+        "title": "Near miss occurrences",
+        "type": "nearMissOccurrences",
+        "supplier": "Total Revenue: $1.2M",
+        "industry": "View Details",
+        "riskScore": "8.5% (YoY)",
+        "riskLevel": "$100K",
+        "compliance": "$100K"
+      },
+      {
+        "title": "Reportable incident frequency",
+        "type": "reportableIncidentFrequency",
+        "supplier": "Total Revenue: $1.2M",
+        "industry": "View Details",
+        "riskScore": "8.5% (YoY)",
+        "riskLevel": "$100K",
+        "compliance": "$100K"
+      },
+      {
+        "title": "Fatal Accident Rate  (FAR)",
+        "type": "far",
+        "supplier": "Total Revenue: $1.2M",
+        "industry": "View Details",
+        "riskScore": "8.5% (YoY)",
+        "riskLevel": "$100K",
+        "compliance": "$100K"
+      },
+      {
+        "title": "Lost Time Injury Frequency (LTIF)",
+        "type": "ltif",
+        "supplier": "Total Revenue: $1.2M",
+        "industry": "View Details",
+        "riskScore": "8.5% (YoY)",
+        "riskLevel": "$100K",
+        "compliance": "$100K"
+      },
+      {
+        "title": "Total Recordable Incident Rate (TRIR)",
+        "type": "trir",
+        "supplier": "Total Revenue: $1.2M",
+        "industry": "View Details",
+        "riskScore": "8.5% (YoY)",
+        "riskLevel": "$100K",
+        "compliance": "$100K"
+      }
+    ]
+  },
+  {
+    "cards": [
+      {
+        "title": "Total Emissions",
+        "totalEmissions": "118,273",
+        "totalEmissionsTons": "Tons CO₂"
+      },
+      {
+        "title": "Yearly Reduction",
+        "yearlyReduction": "10%"
+      },
+      {
+        "title": "Carbon Intensity",
+        "carbonIntensity": "0.8 Tons",
+        "carbonUnit": "CO₂/Unit"
+      },
+      {
+        "title": "Renewable Energy Use",
+        "renewableEnergyUse": "10%"
+      }
+    ]
+  },
+  {
+    "data": [
+      {
+        "title": "Energy Consumptions",
+        "key": 1,
+        "type": "consumptions",
+        "source": "Energy Consumptions",
+        "emissions": "6000,000",
+        "percentage": "40",
+        "mitigation": "Upgrade to energy-efficient systems"
+      },
+      {
+        "title": "Transportation",
+        "key": 2,
+        "type": "transportation",
+        "source": "Transportation",
+        "emissions": "450,000",
+        "percentage": "73",
+        "mitigation": "Implement electric vehicles"
+      },
+      {
+        "title": "Waste Management",
+        "key": 3,
+        "type": "waste",
+        "source": "Waste Management",
+        "emissions": "300,000",
+        "percentage": "84",
+        "mitigation": "Enhance recycling programs"
+      }
+    ]
+  }
+]

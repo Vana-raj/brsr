@@ -1,0 +1,102 @@
+{
+  "columns": [
+    "",
+    "Suppliers",
+    "Industry",
+    "Risk Score",
+    "Risk Level",
+    "Compliance"
+  ],
+  "rows": [
+    {
+      "name": "Person hours worked",
+      "id": 1,
+      "suppliers": "1327580",
+      "industry": "1427520",
+      "risk_Score": "1625420",
+      "risk_Level": "1331509",
+      "compliance": "1125201"
+    },
+    {
+      "name": "Fatalities",
+      "id": 2,
+      "suppliers": "0",
+      "industry": "0",
+      "risk_Score": "0",
+      "risk_Level": "0",
+      "compliance": "0"
+    },
+    {
+      "name": "Major  injuries",
+      "id": 3,
+      "suppliers": "0",
+      "industry": "2",
+      "risk_Score": "0",
+      "risk_Level": "0",
+      "compliance": "1"
+    },
+    {
+      "name": "Lost time accidents",
+      "id": 4,
+      "suppliers": "5",
+      "industry": "4",
+      "risk_Score": "0",
+      "risk_Level": "0",
+      "compliance": "0"
+    },
+    {
+      "name": "Dangerous occurrences",
+      "id": 5,
+      "suppliers": "6",
+      "industry": "4",
+      "risk_Score": "0",
+      "risk_Level": "1",
+      "compliance": "3"
+    },
+    {
+      "name": "Near miss occurrences",
+      "id": 6,
+      "suppliers": "12",
+      "industry": "3",
+      "risk_Score": "0",
+      "risk_Level": "7",
+      "compliance": "0"
+    },
+    {
+      "name": "Reportable incident frequency",
+      "id": 7,
+      "suppliers": "0",
+      "industry": "0",
+      "risk_Score": "0",
+      "risk_Level": "0",
+      "compliance": "0"
+    },
+    {
+      "name": "Fatal Accident Rate  (FAR)",
+      "id": 8,
+      "suppliers": "0",
+      "industry": "0",
+      "risk_Score": "0",
+      "risk_Level": "0",
+      "compliance": "0"
+    },
+    {
+      "name": "Lost Time Injury Frequency (LTIF)",
+      "id": 9,
+      "suppliers": "0.18",
+      "industry": "0.18",
+      "risk_Score": "0.18",
+      "risk_Level": "0.18",
+      "compliance": "0.18"
+    },
+    {
+      "name": "Total Recordable Incident Rate (TRIR)",
+      "id": 10,
+      "suppliers": "1.6",
+      "industry": "1.6",
+      "risk_Score": "1.6",
+      "risk_Level": "1.6",
+      "compliance": "1.6"
+    }
+  ]
+}

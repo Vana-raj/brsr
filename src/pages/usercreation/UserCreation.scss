@@ -1,0 +1,372 @@
+@import '../../style/utils/Variables.scss';
+
+.user-main {
+    .user-container {
+        display: flex;
+        padding: $commonPadding;
+        background: $cleanWhite;
+        border-radius: 10px;
+
+
+        .user-first-box {
+            width: 20%;
+            height: max-content;
+            padding: $commonPadding;
+            background: $cleanWhite;
+
+            .ant-card {
+                background: $cleanWhite;
+                border-radius: 0;
+                border-right: $border;
+                border-left: none;
+                border-top: none;
+                border-bottom: none;
+                height: 103vh;
+            }
+.ant-card-head-title {
+    padding-top: 20px;
+    color: $textColor;
+}
+.ant-collapse-header {
+    background: $cleanWhite;
+
+}
+
+.ant-collapse-header-text {
+    color: $textColor;
+    background: $cleanWhite;
+}
+            .ant-card-body {
+                padding: 0;
+            }
+
+            .ant-collapse {
+                border: none;
+            }
+            .ant-collapse-content-box {
+                padding: 0 10px 10px 10px;
+                background: $cleanWhite;
+            }
+
+            .ant-collapse-item {
+                border: none;
+                background-color: $bgColor;
+
+            }
+
+            .ant-collapse-content {
+                border: none;
+            }
+            
+
+            .ant-list-item {
+                border: none;
+                
+            }
+
+            
+
+            .category-item {
+                cursor: pointer;
+                padding: $commonPadding;
+                color: $textColor;
+                font-weight: $bold;
+                margin-left: 15%;
+            }
+
+            .category-item.active {
+                background-color: $bgColor;
+                font-weight: $bold;
+                color: $textColor;
+                border-left: 4px solid $primary;
+                border-radius: 3px;
+            }
+
+        }
+.none-box {
+  display: none;
+}
+        .user-second-box {
+            width: 80%;
+            padding: $commonPadding;
+            background: $cleanWhite;
+
+
+
+            .ant-card {
+                height: auto;
+                background: $cleanWhite;
+                border: none;
+
+            }
+
+            .ant-card-head {
+                padding: 0 10px;
+                border-bottom: $border;
+            }
+            .ant-card-head-title {
+                padding-top: 20px;
+    color: $textColor;
+
+            }
+
+            .ant-card-body {
+                padding: 5px;
+            }
+        }
+
+    }
+
+}
+
+
+.settings-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.settings-container h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.settings-container .ant-form-item {
+    margin-bottom: 15px;
+}
+
+
+.role-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    gap: 10px;
+    flex-direction: column;
+}
+
+.role-item span {
+    font-weight: bold;
+}
+
+.role-item .ant-checkbox-group {
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.role-m-item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-div {
+    display: flex;
+    gap: 10px;
+}
+
+.footer {
+    display: flex;
+    gap: 10px;
+}
+
+.header-icon {
+    margin-right: 8px;
+    padding-left: 6px;
+}
+
+.password-form {
+    padding: 16px;
+  
+    .ant-form-item {
+      margin-bottom: 16px;
+    }
+  
+    button {
+      margin-top: 8px;
+    }
+  }
+
+  .setting {
+    padding: 12px;
+    color: $textColor;
+    font-weight: $bold;
+    cursor: pointer;
+  }
+
+  .cointainer-table {
+  padding-left: 0px;
+    background: $cleanWhite;
+
+    .table-title {
+        font-size: 16px;
+        font-weight: $bold;
+        color: $primary;
+        margin-bottom: 16px;
+        display: $flex;
+        justify-self: flex-start;
+        align-items: center;
+        gap: 5px;
+      }
+    
+      .title-count {
+        font-size: 16px;
+        font-weight: $bold;
+        color: $textColor;
+      }
+    .search-dot {
+      display: flex;
+    
+    }
+      .search-bar{
+        display: $flex;
+        min-width:  $fullWidth;
+        justify-content: space-between;
+      }
+    
+      .custom-table {
+        border: none;
+        padding-top:$commonPadding;
+    
+        .ant-table {
+          border: none;
+        }
+    
+        .ant-table-container {
+          overflow-x: auto; 
+        }
+        
+        .ant-table-row-cell {
+          background: $white;
+          transition: background-color 0.9s ease;
+    
+          &:hover {
+            background-color: $error;
+          }
+        }
+        
+        
+        .ant-table-cell {
+          padding: 12px;
+          font-size: 14px;
+          color: $textColor;
+          background-color: $cleanWhite;
+          &:first-child {
+            font-weight: $bold;
+          }
+        }
+    
+        .ant-table-thead > tr > th {
+          background-color: $cleanWhite;
+          border-bottom: none;
+          font-weight: 700;
+          font-size: 14px;
+          color: $textColor;
+          text-align: left;
+    
+          &:first-child {
+          font-weight: 700;
+    
+          }
+        }
+    
+        .ant-table-tbody > tr > td {
+          border-bottom: $border;
+          padding: 12px;
+        }
+    
+        .ant-pagination {
+          justify-content: center;
+        }
+        .risk-high {
+          color: $primary;
+          font-weight: $bold;
+        }
+    
+        .risk-medium {
+          color: $warning;
+          font-weight: $bold;
+        }
+    
+        .risk-low {
+          color: $error;
+          font-weight: $bold;
+        }
+    
+      }
+    
+    
+    
+      .custom-sort-icon {
+        color: $secondary; 
+        font-size: 14px; 
+        margin-left: 5px;
+        transition: transform 0.2s;
+    
+        &.active {
+          color: $primary; 
+          transform: scale(1.2);
+        }
+      }
+    
+      .ant-table-column-sorter {
+        &:hover .custom-sort-icon {
+          color: $primary; 
+        }
+      }
+    
+      .display-add-delete {
+        display: flex;  
+        gap: 15%;
+      }
+    
+      .display-add-delete{
+      .color-delete {
+        .ant-btn-icon
+        {
+          color: $error;
+        }
+      }
+    }
+    
+    .three-dot {
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: $bold;
+      color: $textColor;
+      align-self: center;
+      padding: 5px;
+    }
+    
+    .add-user {
+      display: flex;
+      gap: 5px;
+      cursor: pointer;
+      color: $textColor;
+      font-weight: $bold;
+    }
+    .disabled {
+      pointer-events: none;
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .add-useritem {
+      width: max-content;
+    }
+}
+
+.empty-state {
+  color: #999;
+  text-align: center;
+  padding: 40px;
+  font-style: italic;
+}
+
+.custom-cont {
+  // width: 80%;
+}

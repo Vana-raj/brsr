@@ -1,0 +1,371 @@
+@import '../../style/utils/Variables.scss';
+  
+  
+  @media (max-width: 768px) {
+    body {
+      background-color: $white;
+    }
+    .navbar-1 {
+        background: $grey;
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        display: $flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: $commonPadding;
+        margin-bottom: 4px;
+        flex-wrap: wrap;
+      }
+      .navbar-2 {
+        background: $grey;
+        border-bottom-left-radius: 25px;
+        border-bottom-right-radius: 25px;
+        display: $flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: $commonPadding;
+        flex-wrap: wrap;
+      }
+      .heading {
+        display: $flex;
+        font-size: 20px;
+        font-weight: $bold;
+        line-height: 28.8px;
+        text-align: left;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none;
+        color: $textColor;
+        gap: 5px;
+        align-items: center;
+        align-self: center;
+        flex-wrap: wrap;
+        }
+        .detail-nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: $flex;
+            flex-wrap: wrap;
+          }
+
+          .contact-nav {
+            display: $flex;
+            flex-wrap: wrap;
+            color: $textColor;
+            gap: 50px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+  }
+  
+  @media (max-width: 480px) {
+    body {
+      background-color: $white;
+    }
+    .navbar-1 {
+        background: $grey;
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        display: $flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: $commonPadding;
+        margin-bottom: 4px;
+        flex-wrap: wrap;
+      }
+      .navbar-2 {
+        background: $grey;
+        border-bottom-left-radius: 25px;
+        border-bottom-right-radius: 25px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        display: $flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: $commonPadding;
+        flex-wrap: wrap;
+        margin-top: 5px;
+
+      }
+      .heading {
+        display: $flex;
+        font-size: 20px;
+        font-weight: $bold;
+        line-height: 28.8px;
+        text-align: left;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none;
+        color: $textColor;
+        gap: 5px;
+        align-items: center;
+        align-self: center;
+        flex-wrap: wrap;
+        }
+        .contact-nav {
+            display: $flex;
+            flex-wrap: wrap;
+            color: $textColor;
+            gap: 50px;
+            align-items: center;
+        }
+        .detail-nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: $flex;
+            flex-wrap: wrap;
+          }
+
+          .nav-profile-all {
+            display: $flex;
+            gap: $commonGap;
+            align-self: center;
+            align-items: center;
+            justify-content: flex-end;
+          }
+
+          .detail-nav {
+            margin-top: 12px;
+            width: 100% !important;
+          }
+  }
+
+body {
+  max-width: 100vw;
+  background-color: $bgColor;
+  margin: 10px;
+}
+
+.navbar-1 {
+  background: $grey;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  display: $flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $commonPadding;
+  margin-bottom: 4px;
+}
+.navbar-2 {
+  background: $grey;
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  display: $flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $commonPadding;
+  margin-top: 5px;
+}
+
+.heading {
+display: $flex;
+font-size: 20px;
+font-weight: $bold;
+text-align: left;
+text-underline-position: from-font;
+text-decoration-skip-ink: none;
+color: $textColor;
+gap: $commonGap;
+align-items: center;
+align-self: center;
+}
+
+.qualify {
+font-size: 12px;
+font-weight: 400;
+background: $primary;
+align-self: center;
+align-items: center;
+color: $cleanWhite;
+border-radius: $commonRadius;
+padding: 5px 5px 5px 5px;
+}
+
+.contact-nav {
+    display: $flex;
+    color: $textColor;
+    gap: 50px;
+    align-items: center;
+}
+.contact-home {
+    display: $flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    font-weight: $bold;
+    .email-link {
+      text-decoration: none;
+      color: inherit;
+      display: $flex;
+      align-items: center;
+      gap: 8px; 
+    }
+}
+
+.detail-nav {
+  margin-top: 12px;
+  width: 77%;
+}
+
+.detail-nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: $flex;
+}
+
+.detail-nav li {
+  margin: 10px;
+}
+
+.detail-nav a {
+  color: $textColor;
+  font-size: 14px;
+  font-weight: $bold;
+  line-height: 34px;
+  text-align: left;
+  text-decoration-skip-ink: none;
+}
+
+.detail-nav ul li a {
+  padding: 5px 10px;
+  text-decoration: none;
+  color: $textColor;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 34px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+}
+
+.detail-nav ul li a.active {
+  background-color: $primary;
+  border-radius: $commonRadius;
+  color: $white;
+  padding: 5px 8px 8px 8px;
+  font-size: 16px;
+  font-weight: $bold;
+  line-height: 34px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+}
+
+.nav-profile-all {
+  display: $flex;
+  gap: $commonGap;
+  align-self: center;
+  align-items: center;
+}
+
+.nav-profile {
+  border-radius: $commonRadius;
+  background: $cleanWhite;
+  display: $flex;
+  gap: $commonGap;
+  align-self: center;
+  padding: 7px;
+}
+
+.nav-profile-pic {
+  border-radius: 50%;
+  align-self: center;
+}
+
+.profile-picture {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.flex {
+  display: $flex;
+  gap: $commonGap;
+  font-weight: $bold;
+}
+
+.ant-tabs-nav-list {
+  gap: $commonGap;
+  border-bottom: $border;
+}
+
+.ant-tabs-nav {
+  border-radius: 5px;
+  .ant-tabs-tab {
+    position: relative;
+    color: $textColor;
+    padding: 4px 0; 
+    &:hover {
+      color: $primary; 
+    }
+
+    &::after {
+      content: "";
+      display: block;
+      width: 0;
+      height: 3px;
+      transition: width 0.2s ease;
+      
+    }
+
+    &:hover::after {
+      width: 100%; 
+
+    }
+
+    &.ant-tabs-tab-active {
+      color: $primary; 
+      border-bottom: solid 4px;
+    }
+  }
+
+  .ant-tabs-tab-btn {
+    display: $flex;
+    gap: 3px;
+   
+      div {
+        color: $primary;
+      }   
+
+     
+  }
+
+  .ant-tabs-tab-btn a.active {
+    color: $textColor; 
+    font-weight: 700;
+    font-size: 14px;
+    
+  }
+
+  .ant-tabs-ink-bar {
+    background-color: $primary; 
+  }
+}
+
+.more-drop {
+  color: $textColor;
+  font-weight: $bold;
+
+}
+
+.more-tabs {
+  color: $textColor;
+  cursor: pointer;
+  font-weight: bold;
+
+  &:hover {
+    color: darken($textColor, 30%);
+  }
+}
+
+
+

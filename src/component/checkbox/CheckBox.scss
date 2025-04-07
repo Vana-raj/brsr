@@ -1,0 +1,22 @@
+@import '../../style/utils/Variables.scss';
+
+.checkbox-wrapper {
+    display: $flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .checkbox {
+    margin-right: 8px;
+  }
+  
+  .checkbox-label {
+    font-size: 16px;
+    font-weight: $bold;
+    color:$textColor;
+  }
+  
+  .checkbox-disabled {
+    color: $grey;
+  }
+  

@@ -1,0 +1,80 @@
+@import '../../style/utils/Variables.scss';
+.financial-table-container {
+    width: 100%;
+    overflow-x: auto; 
+    background-color: $bgColor;
+  }
+  
+  .financial-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: $textColor;
+    font-size: 14px;
+  
+    thead {
+      background-color: $bgColor;
+  
+      th {
+        text-align: center;
+        padding: 8px 16px;
+        font-weight: $bold;
+        color: $primary;
+      }
+    }
+  
+    tbody {
+      tr {
+        border-top: $border;
+  
+        &:last-child {
+          border-bottom: $border;
+        }
+  
+        td {
+          padding: 8px 16px;
+          text-align: left;
+          &:nth-child(1) {
+            font-weight: 400;
+            color: $textColor;
+            font-size: 15px;
+
+          }
+  
+          &:nth-child(2) {
+            text-align: center;
+            color: $textColor;
+
+          }
+  
+          &:nth-child(n + 3) {
+            text-align: center;
+          }
+  
+          &:nth-child(1):hover {
+            color: $secondary;
+            cursor: pointer; 
+          }
+        }
+      }
+  
+      tr:nth-child(3) { 
+        border-bottom: none;
+        
+        td {
+          padding-bottom: 25px;
+          color: $secondary;
+        }
+      }
+      tr:nth-child(4) { 
+        border: none;
+      }
+      tr:nth-child(7) { 
+        color: $secondary;
+      td  {
+        color: $secondary;
+
+        }
+      }
+    }
+  }
+  

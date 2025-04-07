@@ -1,0 +1,63 @@
+@import '../../style/utils/Variables.scss';
+.environmental-table-container {
+  width: 100%;
+  overflow-x: auto;
+  background-color: $bgColor;
+
+  .environmental-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: $textColor;
+    font-size: 14px;
+
+    thead {
+      background-color: $bgColor;
+
+      th {
+        text-align: center;
+        padding: 8px 16px;
+        font-weight: $bold;
+        color: $textColor;
+      }
+    }
+
+    tbody {
+      tr {
+        border-top: $border;
+
+        &:last-child {
+          border-bottom: $border;
+        }
+
+        td {
+          padding: 8px 16px;
+          text-align: center;
+
+          &:nth-child(1) {
+            text-align: left;
+            font-weight: $bold;
+          }
+        }
+      }
+
+      .green-cell {
+        color: $primary;
+      }
+
+      .red-cell {
+        color: $error;
+      }
+
+      .orange-cell {
+        color: $warning
+      }
+    }
+  }
+  
+}
+
+.environmental-table tbody tr:nth-child(6) td {
+  padding-bottom: 40px; 
+  border: none; 
+
+}

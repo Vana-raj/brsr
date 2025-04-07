@@ -1,0 +1,7 @@
+@import '../../../style/utils/Variables.scss';
+
+.normal-card-main {
+    border: $border;
+    background: $cleanWhite;
+    border-radius: $commonRadius;
+}

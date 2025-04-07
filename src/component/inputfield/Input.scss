@@ -1,0 +1,43 @@
+@import '../../style/utils/Variables.scss';
+.input-field {
+  width: 100%;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.input-field--outlined {
+  border: $border;
+  background-color: transparent;
+
+  &:focus {
+    border-color: $secondary;
+    outline: none;
+  }
+}
+
+.input-field--filled {
+  border: $border;
+  background-color: $cleanWhite;
+
+  &:focus {
+    border-color: $secondary;
+    background-color: $cleanWhite;
+  }
+}
+
+.input-field--borderless {
+  border: none;
+  background-color: transparent;
+  box-shadow: none !important; 
+  
+  &:focus {
+    border-color: transparent;
+    box-shadow: none !important;
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
+}
+

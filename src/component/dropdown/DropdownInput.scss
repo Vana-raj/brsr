@@ -1,0 +1,44 @@
+@import '../../style/utils/Variables.scss';
+
+.custom-dropdown {
+    width: 100%;
+    font-size: 14px;
+    font-weight: $bold;
+    color: $textColor;
+    
+    .ant-select-selector {
+      background-color: transparent; 
+      border: none !important; 
+      box-shadow: none !important; 
+      padding: 8px 12px; 
+      outline: none;
+    font-size: 14px;
+    font-weight: $bold;
+    color: $secondary;
+      &:hover {
+        background-color: $white; 
+      }
+    }
+  
+    .ant-select-arrow {
+        color: $secondary;
+      font-size: 14px;
+    font-weight: $bold;
+
+    }
+  }
+  
+  .dropdown-options {
+    .ant-select-item {
+      font-size: 14px;
+      padding: 8px 12px;
+      font-weight: $bold;
+      color: $secondary;
+      
+  
+      &:hover {
+        background-color: $grey;
+      }
+    }
+  }
+  

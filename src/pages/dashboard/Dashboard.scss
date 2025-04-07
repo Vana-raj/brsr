@@ -1,0 +1,192 @@
+@import '../../style/utils/Variables.scss';
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+
+@media (max-width: 768px) {
+  body {
+    background-color: $white;
+  }
+  .cards-flex {
+    display: $flex;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    background-color: $white;
+  }
+  .cards-flex {
+    display: $flex;
+    flex-wrap: wrap;
+  }
+
+  .multi-cards {
+    display: $flex;
+    flex-wrap: wrap;
+    width: 100%;
+    padding-top: 3px;
+    justify-content: center;
+  }
+  .single-card {
+    width: 100vh;
+    display: $flex;
+    padding: $commonPadding;
+    margin-right: 10px;
+    justify-content: center;
+
+  }
+}
+
+.Dashboard-main {
+  width: 100%;
+}
+
+.cards-flex {
+  display: $flex;
+}
+
+.multi-cards {
+  display: $flex;
+  flex-wrap: wrap;
+  width: 100%;
+  padding-top: 3px;
+  grid-template-columns:repeat(3, 1fr);
+}
+
+.single-card {
+  width: 100vh;
+  display: $flex;
+  padding: $commonPadding;
+  margin-right: 10px;
+}
+
+.supplier-name {
+  cursor: pointer;
+}
+
+.action-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.three-dot-menu {
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: $bold;
+  color: $textColor;
+  writing-mode:vertical-lr;
+  padding: 5px;
+  &:hover {
+    color: $primary; 
+  }
+}
+
+
+.environmental-table-container {
+  width: 100%;
+  overflow-x: auto;
+  background-color: $cleanWhite;
+}
+
+.environmental-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: $textColor;
+  font-size: 14px;
+}
+
+thead {
+  background-color: $bgColor;
+  th {
+    text-align: center;
+    padding: 8px 16px;
+    font-weight: $bold;
+    color: $textColor;
+  }
+}
+
+tbody {
+  tr {
+    border-top: $border;
+
+    &:last-child {
+      border-bottom: $border;
+    }
+
+    td {
+      padding: 8px 16px;
+
+      &:nth-child(1) {
+        text-align: left;
+        font-weight: $bold;
+      }
+    }
+  }
+
+  .green-cell {
+    color: $primary; 
+  }
+
+  .red-cell {
+    color: $error; 
+  }
+
+  .orange-cell {
+    color: $error; 
+  }
+}
+
+.list-icon {
+  border: $bold;
+  padding: 0px 2px 0px 2px;
+}
+
+.edit-icon {
+  padding: 2px;
+
+}
+
+.delete-icon {
+  padding: 2px;
+
+}
+
+.ant-switch {
+  background-color: $primary !important;
+}
+
+.ant-switch-checked {
+  background-color: $error !important;
+}
+
+
+
+.menu-options {
+    width: 150px;
+    padding: 5px 0;
+  }
+  
+  .menu-options .menu-item {
+    padding: $commonPadding;
+    display: $flex;
+    gap: 15px;
+    color: $textColor;
+    font-size: 14px;
+    font-weight: $bold;
+    cursor: pointer;
+    &:hover {
+      background-color: $grey;
+      color: $textColor;
+      
+    }
+  }
+  
+  .action-menu:hover .menu-options {
+    display: block;
+  }
