@@ -100,7 +100,18 @@ export const allCategories = [
         questionsAnswer: "0/4",
         percentComplete: "0",
         question: [
-          { text: "Details of business activities (accounting for 90% of the turnover):", choices: ["Yes", "No", "In Progress"], isMandatory: false },
+          {
+            text: "Details of business activities (accounting for 90% of the turnover):", choices: ["Yes", "No", "In Progress"], isMandatory: false,
+            type: "table",
+            columns: [
+              "S. No.",
+              "Material Issue Identified",
+              "Risk/Opportunity",
+              "Rationale",
+              "Mitigation Approach",
+              "Financial Implications"
+            ],
+          },
           { text: "Products/Services sold by the entity (accounting for 90% of the entity’s Turnover):", choices: null, isMandatory: false },
         ],
       },
@@ -247,11 +258,60 @@ export const allCategories = [
         questionsAnswer: "0/3",
         percentComplete: "0",
         question: [
-          { text: "What is your current CDP score for Climate Change?", choices: null, isMandatory: false },
-          { text: "What is your current CDP score for Water?", choices: null, isMandatory: false },
-          { text: "What is your current CDP score for Forests?", choices: null, isMandatory: false },
-        ],
-      },
+          {
+            text: "Details as at the end of Financial Year:",
+            choices: null,
+            isMandatory: true,
+            type: "sectionHeader",
+            parent: true
+          },
+          {
+            text: "Employees and workers (including differently abled):",
+            type: "table",
+            columns: [
+              "S. No.",
+              "Particulars",
+              "Total (A)",
+              "Male (No. (B))",
+              "% (B/A)",
+              "N"
+            ],
+            "isMandatory": true,
+            rows: [
+              "Employees - Permanent (D)",
+              "Employees - Other than Permanent (E)",
+              "Total employees (D + E)",
+              "Workers - Permanent (F)",
+              "Workers - Other than Permanent (G)",
+              "Total employees (F + G)"
+            ],
+            parent: false
+          },
+          {
+            text: "Differently abled Employees and workers:",
+            type: "table",
+            columns: [
+              "S. No.",
+              "Particulars",
+              "Total (A)",
+              "Male (No. (B))",
+              "% (B/A)",
+              "N"
+            ],
+            isMandator: true,
+            rows: [
+              "Differently-abled Employees - Permanent (D)",
+              "Differently-abled Employees - Other than Permanent (E)",
+              "Total employees (D + E)",
+              "Differently-abled Workers - Permanent (F)",
+              "Differently-abled Workers - Other than Permanent (G)",
+              "Total employees (F + G)"
+            ],
+            parent: false
+          },
+          { text: "Participation/Inclusion/Representation of women", choices: null, isMandatory: true, parent: true }
+        ]
+      }
     ]
   },
   {
