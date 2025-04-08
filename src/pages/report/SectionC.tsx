@@ -36,7 +36,7 @@ const columns: any = [
 ];
 
 const SectionC: React.FC = () => {
-    const [activeCategory, setActiveCategory] = useState<string>("general");
+    const [activeCategory, setActiveCategory] = useState<string>("details");
     const [showQuestions, setShowQuestions] = useState<boolean>(false);
     const [answers, setAnswers] = useState<{ [key: string]: any }>({});
     const [uploadedFiles, setUploadedFiles] = useState<{ [key: string]: { name: string; size: string } | null }>({});

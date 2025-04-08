@@ -20,7 +20,7 @@ interface QuestionSection {
 }
 
 const Questionnaire: React.FC = () => {
-    const [activeCategory, setActiveCategory] = useState<string>("general");
+    const [activeCategory, setActiveCategory] = useState<string>("details");
     const [showQuestions, setShowQuestions] = useState<boolean>(false);
     const [answers, setAnswers] = useState<{ [key: string]: any }>({});
     const [uploadedFiles, setUploadedFiles] = useState<{ [key: string]: { name: string; size: string } | null }>({});
@@ -269,10 +269,14 @@ const Questionnaire: React.FC = () => {
 
         const getQuestionNumber = () => {
             if (question.parent) {
-                // Parent question - use numerical numbering
-                return `${questionIndex + 1}.`;
+                let parentCount = 0;
+                for (let i = 0; i <= questionIndex; i++) {
+                    if (questionsArray[i].parent) {
+                        parentCount++;
+                    }
+                }
+                return `${parentCount}.`;
             } else {
-                // Child question - find nearest parent for alphabetical numbering
                 let lastParentIndex = -1;
                 for (let i = questionIndex - 1; i >= 0; i--) {
                     if (questionsArray[i].parent) {
@@ -284,11 +288,12 @@ const Questionnaire: React.FC = () => {
                 if (lastParentIndex === -1) return `${questionIndex + 1}.`;
 
                 const subQuestionIndex = questionIndex - lastParentIndex - 1;
-                const alphabet = String.fromCharCode(97 + subQuestionIndex);
+                const alphabet = String.fromCharCode(97 + subQuestionIndex); // 97 = 'a'
                 return `${alphabet}.`;
             }
         };
-        const questionKey = `${section}-${key}-${questionIndex}`;
+
+        const questionKey = `${section} -${key} -${questionIndex} `;
         const isFileUploaded = !!uploadedFiles[questionKey];
         const isAnswered = !!answers[questionKey];
         if (isViewMode && !isAnswered) {
@@ -401,7 +406,7 @@ const Questionnaire: React.FC = () => {
                             value: choice,
                         }))}
                         placeholder="Select options"
-                        value={answers[`${section}-${key}-${questionIndex}`] || []}
+                        value={answers[`${section} -${key} -${questionIndex} `] || []}
                         onChange={(value: any) =>
                             handleInputChange(section, key, value, questionIndex)
                         }
@@ -409,12 +414,12 @@ const Questionnaire: React.FC = () => {
                 ) : (
                     <div className="question-options">
                         {question.choices.map((option, idx) => (
-                            <label key={`${option}-${idx}`}>
+                            <label key={`${option} -${idx} `}>
                                 <Space direction="vertical">
                                     <Radio
                                         value={option}
                                         checked={
-                                            answers[`${section}-${key}-${questionIndex}`] ===
+                                            answers[`${section} -${key} -${questionIndex} `] ===
                                             option
                                         }
                                         onChange={() =>
@@ -446,7 +451,7 @@ const Questionnaire: React.FC = () => {
         let nonEmptyCount = 0;
         if (currentCategory) {
             currentCategory.questions[currentSectionIndex]?.question.forEach((_, questionIndex) => {
-                const questionKey = `${activeCategory}-${questions.key}-${questionIndex}`;
+                const questionKey = `${activeCategory} -${questions.key} -${questionIndex} `;
                 if (answers[questionKey]) {
                     nonEmptyCount += 1;
                 }
@@ -480,7 +485,7 @@ const Questionnaire: React.FC = () => {
                                 <List.Item
                                     key={category.key}
                                     onClick={() => handleCategoryClick(category.key)}
-                                    className={`category-item ${activeCategory === category.key ? "active" : ""}`}
+                                    className={`category - item ${activeCategory === category.key ? "active" : ""} `}
                                 >
                                     {category.section}
                                 </List.Item>
@@ -502,22 +507,25 @@ const Questionnaire: React.FC = () => {
                                     percent={progressPercent}
                                     width={50}
                                     strokeColor={primaryColor}
-                                    format={() => `${countNonEmptyAnswers()}/${singleSectionTextArea}`}
+                                    format={() => `${countNonEmptyAnswers()}/${singleSectionTextArea}`
+                                    }
                                 />
 
-                            </div>
+                            </div >
                         }
                         bordered
                     >
-                        {questions?.question.map((q: any, idx: any) => {
-                            return (
-                                <div key={`${questions.key}-${idx}`}>
-                                    {renderQuestionInput(activeCategory, questions.key, q, idx, questions.question)}
-                                </div>
-                            );
-                        })}
+                        {
+                            questions?.question.map((q: any, idx: any) => {
+                                return (
+                                    <div key={`${questions.key}-${idx}`}>
+                                        {renderQuestionInput(activeCategory, questions.key, q, idx, questions.question)}
+                                    </div>
+                                );
+                            })
+                        }
 
-                        <div className="subbutton">
+                        < div className="subbutton" >
                             <div className="common-submit-btn">
                                 <CustomButton
                                     label="Submit Answers"
@@ -525,10 +533,10 @@ const Questionnaire: React.FC = () => {
                                     onClick={(item: any) => handleSubmitAll(item)}
                                 />
                             </div>
-                        </div>
+                        </div >
 
-                    </Card>
-                </div>
+                    </Card >
+                </div >
                 {/* )
                 } */}
             </div >

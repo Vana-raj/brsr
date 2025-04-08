@@ -106,7 +106,6 @@ const Report: React.FC = () => {
   const handleAddData = (sectionType: string) => [
     setAddData(sectionType)
   ]
-  console.log(addData, 'addData')
   const handleImport = () => {
     const input = document.createElement("input");
     input.type = "file";
@@ -199,11 +198,11 @@ const Report: React.FC = () => {
               >
                 <div className="section-header">
                   <div className='xbrl-header'>SECTION A</div>
-                  <span>0%</span>
+                  <span>40%</span>
                 </div>
                 <p>General Disclosures</p>
                 <Progress
-                  percent={0}
+                  percent={40}
                   status="active"
                   showInfo={false}
                   strokeColor="#1890ff"
@@ -224,11 +223,11 @@ const Report: React.FC = () => {
               >
                 <div className="section-header">
                   <div className='xbrl-header'>SECTION B</div>
-                  <span>0%</span>
+                  <span>10%</span>
                 </div>
                 <p>Management & Process Disclosures</p>
                 <Progress
-                  percent={0}
+                  percent={10}
                   status="active"
                   showInfo={false}
                   strokeColor="#1890ff"
@@ -300,11 +299,11 @@ const Report: React.FC = () => {
           {addData === "section_a" &&
             <Questionnaire />
           }
-                {addData === "section_b" &&
-            <SectionB/>
+          {addData === "section_b" &&
+            <SectionB />
           }
-                          {addData === "section_c" &&
-            <SectionC/>
+          {addData === "section_c" &&
+            <SectionC />
           }
 
         </div>
