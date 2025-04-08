@@ -253,10 +253,11 @@ const SectionB: React.FC = () => {
         key: string,
         question: {
             text: string; choices: string[] | null; isMandatory: boolean, type: string, columns: [], rows: [],
-            parent?: boolean;
+            parent?: boolean; label: string;
         },
         questionIndex: number,
-        questionsArray: any[]
+        questionsArray: any[],
+        label:string
     ) => {
 
         const getQuestionNumber = () => {
@@ -287,6 +288,7 @@ const SectionB: React.FC = () => {
             return null;
         }
         if (question?.type === 'table') {
+            console.log(label,'label')
             return (
                 <div>
                     <div className="question-text">
@@ -312,7 +314,7 @@ const SectionB: React.FC = () => {
                     </div>
                     <TableInput
                         columns={question?.columns}
-header={"Disclosure Questions"}
+header={label}
                         rows={question?.rows}
                         value={answers[questionKey] || []}
                         onChange={(value: any) =>
@@ -505,7 +507,7 @@ header={"Disclosure Questions"}
                         {questions?.question.map((q: any, idx: any) => {
                             return (
                                 <div key={`${questions.key}-${idx}`}>
-                                    {renderQuestionInput(activeCategory, questions.key, q, idx, questions.question)}
+                                    {renderQuestionInput(activeCategory, questions.key, q, idx, questions.question, q.label)}
                                 </div>
                             );
                         })}

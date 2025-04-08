@@ -1,3 +1,4 @@
+import Column from "antd/es/table/Column";
 import { Fa500Px } from "react-icons/fa";
 
 export const options2 = [
@@ -53,7 +54,7 @@ export const options2 = [
   export const allCategories2 = [
     {
       key: "details",
-      section: "PolicyPolicy and management processes",
+      section: "Policy and management processes",
       questionsAnswer: "1/3",
       percentComplete: "40%",
       questions: [
@@ -65,6 +66,7 @@ export const options2 = [
           question: [
             { text: "Whether your entity’s policy/policies cover each principle and its core elements of the NGRBCs. (Yes/No)", choices: ["Yes", "No", "In Progress"],
               type: "table",
+              label:"Policy", 
               columns: [
                 "P1",
                 "P2",
@@ -78,29 +80,18 @@ export const options2 = [
               ],
               "isMandatory":true,
               rows: [
-                "Differently-abled Employees - Permanent (D)",
-                "Differently-abled Employees - Other than Permanent (E)",
-                "Total employees (D + E)",
-                "Differently-abled Workers - Permanent (F)",
-                "Differently-abled Workers - Other than Permanent (G)",
-                "Total employees (F + G)"
+                "Whether your entity’s policy/policies cover each principle and its core elements of the NGRBCs. (Yes/No)",
+                "Has the policy been approved by the Board? (Yes/No)",
+                "Web Link of the Policies, if available",
+                "Whether the entity has translated the policy into procedures. (Yes / No)",
+                "Do the enlisted policies extend to your value chain partners? (Yes/No)",
+                "Name of the national and international codes/certifications/labels/ standards (e.g. Forest Stewardship Council, Fairtrade, Rainforest Alliance, Trustea) standards (e.g. SA 8000, OHSAS, ISO, BIS) adopted by your entity and mapped to each principle.",
+                "Specific commitments, goals and targets set by the entity with defined timelines, if any.",
+                "Performance of the entity against the specific commitments, goals and targets along-with reasons in case the same are not met.",
               ],
               parent: true
   
             },
-            
-            { text: "Whether the entity has translated the policy into procedures. (Yes / No)", choices: null, isMandatory: true },
-            { text: "Do the enlisted policies extend to your value chain partners? (Yes/No)", choices: null, isMandatory: true },
-            {
-              text: "Name of the national and international codes/certifications/labels/ standards (e.g. Forest Stewardship Council, Fairtrade, Rainforest Alliance, Trustea) standards (e.g. SA 8000, OHSAS, ISO, BIS) adopted by your entity and mapped to each principle.", choices: null, isMandatory: true
-            },
-            {
-              text: "Specific commitments, goals and targets set by the entity with defined timelines, if any.",
-              choices: null, isMandatory: true,
-            },
-            {
-              text: "Performance of the entity against the specific commitments, goals and targets along-with reasons in case the same are not met.", choices: null, isMandatory: true
-            }
           ],
         },
       ],
@@ -117,13 +108,138 @@ export const options2 = [
           questionsAnswer: "0/4",
           percentComplete: "0",
           question: [
-            { text: "Statement by director responsible for the business responsibility report, highlighting ESG related challenges, targets and achievements (listed entity has flexibility regarding the placement of this disclosure)", choices: ["Yes", "No", "In Progress"], isMandatory: false },
-            { text: "Details of the highest authority responsible for implementation and oversight of the Business Responsibility policy (ies).", choices: null, isMandatory: false },
-            { text: "Does the entity have a specified Committee of the Board/ Director responsible for decision making on sustainability related issues? (Yes / No). If yes, provide details.", choices: null, isMandatory: false },
-            { text: "Details of Review of NGRBCs by the Company:", choices: null, isMandatory: false },
-            { text: "Has the entity carried out independent assessment/ evaluation of the working of its policies by an external agency? (Yes/No). If yes, provide name of the agency.", choices: null, isMandatory: false },
-            { text: "If answer to question (1) above is “No” i.e. not all Principles are covered by a policy, reasons to be stated, as below:", choices: null, isMandatory: false },
-            { text: "Supply Chain Mangement", choices: null, isMandatory: false },
+            { text: "Statement by director responsible for the business responsibility report, highlighting ESG related challenges, targets and achievements (listed entity has flexibility regarding the placement of this disclosure)", choices: ["Yes", "No", "In Progress"], isMandatory: false,
+              label:"Disclosure", 
+              type:"table",
+              columns: [
+                "P1",
+                "P2",
+                "P3",
+                "P4",
+                "P5",
+                "P6",
+                "P7",
+                "P8",
+                "P9"
+              ],
+              // "isMandatory":true,
+              rows: [
+                "Statement by director responsible for the business responsibility report, highlighting ESG related challenges, targets and achievements (listed entity has flexibility regarding the placement of this disclosure)"
+              ],
+              parent: true
+            },
+            { text: "Details of the highest authority responsible for implementation and oversight of the Business Responsibility policy (ies).", choices: null, isMandatory: false ,parent: false},
+            { text: "Does the entity have a specified Committee of the Board/ Director responsible for decision making on sustainability related issues? (Yes / No). If yes, provide details.", choices: null, isMandatory: false ,parent:false},
+
+
+
+            { text: "Details of Review of NGRBCs by the Company:" ,choices: null, isMandatory: false,parent: true, 
+              lablel:"Subject for Review", 
+            },
+              { text: "Indicate whether review was undertaken by Director / Committee of the Board/ Any other Committee", choices: ["Yes", "No", "In Progress"], isMandatory: false,
+                  label:"Performance against above policies and follow up action", 
+                  type:"table",
+                  columns: [
+                    "P1",
+                    "P2",
+                    "P3",
+                    "P4",
+                    "P5",
+                    "P6",
+                    "P7",
+                    "P8",
+                    "P9"
+                  ],
+                  // "isMandatory":true,
+                  rows: [
+                    "Performance against above policies and follow up action"
+                  ],
+                },
+    
+                { text: "Frequency(Annually/ Half yearly/ Quarterly/ Any other – please specify)", choices: ["Yes", "No", "In Progress"], isMandatory: false,
+                  label:"Compliance with statutory requirements of relevance to the principles, and, rectification of any non-compliances", 
+                  type:"table",
+                  columns: [
+                    "P1",
+                    "P2",
+                    "P3",
+                    "P4",
+                    "P5",
+                    "P6",
+                    "P7",
+                    "P8",
+                    "P9"
+                  ],
+                  // "isMandatory":true,
+                  rows: [
+                    "Compliance with statutory requirements of relevance to the principles, and, rectification of any non-compliances"
+                  ],
+                },
+
+
+            { text: "Has the entity carried out independent assessment/ evaluation of the working of its policies by an external agency? (Yes/No). If yes, provide name of the agency.", choices: null, isMandatory: false, 
+              type:"table",
+              label:"Has the entity carried out independent assessment/ evaluation of the working of its policies by an external agency? (Yes/No). If yes, provide name of the agency.",
+              columns: [
+                "P1",
+                "P2",
+                "P3",
+                "P4",
+                "P5",
+                "P6",
+                "P7",
+                "P8",
+                "P9"
+              ],     
+            },
+            { text: "If answer to question (1) above is “No” i.e. not all Principles are covered by a policy, reasons to be stated, as below:", choices: null, isMandatory: false,
+              type:"table",
+              label:"",
+              columns: [
+                "P1",
+                "P2",
+                "P3",
+                "P4",
+                "P5",
+                "P6",
+                "P7",
+                "P8",
+                "P9"
+              ],
+              row:["Question",
+                "The entity does not consider the Principles material to its business (Yes/No)",
+                "The entity is not at a stage where it is in a position to formulate and implement the policies on specified principles (Yes/No)",
+                "The entity does not have the financial or/human and technical resources available for the task (Yes/No)",
+                "It is planned to be done in the next financial year (Yes/No)",
+                "Any other reason (please specify)"
+              ]
+            },
+
+            { text: "Supply Chain Mangement", choices: null, isMandatory: false,parent:true
+            },
+            {text:"Upstream (Suppliers & Logistics Partners)",parent:false,
+              type:"table",
+              columns:["List the top upstream partners that individually contribute 2% or more of your total purchases (by value).",
+                "What percentage of total purchases (by value) is covered in this disclosure?",
+                "Disclose the percentage of total purchases covered by value chain partners for which ESG disclosures are provided.",,
+                "What ESG performance metrics are tracked for these upstream partners?"
+
+              ]
+            },
+
+            {text:"Downstream (Distributors & Customers)",parent:false,
+              type:"table",
+              columns:["List the top downstream partners that individually contribute 2% or more of your total sales (by value).",
+                "What percentage of total sales (by value) is covered in this disclosure?",
+                "Disclose the percentage of total sales covered by value chain partners for which ESG disclosures are provided.",,
+                "What ESG criteria are assessed for downstream partners?"
+
+              ]
+            },
+
+
+
+
 
 
           ],
