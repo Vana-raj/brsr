@@ -37,7 +37,7 @@ const TableInput = ({ columns, rows, value, onChange }: any) => {
             <table className="custom-table">
                 <thead>
                     <tr>
-                        {rows && <th>S. No.</th>}
+                        {rows && <th>Disclosure Questions</th>}
                         {columns?.map((col: string, idx: number) => (
                             <th key={idx}>{col}</th>
                         ))}

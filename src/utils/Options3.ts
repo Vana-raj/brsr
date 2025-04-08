@@ -321,37 +321,4 @@ export const allCategories3 = [
       },
     ]
   },
-
-  // {
-  //   key: "operations",
-  //   section: "Operations",
-  //   questionsAnswer: "1/3",
-  //   percentComplete: "40%",
-  //   questions: [
-  //     {
-  //       key: "operations",
-  //       quesSection: "Operations",
-  //       questionsAnswer: "0/0",
-  //       percentComplete: "0",
-  //       question: [
-  //         { text: "", choices: null, isMandatory: true },
-  //         { text: "", choices: null, isMandatory: true },
-  //         { text: "", choices: null, isMandatory: true },
-  //         { text: "", choices: null, isMandatory: true },
-  //         { text: "", choices: null, isMandatory: true },
-  //         { text: "", choices: null, isMandatory: true },
-  //         { text: "", choices: null, isMandatory: true },
-  //         { text: "", choices: null, isMandatory: true },
-  //         { text: "", choices: null, isMandatory: true },
-  //         { text: "", choices: null, isMandatory: true },
-  //         { text: "", choices: null, isMandatory: true },
-  //         { text: "", choices: null, isMandatory: true },
-  //         { text: "", choices: null, isMandatory: true },
-  //         { text: "", choices: null, isMandatory: true },
-  //         { text: "", choices: null, isMandatory: true },
-
-  //       ],
-  //     },
-  //   ]
-  // },
 ];
