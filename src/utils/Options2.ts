@@ -1,3 +1,5 @@
+import { Fa500Px } from "react-icons/fa";
+
 export const options2 = [
     { label: "This Month", value: "1" },
     { label: "Last Year", value: "2" },
@@ -61,7 +63,32 @@ export const options2 = [
           questionsAnswer: "0/9",
           percentComplete: "0",
           question: [
-            { text: "Whether your entity’s policy/policies cover each principle and its core elements of the NGRBCs. (Yes/No)", choices: null, isMandatory: true },
+            { text: "Whether your entity’s policy/policies cover each principle and its core elements of the NGRBCs. (Yes/No)", choices: ["Yes", "No", "In Progress"],
+              type: "table",
+              columns: [
+                "P1",
+                "P2",
+                "P3",
+                "P4",
+                "P5",
+                "P6",
+                "P7",
+                "P8",
+                "P9"
+              ],
+              "isMandatory":true,
+              rows: [
+                "Differently-abled Employees - Permanent (D)",
+                "Differently-abled Employees - Other than Permanent (E)",
+                "Total employees (D + E)",
+                "Differently-abled Workers - Permanent (F)",
+                "Differently-abled Workers - Other than Permanent (G)",
+                "Total employees (F + G)"
+              ],
+              parent: true
+  
+            },
+            
             { text: "Whether the entity has translated the policy into procedures. (Yes / No)", choices: null, isMandatory: true },
             { text: "Do the enlisted policies extend to your value chain partners? (Yes/No)", choices: null, isMandatory: true },
             {
