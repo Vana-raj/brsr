@@ -48,7 +48,7 @@ const TableInput = ({ columns, rows, value,header, onChange }: any) => {
                     {data.map((row: any, index: number) => (
                         console.log(row,'row'),
                         <tr key={index}>
-                            {rows && <td>{header === "Disclosure Questions" ? row.particulars:index +1 }</td>}
+                            {rows && <td>{header === "Policy" ? row.particulars:index +1 }</td>}
                             {columns.map((col: string, colIndex: number) => (
                                 <td key={colIndex}>
                                     <InputField
