@@ -312,7 +312,7 @@ const SectionB: React.FC = () => {
                     </div>
                     <TableInput
                         columns={question?.columns}
-
+header={"Disclosure Questions"}
                         rows={question?.rows}
                         value={answers[questionKey] || []}
                         onChange={(value: any) =>

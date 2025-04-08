@@ -4,7 +4,7 @@ import CustomButton from "../buttons/CustomButton";
 import InputField from "../inputfield/CustomInputField";
 import './InputTable.scss'
 
-const TableInput = ({ columns, rows, value, onChange }: any) => {
+const TableInput = ({ columns, rows, value,header, onChange }: any) => {
     const [data, setData] = useState(() => {
         if (rows) {
             return rows.map((row: string) => ({ particulars: row }));
@@ -37,7 +37,7 @@ const TableInput = ({ columns, rows, value, onChange }: any) => {
             <table className="custom-table">
                 <thead>
                     <tr>
-                        {rows && <th>Disclosure Questions</th>}
+                        {rows && <th>{header}</th>}
                         {columns?.map((col: string, idx: number) => (
                             <th key={idx}>{col}</th>
                         ))}
@@ -46,8 +46,9 @@ const TableInput = ({ columns, rows, value, onChange }: any) => {
                 </thead>
                 <tbody>
                     {data.map((row: any, index: number) => (
+                        console.log(row,'row'),
                         <tr key={index}>
-                            {rows && <td>{index + 1}</td>}
+                            {rows && <td>{header === "Disclosure Questions" ? row.particulars:index +1 }</td>}
                             {columns.map((col: string, colIndex: number) => (
                                 <td key={colIndex}>
                                     <InputField
