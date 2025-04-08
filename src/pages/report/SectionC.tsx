@@ -3,10 +3,10 @@ import { Card, Input, List, Modal, Progress, Space, Table, Tooltip, Upload, mess
 import { Radio } from "antd";
 import { ArrowLeftOutlined, CheckOutlined, CopyTwoTone, DeleteOutlined, FileAddTwoTone } from "@ant-design/icons";
 import CustomButton from "../../component/buttons/CustomButton";
-import { allCategories } from "../../utils/Options";
-// import { allCategories2 } from "../../utils/Options2";
+// import { allCategories3 } from "../../utils/Options2";
+import { allCategories3 } from "../../utils/Options3";
 import { primaryColor } from '../../style/ColorCode';
-import "./Questionnaire.scss";
+import '../questionnaire/Questionnaire.scss';
 import SelectDropDown from "../../component/select/SelectDropDown";
 
 const { TextArea } = Input;
@@ -35,7 +35,7 @@ const columns: any = [
     },
 ];
 
-const Questionnaire: React.FC = () => {
+const SectionC: React.FC = () => {
     const [activeCategory, setActiveCategory] = useState<string>("general");
     const [showQuestions, setShowQuestions] = useState<boolean>(false);
     const [answers, setAnswers] = useState<{ [key: string]: any }>({});
@@ -81,7 +81,7 @@ const Questionnaire: React.FC = () => {
     };
 
     const handleNextSection = () => {
-        setCurrentSectionIndex((prev) => Math.min(prev + 1, allCategories[0].questions.length - 1));
+        setCurrentSectionIndex((prev) => Math.min(prev + 1, allCategories3[0].questions.length - 1));
     };
 
     const handlePreviousSection = () => {
@@ -162,7 +162,7 @@ const Questionnaire: React.FC = () => {
         }));
 
         let anyAnswered = false;
-        const currentCategory = allCategories.find((cat) => cat.key === activeCategory);
+        const currentCategory = allCategories3.find((cat) => cat.key === activeCategory);
 
         if (currentCategory) {
             const answeredData: any = [];
@@ -231,7 +231,7 @@ const Questionnaire: React.FC = () => {
     const handleCategoryClick = (categoryKey: string) => {
         confirmNavigation(() => {
 
-            const selectedCategory = allCategories.find((cat) => cat.key === categoryKey);
+            const selectedCategory = allCategories3.find((cat) => cat.key === categoryKey);
             if (selectedCategory) {
                 loadAnsweredData(categoryKey, selectedCategory.questions);
             }
@@ -394,7 +394,7 @@ const Questionnaire: React.FC = () => {
         );
     };
 
-    const currentCategory = allCategories.find((cat) => cat.key === activeCategory);
+    const currentCategory = allCategories3.find((cat) => cat.key === activeCategory);
     const questions: any = currentCategory?.questions[currentSectionIndex];
 
     const totalQuestions = currentCategory?.questions.reduce((sum, section) => {
@@ -460,7 +460,7 @@ const Questionnaire: React.FC = () => {
                     <Card title={"Categories"} bordered>
                         <List
                             key={activeCategory}
-                            dataSource={allCategories}
+                            dataSource={allCategories3}
                             renderItem={(category, id: number) => (
                                 <List.Item
                                     key={category.key}
@@ -551,7 +551,7 @@ const Questionnaire: React.FC = () => {
                                     label="Submit Answers"
                                     type="primary"
                                     onClick={(item: any) => handleSubmitAll(item)}
-                                    disabled={allCategories.find((cat) => cat.key === activeCategory)?.questions.every(section =>
+                                    disabled={allCategories3.find((cat) => cat.key === activeCategory)?.questions.every(section =>
                                         section.question.every((_, questionIndex) => {
                                             const questionKey = `${activeCategory}-${section.key}-${questionIndex}`;
                                             return !answers[questionKey];
@@ -589,4 +589,4 @@ const Questionnaire: React.FC = () => {
 
 };
 
-export default Questionnaire;
+export default SectionC;
