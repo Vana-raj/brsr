@@ -149,5 +149,33 @@ padding: $commonPadding;
           }
         }
       }
+
+      .first-percentage {
+        font-size: 14px;
+        font-weight: bold;
+        color: #09B96D;
+        line-height: 1;
+        display: block;
+        margin-bottom: 2px;
+      }
+      
+      .second-percentage {
+        font-size: 14px;
+        color: #ec70b4;
+        line-height: 1;
+        margin: 2px 0;
+        font-weight: bold;
+  
+      }
+      
+      .thirt-percentage {
+        font-size: 14px;
+        color: #0058EA;
+        line-height: 1;
+        display: block;
+        margin-top: 2px;
+        font-weight: bold;
+
+      }
 }
 

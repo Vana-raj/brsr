@@ -326,6 +326,7 @@ const Questionnaire: React.FC = () => {
                     <TableInput
                         columns={question?.columns}
                         rows={question?.rows}
+                        header={"S.No"}
                         value={answers[questionKey] || []}
                         onChange={(value: any) =>
                             handleInputChange(section, key, value, questionIndex)
@@ -485,7 +486,7 @@ const Questionnaire: React.FC = () => {
                                 <List.Item
                                     key={category.key}
                                     onClick={() => handleCategoryClick(category.key)}
-                                    className={`category - item ${activeCategory === category.key ? "active" : ""} `}
+                                    className={`category-item ${activeCategory === category.key ? "active" : ""} `}
                                 >
                                     {category.section}
                                 </List.Item>

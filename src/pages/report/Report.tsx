@@ -223,11 +223,11 @@ const Report: React.FC = () => {
               >
                 <div className="section-header">
                   <div className='xbrl-header'>SECTION B</div>
-                  <span>10%</span>
+                  <span>50%</span>
                 </div>
                 <p>Management & Process Disclosures</p>
                 <Progress
-                  percent={10}
+                  percent={50}
                   status="active"
                   showInfo={false}
                   strokeColor="#1890ff"
@@ -247,12 +247,12 @@ const Report: React.FC = () => {
                 onClick={() => handleAddData('section_c')}
               >
                 <div className="section-header">
-                  <div className='xbrl-header'>SECTION C</div>
-                  <span>7%</span>
+                  <div className='xbrl-header'>SECTION C </div>
+                  <span>60%</span>
                 </div>
                 <p>Principle wise performance disclosure</p>
                 <Progress
-                  percent={7}
+                  percent={60}
                   status="active"
                   showInfo={false}
                   strokeColor="#1890ff"
@@ -281,15 +281,15 @@ const Report: React.FC = () => {
                 <div>
                   <div className="Legend-first">
                     <div className="first-box"></div>
-                    <span className="legend-box-compliant"></span>Section A
+                    <span className="legend-box-compliant"></span>Section A <span className='first-percentage'>40% </span>
                   </div>
                   <div className="Legend-second">
                     <div className="second-box"></div>
-                    <span className="legend-box-non-compliant"></span>Section B
+                    <span className="legend-box-non-compliant"></span>Section B <span className='thirt-percentage'>60% </span>
                   </div>
                   <div className="Legend-first">
                     <div className="third-box"></div>
-                    <span className="legend-box-compliant"></span>Section C
+                    <span className="legend-box-compliant"></span>Section C <span className='second-percentage '>50% </span>
                   </div>
                 </div>
 
