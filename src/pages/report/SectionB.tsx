@@ -11,15 +11,9 @@ import TableInput from "../../component/InputTable/InputTable";
 import "../questionnaire/Questionnaire.scss"
 const { TextArea } = Input;
 
-interface QuestionSection {
-    key: string;
-    quesSection: string;
-    questionsAnswer: string;
-    percentComplete: string;
-    question: any[];
-}
 
-const Questionnaire: React.FC = () => {
+
+const SectionB: React.FC = () => {
     const [activeCategory, setActiveCategory] = useState<string>("general");
     const [showQuestions, setShowQuestions] = useState<boolean>(false);
     const [answers, setAnswers] = useState<{ [key: string]: any }>({});
@@ -556,4 +550,4 @@ const Questionnaire: React.FC = () => {
 
 };
 
-export default Questionnaire;
+export default SectionB;
