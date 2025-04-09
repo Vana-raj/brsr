@@ -1,5 +1,19 @@
 @import '../../style/utils/Variables.scss';
 
+@media (max-width: 480px) {
+  .top-sections {
+    flex-wrap: wrap;
+    .section-cards {
+    flex-wrap: wrap;
+
+    }
+
+    .progress-cards {
+      width: 100% !important;
+    }
+  }
+}
+
 .main-report {
 padding: $commonPadding;
 .back-btn {
@@ -118,7 +132,7 @@ padding: $commonPadding;
             width: 30%;
 
 .progress-card {
-  padding: 8px;
+  padding: 9px;
   border: $border;
   border-radius: 10px;
   background: white;

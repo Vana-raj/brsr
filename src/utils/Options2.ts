@@ -114,6 +114,7 @@ export const allCategories2 = [
             label: "Disclosure",
             type: "table",
             columns: [
+              "Disclosure",
               "P1",
               "P2",
               "P3",
@@ -125,9 +126,9 @@ export const allCategories2 = [
               "P9"
             ],
             // "isMandatory":true,
-            rows: [
-              "Statement by director responsible for the business responsibility report, highlighting ESG related challenges, targets and achievements (listed entity has flexibility regarding the placement of this disclosure)"
-            ],
+            // rows: [
+            //   "Statement by director responsible for the business responsibility report, highlighting ESG related challenges, targets and achievements (listed entity has flexibility regarding the placement of this disclosure)"
+            // ],
             parent: true
           },
           { text: "Details of the highest authority responsible for implementation and oversight of the Business Responsibility policy (ies).", choices: null, isMandatory: false, parent: true },
@@ -141,6 +142,7 @@ export const allCategories2 = [
             label: "Performance against above policies and follow up action",
             type: "table",
             columns: [
+              "Performance against above policies and follow up action",
               "P1",
               "P2",
               "P3",
@@ -151,9 +153,9 @@ export const allCategories2 = [
               "P8",
               "P9"
             ],
-            rows: [
-              "Performance against above policies and follow up action"
-            ],
+            // rows: [
+            //   "Performance against above policies and follow up action"
+            // ],
           },
 
           {
@@ -161,6 +163,7 @@ export const allCategories2 = [
             label: "Compliance with statutory requirements of relevance to the principles, and, rectification of any non-compliances",
             type: "table",
             columns: [
+              "Compliance with statutory requirements of relevance to the principles, and, rectification of any non-compliances",
               "P1",
               "P2",
               "P3",
@@ -171,10 +174,9 @@ export const allCategories2 = [
               "P8",
               "P9"
             ],
-            // "isMandatory":true,
-            rows: [
-              "Compliance with statutory requirements of relevance to the principles, and, rectification of any non-compliances"
-            ],
+            // rows: [
+            //   "Compliance with statutory requirements of relevance to the principles, and, rectification of any non-compliances"
+            // ],
           },
 
           {

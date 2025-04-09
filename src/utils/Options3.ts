@@ -51,7 +51,7 @@ export const data = {
 export const allCategories3 = [
   {
     key: "details",
-    section: "Businesses should conduct and govern themselves with integrity, and in a manner that is Ethical, Transparent and Accountable",
+    section: "Ethical, Transparent, and Accountable Business Governance",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
@@ -79,7 +79,7 @@ export const allCategories3 = [
   },
   {
     key: "product_service",
-    section: "Businesses should provide goods and services in a manner that is sustainable and safe",
+    section: "Sustainable & Safe Business Practices",
     questionsAnswer: "3/3",
     percentComplete: "90%",
     questions: [
@@ -107,7 +107,7 @@ export const allCategories3 = [
   },
   {
     key: "value chains",
-    section: "Businesses should respect and promote the well-being of all employees, including those in their value chains",
+    section: "Employee Well-Being in Value Chains",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
@@ -149,7 +149,7 @@ export const allCategories3 = [
   },
   {
     key: "operations",
-    section: "Businesses should respect the interests of and be responsive to all its stakeholders",
+    section: "Stakeholder-Focused Business Accountability",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
@@ -168,16 +168,16 @@ export const allCategories3 = [
         ],
       },
     ]
-  },  {
+  }, {
     key: "rights",
-    section: "Businesses should respect and promote human rights",
+    section: "Human Rights in Business",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
 
       {
         key: "rights-innovation",
-        quesSection: "Business",
+        quesSection: "Businesses should respect and promote human rights",
         questionsAnswer: "0/2",
         percentComplete: "0",
         question: [
@@ -207,13 +207,13 @@ export const allCategories3 = [
   },
   {
     key: "environment",
-    section: "Businesses should respect and make efforts to protect and restore the environment",
+    section: "Environmental Stewardship in Business",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
       {
         key: "environment",
-        quesSection: "Businesses",
+        quesSection: "Businesses should respect and make efforts to protect and restore the environment",
         questionsAnswer: "0/0",
         percentComplete: "0",
         question: [
@@ -239,14 +239,14 @@ export const allCategories3 = [
           { text: "Disclose any significant adverse impact to the environment, arising from the value chain of the entity. What mitigation or adaptation measures have been taken by the entity in this regard.", choices: null, isMandatory: true },
           { text: "Percentage of value chain partners (by value of business done with such partners) that were assessed for environmental impacts.", choices: null, isMandatory: true },
           { text: "How many Green Credits have been generated or procured:", choices: null, isMandatory: true },
-          
+
         ],
       },
     ]
   },
   {
     key: "transparent",
-    section: "Businesses, when engaging in influencing public and regulatory policy, should do so in a manner that is responsible and transparent",
+    section: "Responsible Policy Advocacy",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
@@ -266,7 +266,7 @@ export const allCategories3 = [
   },
   {
     key: "development",
-    section: "Businesses should promote inclusive growth and equitable development",
+    section: "Inclusive Economic Growth",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
@@ -294,7 +294,7 @@ export const allCategories3 = [
   },
   {
     key: " responsible manner",
-    section: "Businesses should engage with and provide value to their consumers in a responsible manner",
+    section: "Responsible Consumer Engagement",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [

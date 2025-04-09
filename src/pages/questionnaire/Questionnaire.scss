@@ -12,6 +12,9 @@
 
   .question-card {
     width: 100% !important;
+    .ant-card-head-wrapper {
+      gap: $commonGap;
+     }
   }
 
   .subbutton {
@@ -79,6 +82,9 @@
 
         .ant-card-head {
          color: $textColor;
+         .ant-card-head-wrapper {
+          gap: $commonGap;
+         }
       }
 .ant-card-body {
   padding: 25px;
