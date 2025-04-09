@@ -350,6 +350,7 @@ const SectionB: React.FC = () => {
                         </button>
                     </Tooltip>
                 </div>
+                
                 {question.isNone ? null : (
                     question.choices === null ? (
                         <div className="area-upload">
