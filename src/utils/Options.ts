@@ -146,7 +146,7 @@ export const allCategories = [
           },
           {
             text: "Markets served by the entity", choices: null,
-            isMandatory: true, parent: true,
+            isMandatory: true, parent: true, isNone: true,
           },
           {
             text: "No. of Locations", columns: [
@@ -176,7 +176,8 @@ export const allCategories = [
             choices: null,
             isMandatory: true,
             type: "sectionHeader",
-            parent: true
+            parent: true,
+            isNone: true
           },
           {
             text: "Employees and workers (including differently abled):",
@@ -288,6 +289,7 @@ export const allCategories = [
           {
             text: "Whether CSR is applicable as per section 135 of Companies Act, 2013: (Yes/No)", choices: ["Yes", "No"], isMandatory: true,
             parent: true,
+            isNone: true
           },
           {
             text: "Turnover (in Rs.)", choices: null, isMandatory: true,
@@ -328,7 +330,7 @@ export const allCategories = [
             parent: true,
           },
           {
-            text: "Overview of the entity’s material responsible business conduct issues", choices: null, isMandatory: false, parent: true,
+            text: "Overview of the entity’s material responsible business conduct issues", choices: null, isMandatory: false, parent: true, isNone: true
           },
           {
             text: "Please indicate material responsible business conduct and sustainability issues pertaining to environmental and social matters that present a risk or an opportunity to your business, rationale for identifying the same, approach to adapt or mitigate the risk along-with its financial implications, as per the following format.", choices: null, isMandatory: false, parent: false, type: "table", columns: [
