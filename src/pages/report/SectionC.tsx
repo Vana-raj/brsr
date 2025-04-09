@@ -1,39 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Card, Input, List, Modal, Progress, Space, Table, Tooltip, Upload, message } from "antd";
 import { Radio } from "antd";
-import { ArrowLeftOutlined, CheckOutlined, CopyTwoTone, DeleteOutlined, FileAddTwoTone } from "@ant-design/icons";
+import { ArrowLeftOutlined, BoldOutlined, CheckOutlined, CopyTwoTone, DeleteOutlined, FileAddTwoTone } from "@ant-design/icons";
 import CustomButton from "../../component/buttons/CustomButton";
-// import { allCategories3 } from "../../utils/Options2";
 import { allCategories3 } from "../../utils/Options3";
 import { primaryColor } from '../../style/ColorCode';
-import '../questionnaire/Questionnaire.scss';
 import SelectDropDown from "../../component/select/SelectDropDown";
-
+import TableInput from "../../component/InputTable/InputTable";
+// import "./Questionnaire.scss";
+import "../questionnaire/Questionnaire.scss"
 const { TextArea } = Input;
-const columns: any = [
-    {
-        title: "Section",
-        dataIndex: "quesSection",
-        key: "section",
-        sorter: false,
-        render: (text: string) => <span className="supplier-name">{text}</span>,
-    },
-    {
-        title: "Questions Answered / Total",
-        dataIndex: "questionsAnswer",
-        key: "questionsAnswer",
-        sorter: false,
-        align: "center",
-    },
-    {
-        title: "Percent Complete",
-        dataIndex: "percentComplete",
-        key: "percentComplete",
-        sorter: false,
-        align: "center",
-        render: (percentComplete: number) => `${percentComplete}%`
-    },
-];
 
 const SectionC: React.FC = () => {
     const [activeCategory, setActiveCategory] = useState<string>("details");
@@ -275,19 +251,83 @@ const SectionC: React.FC = () => {
     const renderQuestionInput = (
         section: string,
         key: string,
-        question: { text: string; choices: string[] | null; isMandatory: boolean },
-        questionIndex: number
+        question: {
+            text: string; choices: string[] | null; isMandatory: boolean, type: string, columns: [], rows: [],
+            parent?: boolean; label: string;
+        },
+        questionIndex: number,
+        questionsArray: any[],
+        label:string
     ) => {
+
+        const getQuestionNumber = () => {
+            if (question.parent) {
+                // Parent question - use numerical numbering
+                return `${questionIndex + 1}.`;
+            } else {
+                // Child question - find nearest parent for alphabetical numbering
+                let lastParentIndex = -1;
+                for (let i = questionIndex - 1; i >= 0; i--) {
+                    if (questionsArray[i].parent) {
+                        lastParentIndex = i;
+                        break;
+                    }
+                }
+
+                if (lastParentIndex === -1) return `${questionIndex + 1}.`;
+
+                const subQuestionIndex = questionIndex - lastParentIndex - 1;
+                const alphabet = String.fromCharCode(97 + subQuestionIndex);
+                return `${alphabet}.`;
+            }
+        };
         const questionKey = `${section}-${key}-${questionIndex}`;
         const isFileUploaded = !!uploadedFiles[questionKey];
         const isAnswered = !!answers[questionKey];
         if (isViewMode && !isAnswered) {
             return null;
         }
+        if (question?.type === 'table') {
+            console.log(label,'label')
+            return (
+                <div>
+                    <div className="question-text">
+                        <div>{getQuestionNumber()} {question.text}
+
+                            {question.isMandatory && <span className="mandatory-asterisk">*</span>}
+                            {isAnswered && (
+                                <Tooltip title="Answered">
+                                    <CheckOutlined className="answered-icon" />
+                                </Tooltip>
+
+                            )}
+                        </div>
+                        <Tooltip title="Copy Question">
+                            <button
+                                className="copy-border"
+                                onClick={() => handleCopyText(question?.text)}>
+                                <CopyTwoTone
+                                    className="copy-icon"
+                                />
+                            </button>
+                        </Tooltip>
+                    </div>
+                    <TableInput
+                        columns={question?.columns}
+header={label}
+                        rows={question?.rows}
+                        value={answers[questionKey] || []}
+                        onChange={(value: any) =>
+                            handleInputChange(section, key, value, questionIndex)
+                        }
+                    />
+                </div>
+            );
+        }
         return (
             <div>
                 <div className="question-text">
-                    <div>{questionIndex + 1}. {question.text}
+                    <div>{getQuestionNumber()} {question.text}
                         {question.isMandatory && <span className="mandatory-asterisk">*</span>}
                         {isAnswered && (
                             <Tooltip title="Answered">
@@ -397,36 +437,6 @@ const SectionC: React.FC = () => {
     const currentCategory = allCategories3.find((cat) => cat.key === activeCategory);
     const questions: any = currentCategory?.questions[currentSectionIndex];
 
-    const totalQuestions = currentCategory?.questions.reduce((sum, section) => {
-        const [, total] = section.questionsAnswer.split("/").map(Number);
-        return sum + total;
-    }, 0) ?? 0;
-
-    const totalAnswered = currentCategory?.questions.reduce((sum, section) => {
-        const [answered] = section.questionsAnswer.split("/").map(Number);
-        return sum + answered;
-    }, 0) ?? 0;
-    const footer = () => {
-        return (
-            <div className="footer-main">
-                <div className="footer-row">
-                    <div className="footer-text empty-cell"></div>
-                    <div className="footer-text total-label">
-                        <strong>TOTAL</strong>
-                    </div>
-                    <div className={`footer-text ${activeCategory || "default"}`}>
-                        {totalAnswered}/{totalQuestions}
-                    </div>
-
-                    <div className={`footer-text percentage ${activeCategory}`}>
-                        {Math.round((totalAnswered / totalQuestions) * 100)}%
-                    </div>
-
-                </div>
-            </div>
-        )
-    }
-
     const countNonEmptyAnswers = () => {
         let nonEmptyCount = 0;
         if (currentCategory) {
@@ -473,23 +483,6 @@ const SectionC: React.FC = () => {
                         />
                     </Card>
                 </div>
-                {/* {!showQuestions ? (
-                    <div className="question-card">
-                        <Card title={currentCategory?.section} bordered>
-                            <Table
-                                columns={columns}
-                                dataSource={(currentCategory?.questions || []).map((q, idx) => ({ ...q, key: idx }))}
-                                bordered={false}
-                                pagination={false}
-                                onRow={(record: any, index: any) => ({
-                                    onClick: () => handleRowClick(record, index),
-                                })}
-                                footer={footer}
-                            />
-
-                        </Card>
-                    </div>
-                ) : (    */}
                 <div className="question-card">
                     <Card
                         title={
@@ -509,54 +502,22 @@ const SectionC: React.FC = () => {
 
                             </div>
                         }
-
-
-
                         bordered
                     >
                         {questions?.question.map((q: any, idx: any) => {
                             return (
                                 <div key={`${questions.key}-${idx}`}>
-                                    {renderQuestionInput(activeCategory, questions.key, q, idx)}
+                                    {renderQuestionInput(activeCategory, questions.key, q, idx, questions.question, q.label)}
                                 </div>
                             );
                         })}
 
                         <div className="subbutton">
-                            <div className="navigation-buttons">
-                                <CustomButton
-                                    label="Previous Section"
-                                    type="primary"
-                                    onClick={handlePreviousSection}
-                                    disabled={currentSectionIndex === 0}
-                                />
-                                <span className="current-section-text">
-                                    {`Section ${currentSectionIndex + 1} of ${currentCategory?.questions.length}`}
-                                </span>
-                                <CustomButton
-                                    label="Next Section"
-                                    type="primary"
-                                    onClick={handleNextSection}
-                                    disabled={currentSectionIndex === (currentCategory?.questions.length ?? 1) - 1 || (isViewMode && hasNonEmptyValues)}
-                                />
-                            </div>
                             <div className="common-submit-btn">
-                                <CustomButton
-                                    label={isViewMode ? "Hide Answers" : "View Answers"}
-                                    type="primary"
-                                    onClick={() => setIsViewMode(prev => !prev)}
-                                />
-
                                 <CustomButton
                                     label="Submit Answers"
                                     type="primary"
                                     onClick={(item: any) => handleSubmitAll(item)}
-                                    disabled={allCategories3.find((cat) => cat.key === activeCategory)?.questions.every(section =>
-                                        section.question.every((_, questionIndex) => {
-                                            const questionKey = `${activeCategory}-${section.key}-${questionIndex}`;
-                                            return !answers[questionKey];
-                                        })
-                                    )}
                                 />
                             </div>
                         </div>

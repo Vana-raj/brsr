@@ -1,3 +1,5 @@
+import { Row } from "antd";
+
 export const options = [
   { label: "This Month", value: "1" },
   { label: "Last Year", value: "2" },
@@ -61,17 +63,110 @@ export const allCategories3 = [
         questionsAnswer: "0/9",
         percentComplete: "0",
         question: [
-          { text: "Percentage coverage by training and awareness programmes on any of the Principles during the financial year:", choices: null, isMandatory: true },
+          { text: "Percentage coverage by training and awareness programmes on any of the Principles during the financial year:", choices: null, isMandatory: true,parent:true,
+            type:"table",
+            label:"Percentage",
+            columns:[
+              "Total number of training and awareness programmes held",
+              "Topics / principles covered under the training and its impact",
+              "% of persons in respective category covered by the awareness programmes"
+
+            ],
+            rows:[
+              "Segment",
+              "Board of Directors",
+              "Key Managerial Personnel",
+              "Employees other than BoD and KMPs",
+              "Workers"
+            ]
+
+          },
+
           { text: "Details of fines / penalties /punishment/ award/ compounding fees/ settlement amount paid in proceedings (by the entity or by directors / KMPs) with regulators/ law enforcement agencies/ judicial institutions, in the financial year, in the following format (Note: the entity shall make disclosures on the basis of materiality as specified in Regulation 30 of SEBI (Listing Obligations and Disclosure Obligations) Regulations, 2015 and as disclosed on the entity’s website", choices: null, isMandatory: true },
-          { text: "Of the instances disclosed in Question 2 above, details of the Appeal/ Revision preferred in cases where monetary or non-monetary action has been appealed.", choices: null, isMandatory: true },
-          { text: "Does the entity have an anti-corruption or anti-bribery policy? If yes, provide details in brief and if available, provide a web-link to the policy.", choices: null, isMandatory: true },
-          { text: "Number of Directors/KMPs/employees/workers against whom disciplinary action was taken by any law enforcement agency for the charges of bribery/ corruption", choices: null, isMandatory: true },
-          { text: "Details of complaints with regard to conflict of interest", choices: null, isMandatory: true },
-          { text: "Provide details of any corrective action taken or underway on issues related to fines / penalties / action taken by regulators/ law enforcement agencies/ judicial institutions, on cases of corruption and conflicts of interest.", choices: null, isMandatory: true },
-          { text: "Number of days of accounts payables ((Accounts payable *365) / Cost of goods/services procured) in the following format:", choices: null, isMandatory: true },
-          { text: "Open-ness of business", choices: null, isMandatory: true },
-          { text: "Awareness programmes conducted for value chain partners on any of the Principles during the financial year:", choices: null, isMandatory: true },
-          { text: "Does the entity have processes in place to avoid/ manage conflict of interests involving members of the Board? (Yes/No) If Yes, provide details of the same.", choices: null, isMandatory: true },
+          { text: "Of the instances disclosed in Question 2 above, details of the Appeal/ Revision preferred in cases where monetary or non-monetary action has been appealed.", choices: null, isMandatory: true,parent:true,
+            type:"table",
+            label:"Percentage",
+            columns:[
+              "Case Details",
+              "Name of the regulatory/ enforcement agencies/ judicial institutions",
+            ],
+           
+           },
+          { text: "Does the entity have an anti-corruption or anti-bribery policy? If yes, provide details in brief and if available, provide a web-link to the policy.", choices: null, isMandatory: true,parent:true },
+
+          { text: "Number of Directors/KMPs/employees/workers against whom disciplinary action was taken by any law enforcement agency for the charges of bribery/ corruption", choices: null, isMandatory: true,parent:true,
+            type:"table",
+            columns:[
+              "Category",
+              "FY 2024-25(Current Financial Year)",
+              "FY 2023-24(Previous Financial Year)"
+
+            ],
+            rows:[
+              "Directors",
+              "KMPs",
+              "Employees",
+              "Workers",
+            ]
+
+          },
+          { text: "Details of complaints with regard to conflict of interest", choices: null, isMandatory: true,parent:true,
+            type:"table",
+            columns:[
+              "Category",
+              "FY 2023-24 (Current Financial Year)",
+              "FY 2022-23 (Previous Financial Year)"
+            ],
+            row:[
+              "Number of complaints received in relation to issues of Conflict of Interest of the Directors",
+              "Number of complaints received in relation to issues of Conflict of Interest of the KMPs",
+            ]
+            
+          },
+          { text: "Provide details of any corrective action taken or underway on issues related to fines / penalties / action taken by regulators/ law enforcement agencies/ judicial institutions, on cases of corruption and conflicts of interest.", choices: null, isMandatory: true ,parent:true},
+          { text: "Number of days of accounts payables ((Accounts payable *365) / Cost of goods/services procured) in the following format:", choices: null, isMandatory: true,parent:true,
+            type:"table",
+            columns:[
+              "Category",
+              "FY 2024-25(Current Financial Year)",
+              "FY 2023-24(Previous Financial Year)"
+            
+            ],
+            rows:[
+              "Number of days of accounts payables",
+            ]
+          },
+
+          { text: "Open-ness of business", choices: null, isMandatory: true,parent:true },
+          { text: "Provide details of concentration of purchases and sales with trading houses, dealers, and related parties along-with loans and advances & investments, with related parties, in the following format:", choices: null, isMandatory: true,parent:false, 
+            type:"table",
+            columns:[
+              "Parameter",
+              "Metrics",
+              "FY 2024-25(Current Financial Year)",
+              "FY 2023-24(Previous Financial Year)"
+
+            ],
+            rows:[
+              "Concentration of Purchases",
+              "Concentration of Sales",
+              "Share of RPTs in",
+            ]
+            
+          },
+
+
+          { text: "Awareness programmes conducted for value chain partners on any of the Principles during the financial year:", choices: null, isMandatory: true,parent:true,
+            type:"table",
+            columns:[
+              "Total number of awareness programmes held",
+              "Topics / principles covered under the training",
+              "% of value chain partners covered (by value of business done with such partners) under the awareness programmes"
+
+            ],
+           },
+          { text: "Does the entity have processes in place to avoid/ manage conflict of interests involving members of the Board? (Yes/No) If Yes, provide details of the same.", choices: null, isMandatory: true,parent:true
+           },
 
         ],
       },
@@ -89,16 +184,113 @@ export const allCategories3 = [
         questionsAnswer: "0/4",
         percentComplete: "0",
         question: [
-          { text: "Percentage of R&D and capital expenditure (capex) investments in specific technologies to improve the environmental and social impacts of product and processes to total R&D and capex investments made by the entity, respectively.", choices: null, isMandatory: true },
-          { text: "Does the entity have procedures in place for sustainable sourcing? (Yes/No)", choices: null, isMandatory: true },
+          { text: "Percentage of R&D and capital expenditure (capex) investments in specific technologies to improve the environmental and social impacts of product and processes to total R&D and capex investments made by the entity, respectively.", choices: null, isMandatory: true,
+            type:"table",
+            label:"",
+            columns:[
+              "Category",
+              "FY 2024-25(Current Financial Year)",
+              "FY 2023-24(Previous Financial Year)",
+              "Details of improvements in environmental and social impacts",
+
+            ],
+            rows:[
+              "R&D",
+              "CapEx",
+            ]
+           },
+
+          { text: "Does the entity have procedures in place for sustainable sourcing? (Yes/No)", choices: null, isMandatory: true,parent:true },
+          { text: "If yes, what percentage of inputs were sourced sustainably?", choices: null, isMandatory: true ,parent:false},
           { text: "Describe the processes in place to safely reclaim your products for reusing, recycling and disposing at the end of life, for :", choices: null, isMandatory: true },
           { text: "Whether Extended Producer Responsibility (EPR) is applicable to the entity’s activities (Yes / No). If yes, whether the waste collection plan is in line with the Extended Producer Responsibility (EPR) plan submitted to Pollution Control Boards? If not, provide steps taken to address the same.", choices: null, isMandatory: true },
-          { text: "Has the entity conducted Life Cycle Perspective / Assessments (LCA) for any of its products (for manufacturing industry) or for its services (for service industry)? If yes, provide details in the following format?", choices: null, isMandatory: true },
-          { text: "If there are any significant social or environmental concerns and/or risks arising from production or disposal of your products / services, as identified in the Life Cycle Perspective / Assessments (LCA) or through any other means, briefly describe the same along-with action taken to mitigate the same.", choices: null, isMandatory: true },
-          { text: "Percentage of recycled or reused input material to total material (by value) used in production (for manufacturing industry) or providing services (for service industry)", choices: null, isMandatory: true },
-          { text: "Of the products and packaging reclaimed at end of life of products, amount (in metric tonnes) reused, recycled, and safely disposed, as per the following format:", choices: null, isMandatory: true },
-          { text: "Reclaimed products and their packaging materials (as percentage of products sold) for each product category.", choices: null, isMandatory: true },
+          { text: "Has the entity conducted Life Cycle Perspective / Assessments (LCA) for any of its products (for manufacturing industry) or for its services (for service industry)? If yes, provide details in the following format?", choices: null, isMandatory: true,
+            type:"table",
+            label:"",
+            columns:[
+              "NIC Code",
+              "Name of Product /Service",
+              "% of total Turnover contributed",
+              "Boundary for which the Life Cycle Perspective / Assessment was conducted",
+              "Whether conducted by independent external agency(Yes/No)",
+              "Results communicated in public domain (Yes/No). If yes, provide the web-link."
 
+            ],
+            rows:[
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+
+
+
+
+          },
+          { text: "If there are any significant social or environmental concerns and/or risks arising from production or disposal of your products / services, as identified in the Life Cycle Perspective / Assessments (LCA) or through any other means, briefly describe the same along-with action taken to mitigate the same.", choices: null, isMandatory: true,
+            type:"table",
+            label:"",
+            columns:[
+              "Name of Product / Service",
+              "Description of the risk / concern",
+              "Action Taken"
+            ],
+            rows:[
+              "",
+              "",
+              "",
+              "",
+            ]
+
+           },
+          { text: "Percentage of recycled or reused input material to total material (by value) used in production (for manufacturing industry) or providing services (for service industry)", choices: null, isMandatory: true,
+            type:"table",
+            label:"",
+            columns:[
+              "Indicate input material",
+              "Recycled or re-used input material to total material",
+            ],
+            rows:[
+              "",
+              "",
+              "",
+              "",
+            ]
+
+           },
+          { text: "Of the products and packaging reclaimed at end of life of products, amount (in metric tonnes) reused, recycled, and safely disposed, as per the following format:", choices: null, isMandatory: true ,
+            type:"table",
+            label:"",
+            columns:[
+              "Category",
+              "Reused",
+              "Recycled",
+              "Safely Disposed",
+              "Reused",
+              "Recycled",
+              "Safely Disposed"
+
+            ],
+            rows:[
+              "Plastics (including packaging)",
+              "E-waste",
+              "Hazardous waste",
+              "Other waste"
+            ]
+
+          },
+          { text: "Reclaimed products and their packaging materials (as percentage of products sold) for each product category.", choices: null, isMandatory: true,
+            type:"table",
+            label:"",
+            columns:[
+              "Indicate product category",
+              "Reclaimed products and their packaging materials as % of total products sold in respective category",
+
+            ],
+            Row:[""]
+
+           },
         ],
       },
 
@@ -117,23 +309,133 @@ export const allCategories3 = [
         questionsAnswer: "0/3",
         percentComplete: "0",
         question: [
-          { text: "Details of measures for the well-being of employees:", choices: null, isMandatory: true },
-          { text: "Details of measures for the well-being of workers:", choices: null, isMandatory: true },
-          { text: "Spending on measures towards well-being of employees and workers (including permanent and other than permanent) in the following format –", choices: null, isMandatory: true },
-          { text: "Details of retirement benefits, for Current and Previous FY", choices: null, isMandatory: true },
-          { text: "Accessibility of workplaces", choices: null, isMandatory: true },
-          { text: "Does the entity have an equal opportunity policy as per the Rights of Persons with Disabilities Act, 2016? If so, provide a web-link to the policy.", choices: null, isMandatory: true },
-          { text: "Return to work and Retention rates of permanent employees and workers that took parental leave.", choices: null, isMandatory: true },
-          { text: "Is there a mechanism available to receive and redress grievances for the following categories of employees and worker? If yes, give details of the mechanism in brief", choices: null, isMandatory: true },
+          { text: "Details of measures for the well-being of employees:", choices: null, isMandatory: true,parent:true },
+          { text: "Details of measures for the well-being of workers:", choices: null, isMandatory: true ,parent:false},
+          { text: "Spending on measures towards well-being of employees and workers (including permanent and other than permanent) in the following format –", choices: null, isMandatory: true ,parent:false},
+          { text: "Details of retirement benefits, for Current and Previous FY", choices: null, isMandatory: true
+            ,parent:true,
+            type:"table",
+            label:"",
+            columns:[
+              "Benefits",
+              "No. of employees covered as a % of total employees",
+              "No. of workers covered as a % of total workers",
+              "Deducted and deposited with the authority(Y/N/N.A.)",
+              "No. of employees covered as a % of total employees",
+              "No. of workers covered as a % of total worker",
+              "Deducted and deposited with the authority(Y/N/N.A.)"
+            ],
+            rows:[
+              "PF",
+              "Gratuity",
+              "ESI",
+              "Others - please specify"
+            ]
+
+           },
+          { text: "Accessibility of workplaces", choices: null, isMandatory: true ,parent:true},
+          { text: "Does the entity have an equal opportunity policy as per the Rights of Persons with Disabilities Act, 2016? If so, provide a web-link to the policy.", choices: null, isMandatory: true ,parent:true},
+          { text: "Return to work and Retention rates of permanent employees and workers that took parental leave.", choices: null, isMandatory: true 
+            ,parent:true,
+            type:"table",
+            label:"",
+            columns:[
+              "Gender",
+              "Permanent employees",
+              "Permanent workers"
+
+            ],
+            rows:[
+              "Male",
+              "Female",
+              "Total",
+            ]
+
+          },
+          { text: "Is there a mechanism available to receive and redress grievances for the following categories of employees and worker? If yes, give details of the mechanism in brief", choices: null, isMandatory: true 
+            ,parent:true,
+            type:"table",
+            label:"",
+            columns:[
+              "Category",
+              "Yes/No(If Yes, then give details of the mechanism in brief)"
+
+            ],
+            rows:[
+              "Permanent Workers",
+              "Other than Permanent Workers",
+              "Permanent Employees",
+              "Other than Permanent Employees",
+            ]
+
+          },
           { text: "Membership of employees and worker in association(s) or Unions recognised by the listed entity:", choices: null, isMandatory: true },
           { text: "Details of training given to employees and workers:", choices: null, isMandatory: true },
           { text: "Details of performance and career development reviews of employees and workers:", choices: null, isMandatory: true },
-          { text: "Health and safety management system:", choices: null, isMandatory: true },
-          { text: "Details of safety related incidents, in the following format:", choices: null, isMandatory: true },
-          { text: "Describe the measures taken by the entity to ensure a safe and healthy work place", choices: null, isMandatory: true },
-          { text: "Number of Complaints on the following made by employees and workers:", choices: null, isMandatory: true },
-          { text: "Assessments for the year:", choices: null, isMandatory: true },
-          { text: "Provide details of any corrective action taken or underway to address safety-related incidents (if any) and on significant risks / concerns arising from assessments of health & safety practices and working conditions.", choices: null, isMandatory: true },
+          { text: "Health and safety management system:", choices: null, isMandatory: true,parent:true  
+
+          },
+          {text:"Whether an occupational health and safety management system has been implemented by the entity? (Yes/ No). If yes, the coverage such system?",choices:null,isMandatory:true,parent:false},
+          {text:"What are the processes used to identify work-related hazards and assess risks on a routine and non-routine basis by the entity?",choices:null,isMandatory:true,parent:false},
+          {text:"Whether you have processes for workers to report the work related hazards and to remove themselves from such risks. (Y/N)",choices:null,isMandatory:true,parent:false},
+          {text:"Do the employees/ worker of the entity have access to non-occupational medical and healthcare services? (Yes/ No)",choices:null,isMandatory:true,parent:false},
+
+          { text: "Details of safety related incidents, in the following format:", choices: null, isMandatory: true
+            ,parent:true,
+            type:"table",
+            label:"",
+            columns:[
+              "Safety Incident/Number",
+              "Category",
+              "FY 2024-25Current Financial Year",
+              "FY 2023-24Previous Financial Year"
+            ],
+            rows:[
+              "Lost Time Injury Frequency Rate (LTIFR) (per one million-person hours worked)",
+              "Total recordable work-related injuries",
+              "No. of fatalities",
+              "High consequence work-related injury or ill-health (excluding fatalities)",
+            ]
+
+          },
+          { text: "Describe the measures taken by the entity to ensure a safe and healthy work place", choices: null, isMandatory: true ,parent:true},
+          { text: "Number of Complaints on the following made by employees and workers:", choices: null, isMandatory: true
+            ,parent:true,
+            type:"table",
+            label:"",
+            columns:[
+              "Category",
+              "Filed during the year",
+              "Pending resolution at the end of year",
+              "Remarks",
+              "Filed during the year",
+              "Pending resolution at the end of year",
+              "Remarks"
+
+            ],
+            rows:[
+              "Category",
+              "Working Conditions",
+              "Health & Safety",
+            ]
+
+           },
+          { text: "Assessments for the year:", choices: null, isMandatory: true 
+            ,parent:true,
+            type:"table",
+            label:"",
+            columns:[
+              "Category",
+              "% of your plants and offices that were assessed (by entity or statutory authorities or third parties",
+
+            ],
+            rows:[
+              "Health & Safety Practices",
+              "Working Conditions"
+            ]
+
+          },
+          { text: "Provide details of any corrective action taken or underway to address safety-related incidents (if any) and on significant risks / concerns arising from assessments of health & safety practices and working conditions.", choices: null, isMandatory: true,parent:true },
           { text: "Does the entity extend any life insurance or any compensatory package in the event of death of (A) Employees (Y/N) ", choices: null, isMandatory: true },
           { text: "(B) Workers (Y/N)", choices: null, isMandatory: true },
           { text: "Provide the measures undertaken by the entity to ensure that statutory dues have been deducted and deposited by the value chain partners", choices: null, isMandatory: true },
@@ -322,3 +624,8 @@ export const allCategories3 = [
     ]
   },
 ];
+
+
+
+
+

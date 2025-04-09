@@ -236,12 +236,6 @@ export const options2 = [
 
               ]
             },
-
-
-
-
-
-
           ],
         },
 
