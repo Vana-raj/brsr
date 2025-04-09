@@ -253,19 +253,24 @@ const SectionB: React.FC = () => {
         key: string,
         question: {
             text: string; choices: string[] | null; isMandatory: boolean, type: string, columns: [], rows: [],
+            isNone?: boolean;
             parent?: boolean; label: string;
         },
         questionIndex: number,
         questionsArray: any[],
-        label:string
+        label: string
     ) => {
 
         const getQuestionNumber = () => {
             if (question.parent) {
-                // Parent question - use numerical numbering
-                return `${questionIndex + 1}.`;
+                let parentCount = 0;
+                for (let i = 0; i <= questionIndex; i++) {
+                    if (questionsArray[i].parent) {
+                        parentCount++;
+                    }
+                }
+                return `${parentCount}.`;
             } else {
-                // Child question - find nearest parent for alphabetical numbering
                 let lastParentIndex = -1;
                 for (let i = questionIndex - 1; i >= 0; i--) {
                     if (questionsArray[i].parent) {
@@ -277,7 +282,7 @@ const SectionB: React.FC = () => {
                 if (lastParentIndex === -1) return `${questionIndex + 1}.`;
 
                 const subQuestionIndex = questionIndex - lastParentIndex - 1;
-                const alphabet = String.fromCharCode(97 + subQuestionIndex);
+                const alphabet = String.fromCharCode(97 + subQuestionIndex); // 97 = 'a'
                 return `${alphabet}.`;
             }
         };
@@ -288,7 +293,7 @@ const SectionB: React.FC = () => {
             return null;
         }
         if (question?.type === 'table') {
-            console.log(label,'label')
+            console.log(label, 'label')
             return (
                 <div>
                     <div className="question-text">
@@ -314,7 +319,7 @@ const SectionB: React.FC = () => {
                     </div>
                     <TableInput
                         columns={question?.columns}
-header={label}
+                        header={label}
                         rows={question?.rows}
                         value={answers[questionKey] || []}
                         onChange={(value: any) =>
@@ -346,88 +351,72 @@ header={label}
                         </button>
                     </Tooltip>
                 </div>
-                {question.choices === null ? (
-                    <div className="area-upload">
-                        <TextArea
-                            rows={3}
-                            placeholder="Type your answer here"
-                            size="small"
-                            onChange={(e) =>
-                                handleInputChange(section, key, e.target.value, questionIndex)
-                            }
-                            value={answers[questionKey] || ""}
-                        />
-
-                        <div className="upload-section">
-                            {!isFileUploaded && (
-                                <Tooltip title="Upload">
-                                    <Upload
-                                        showUploadList={false}
-                                        customRequest={(options) => {
-                                            const { onSuccess } = options;
-                                            setTimeout(() => onSuccess?.("ok"), 0);
-                                        }}
-                                        onChange={(info) => handleFileUpload(info, questionKey)}
-                                    >
-                                        <FileAddTwoTone className="upload-icon" />
-                                    </Upload>
-                                </Tooltip>
+                {question.isNone ? null : (
+                    question.choices === null ? (
+                        <div className="area-upload">
+                            <TextArea
+                                rows={3}
+                                placeholder="Type your answer here"
+                                size="small"
+                                onChange={(e) => handleInputChange(section, key, e.target.value, questionIndex)}
+                                value={answers[questionKey] || ""}
+                            />
+                            <div className="upload-section">
+                                {!isFileUploaded && (
+                                    <Tooltip title="Upload">
+                                        <Upload
+                                            showUploadList={false}
+                                            customRequest={({ onSuccess }) => setTimeout(() => onSuccess?.("ok"), 0)}
+                                            onChange={(info) => handleFileUpload(info, questionKey)}
+                                        >
+                                            <FileAddTwoTone className="upload-icon" />
+                                        </Upload>
+                                    </Tooltip>
+                                )}
+                            </div>
+                            {isFileUploaded && (
+                                <div className="uploaded-file-info">
+                                    <div className="uploaded-file-details">
+                                        File: {uploadedFiles[questionKey]?.name} ({uploadedFiles[questionKey]?.size})
+                                        <button
+                                            onClick={() => handleRemoveFile(questionKey)}
+                                            className="remove-file-icon"
+                                        >
+                                            <DeleteOutlined />
+                                        </button>
+                                    </div>
+                                </div>
                             )}
                         </div>
-                        {isFileUploaded && (
-                            <div className="uploaded-file-info">
-                                <div className="uploaded-file-details">
-                                    File: {uploadedFiles[questionKey]?.name} ({uploadedFiles[questionKey]?.size})
-                                    <button
-                                        onClick={() => handleRemoveFile(questionKey)}
-                                        className="remove-file-icon"
-                                    >
-                                        <DeleteOutlined />
-                                    </button>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                ) : question.choices.length > 4 ? (
-                    <SelectDropDown
-                        mode="multiple"
-                        options={question.choices.map((choice) => ({
-                            label: choice,
-                            value: choice,
-                        }))}
-                        placeholder="Select options"
-                        value={answers[`${section}-${key}-${questionIndex}`] || []}
-                        onChange={(value: any) =>
-                            handleInputChange(section, key, value, questionIndex)
-                        }
-                    />
-                ) : (
-                    <div className="question-options">
-                        {question.choices.map((option, idx) => (
-                            <label key={`${option}-${idx}`}>
-                                <Space direction="vertical">
-                                    <Radio
-                                        value={option}
-                                        checked={
-                                            answers[`${section}-${key}-${questionIndex}`] ===
-                                            option
-                                        }
-                                        onChange={() =>
-                                            handleInputChange(
-                                                section,
-                                                key,
-                                                option,
-                                                questionIndex
-                                            )
-                                        }
-                                        className="radio-qbutton"
-                                    >
-                                        {option}
-                                    </Radio>
-                                </Space>
-                            </label>
-                        ))}
-                    </div>
+                    ) : question.choices.length > 4 ? (
+                        <SelectDropDown
+                            mode="multiple"
+                            options={question.choices.map((choice) => ({
+                                label: choice,
+                                value: choice,
+                            }))}
+                            placeholder="Select options"
+                            value={answers[`${section}-${key}-${questionIndex}`] || []}
+                            onChange={(value) => handleInputChange(section, key, value, questionIndex)}
+                        />
+                    ) : (
+                        <div className="question-options">
+                            {question.choices.map((option, idx) => (
+                                <label key={`${option}-${idx}`}>
+                                    <Space direction="vertical">
+                                        <Radio
+                                            value={option}
+                                            checked={answers[`${section}-${key}-${questionIndex}`] === option}
+                                            onChange={() => handleInputChange(section, key, option, questionIndex)}
+                                            className="radio-qbutton"
+                                        >
+                                            {option}
+                                        </Radio>
+                                    </Space>
+                                </label>
+                            ))}
+                        </div>
+                    )
                 )}
 
             </div>
