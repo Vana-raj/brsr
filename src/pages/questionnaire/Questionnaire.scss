@@ -441,3 +441,21 @@ text-align: left;
   font-weight: $bold;
   font-size: 18px;
 }
+
+
+.table-input-container {
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 16px 0;
+  border-radius: 4px;
+
+  .ant-table {
+    min-width: max-content;
+    white-space: nowrap;
+    
+    .ant-table-thead > tr > th,
+    .ant-table-tbody > tr > td {
+      white-space: nowrap;
+    }
+  }
+}
