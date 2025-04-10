@@ -156,7 +156,7 @@ export const allCategories3 = [
           },
 
 
-          { text: "Awareness programmes conducted for value chain partners on any of the Principles during the financial year:", choices: null, isMandatory: true,parent:true,
+          { text: "Awareness programmes conducted for value chain partners on any of the Principles during the financial year:", choices: null, isMandatory:false,parent:true,
             type:"table",
             columns:[
               "Total number of awareness programmes held",
@@ -165,7 +165,7 @@ export const allCategories3 = [
 
             ],
            },
-          { text: "Does the entity have processes in place to avoid/ manage conflict of interests involving members of the Board? (Yes/No) If Yes, provide details of the same.", choices: null, isMandatory: true,parent:true
+          { text: "Does the entity have processes in place to avoid/ manage conflict of interests involving members of the Board? (Yes/No) If Yes, provide details of the same.", choices: null, isMandatory: false,parent:true
            },
 
         ],
@@ -204,7 +204,7 @@ export const allCategories3 = [
           { text: "If yes, what percentage of inputs were sourced sustainably?", choices: null, isMandatory: true ,parent:false},
           { text: "Describe the processes in place to safely reclaim your products for reusing, recycling and disposing at the end of life, for :", choices: null, isMandatory: true },
           { text: "Whether Extended Producer Responsibility (EPR) is applicable to the entity’s activities (Yes / No). If yes, whether the waste collection plan is in line with the Extended Producer Responsibility (EPR) plan submitted to Pollution Control Boards? If not, provide steps taken to address the same.", choices: null, isMandatory: true },
-          { text: "Has the entity conducted Life Cycle Perspective / Assessments (LCA) for any of its products (for manufacturing industry) or for its services (for service industry)? If yes, provide details in the following format?", choices: null, isMandatory: true,
+          { text: "Has the entity conducted Life Cycle Perspective / Assessments (LCA) for any of its products (for manufacturing industry) or for its services (for service industry)? If yes, provide details in the following format?", choices: null, isMandatory: false,
             type:"table",
             label:"",
             columns:[
@@ -228,7 +228,7 @@ export const allCategories3 = [
 
 
           },
-          { text: "If there are any significant social or environmental concerns and/or risks arising from production or disposal of your products / services, as identified in the Life Cycle Perspective / Assessments (LCA) or through any other means, briefly describe the same along-with action taken to mitigate the same.", choices: null, isMandatory: true,
+          { text: "If there are any significant social or environmental concerns and/or risks arising from production or disposal of your products / services, as identified in the Life Cycle Perspective / Assessments (LCA) or through any other means, briefly describe the same along-with action taken to mitigate the same.", choices: null, isMandatory: false,
             type:"table",
             label:"",
             columns:[
@@ -244,7 +244,7 @@ export const allCategories3 = [
             ]
 
            },
-          { text: "Percentage of recycled or reused input material to total material (by value) used in production (for manufacturing industry) or providing services (for service industry)", choices: null, isMandatory: true,
+          { text: "Percentage of recycled or reused input material to total material (by value) used in production (for manufacturing industry) or providing services (for service industry)", choices: null, isMandatory: false,
             type:"table",
             label:"",
             columns:[
@@ -259,7 +259,7 @@ export const allCategories3 = [
             ]
 
            },
-          { text: "Of the products and packaging reclaimed at end of life of products, amount (in metric tonnes) reused, recycled, and safely disposed, as per the following format:", choices: null, isMandatory: true ,
+          { text: "Of the products and packaging reclaimed at end of life of products, amount (in metric tonnes) reused, recycled, and safely disposed, as per the following format:", choices: null, isMandatory: false ,
             type:"table",
             label:"",
             columns:[
@@ -280,7 +280,7 @@ export const allCategories3 = [
             ]
 
           },
-          { text: "Reclaimed products and their packaging materials (as percentage of products sold) for each product category.", choices: null, isMandatory: true,
+          { text: "Reclaimed products and their packaging materials (as percentage of products sold) for each product category.", choices: null, isMandatory: false,
             type:"table",
             label:"",
             columns:[
@@ -591,10 +591,12 @@ export const allCategories3 = [
 
           },
           { text: "Provide details of any corrective action taken or underway to address safety-related incidents (if any) and on significant risks / concerns arising from assessments of health & safety practices and working conditions.", choices: null, isMandatory: true,parent:true },
-          { text: "Does the entity extend any life insurance or any compensatory package in the event of death of (A) Employees (Y/N) ", choices: null, isMandatory: true ,parent:true},
-          { text: "(B) Workers (Y/N)", choices: null, isMandatory: true ,parent:true},
-          { text: "Provide the measures undertaken by the entity to ensure that statutory dues have been deducted and deposited by the value chain partners", choices: null, isMandatory: true ,parent:true},
-          { text: "Provide the number of employees / workers having suffered high consequence work-related injury / ill-health / fatalities (as reported in Q11 of Essential Indicators above), who have been are rehabilitated and placed in suitable employment or whose family members have been placed in suitable employment:", choices: null, isMandatory: true ,parent:true
+        
+          { text: "Does the entity extend any life insurance or any compensatory package in the event of death of (A) Employees (Y/N) ", choices: null, isMandatory: false ,parent:true,isNone:true},
+          { text: "(A) Employees (Y/N) ", choices: null, isMandatory: false ,parent:false,},
+          { text: "(B) Workers (Y/N)", choices: null, isMandatory: false ,parent:false},
+          { text: "Provide the measures undertaken by the entity to ensure that statutory dues have been deducted and deposited by the value chain partners", choices: null, isMandatory: false ,parent:true},
+          { text: "Provide the number of employees / workers having suffered high consequence work-related injury / ill-health / fatalities (as reported in Q11 of Essential Indicators above), who have been are rehabilitated and placed in suitable employment or whose family members have been placed in suitable employment:", choices: null, isMandatory: false ,parent:true
             ,
             type:"table",
             label:"",
@@ -614,8 +616,8 @@ export const allCategories3 = [
 
 
           },
-          { text: "Does the entity provide transition assistance programs to facilitate continued employability and the management of career endings resulting from retirement or termination of employment? (Yes/ No)", choices: null, isMandatory: true ,parent:true},
-          { text: "Details on assessment of value chain partners:", choices: null, isMandatory: true ,parent:true
+          { text: "Does the entity provide transition assistance programs to facilitate continued employability and the management of career endings resulting from retirement or termination of employment? (Yes/ No)", choices: null, isMandatory: false ,parent:true},
+          { text: "Details on assessment of value chain partners:", choices: null, isMandatory:false ,parent:true
             ,
             type:"table",
             label:"",
@@ -629,7 +631,7 @@ export const allCategories3 = [
             ]
 
           },
-          { text: "Provide details of any corrective actions taken or underway to address significant risks / concerns arising from assessments of health and safety practices and working conditions of value chain partners.", choices: null, isMandatory: true ,parent:true},
+          { text: "Provide details of any corrective actions taken or underway to address significant risks / concerns arising from assessments of health and safety practices and working conditions of value chain partners.", choices: null, isMandatory: false ,parent:true},
 
         ],
       },
@@ -647,7 +649,7 @@ export const allCategories3 = [
         questionsAnswer: "0/3",
         percentComplete: "0",
         question: [
-          { text: "Describe the processes for identifying key stakeholder groups of the entity.", choices: null, isMandatory: true },
+          { text: "Describe the processes for identifying key stakeholder groups of the entity.", choices: null, isMandatory: false },
           { text: "List stakeholder groups identified as key for your entity and the frequency of engagement with each stakeholder group.", choices: null, isMandatory: true
             ,parent:true,
             type:"table",
@@ -669,9 +671,9 @@ export const allCategories3 = [
             ]
 
            },
-          { text: "Provide the processes for consultation between stakeholders and the Board on economic, environmental, and social topics or if consultation is delegated, how is feedback from such consultations provided to the Board.", choices: null, isMandatory: true ,parent:true},
-          { text: "Whether stakeholder consultation is used to support the identification and management of environmental, and social topics (Yes / No). If so, provide details of instances as to how the inputs received from stakeholders on these topics were incorporated into policies and activities of the entity", choices: null, isMandatory: true ,parent:true},
-          { text: "Provide details of instances of engagement with, and actions taken to, address the concerns of vulnerable/ marginalized stakeholder groups.", choices: null, isMandatory: true ,parent:true},
+          { text: "Provide the processes for consultation between stakeholders and the Board on economic, environmental, and social topics or if consultation is delegated, how is feedback from such consultations provided to the Board.", choices: null, isMandatory: false ,parent:true},
+          { text: "Whether stakeholder consultation is used to support the identification and management of environmental, and social topics (Yes / No). If so, provide details of instances as to how the inputs received from stakeholders on these topics were incorporated into policies and activities of the entity", choices: null, isMandatory: false ,parent:true},
+          { text: "Provide details of instances of engagement with, and actions taken to, address the concerns of vulnerable/ marginalized stakeholder groups.", choices: null, isMandatory: false ,parent:true},
 
         ],
       },
@@ -854,10 +856,10 @@ export const allCategories3 = [
 
            },
           { text: "Provide details of any corrective actions taken or underway to address significant risks / concerns arising from the assessments at Question 10 above.", choices: null, isMandatory: true ,parent:true},
-          { text: "Details of a business process being modified / introduced as a result of addressing human rights grievances/complaints.", choices: null, isMandatory: true ,parent:true},
-          { text: "Details of the scope and coverage of any Human rights due-diligence conducted", choices: null, isMandatory: true ,parent:true},
-          { text: "Is the premise/office of the entity accessible to differently abled visitors, as per the requirements of the Rights of Persons with Disabilities Act, 2016?", choices: null, isMandatory: true,parent:true },
-          { text: "Details on assessment of value chain partners:", choices: null, isMandatory: true,parent:true
+          { text: "Details of a business process being modified / introduced as a result of addressing human rights grievances/complaints.", choices: null, isMandatory: false ,parent:true},
+          { text: "Details of the scope and coverage of any Human rights due-diligence conducted", choices: null, isMandatory: false ,parent:true},
+          { text: "Is the premise/office of the entity accessible to differently abled visitors, as per the requirements of the Rights of Persons with Disabilities Act, 2016?", choices: null, isMandatory: false,parent:true },
+          { text: "Details on assessment of value chain partners:", choices: null, isMandatory: false,parent:true
             ,
             type:"table",
             label:"",
@@ -876,7 +878,7 @@ export const allCategories3 = [
             ]
  
            },
-          { text: "Provide details of any corrective actions taken or underway to address significant risks / concerns arising from the assessments at Question 4 above.", choices: null, isMandatory: true ,parent:true},
+          { text: "Provide details of any corrective actions taken or underway to address significant risks / concerns arising from the assessments at Question 4 above.", choices: null, isMandatory: false ,parent:true},
 
         ],
       },
@@ -1149,12 +1151,12 @@ export const allCategories3 = [
 
 
           },
-          { text: "Water withdrawal, consumption and discharge in areas of water stress (in kilolitres):", choices: null, isMandatory: true ,parent:true
+          { text: "Water withdrawal, consumption and discharge in areas of water stress (in kilolitres):", choices: null, isMandatory: false ,parent:true
             
 
 
           },
-          { text: "Please provide details of total Scope 3 emissions & its intensity, in the following format", choices: null, isMandatory: true ,parent:true
+          { text: "Please provide details of total Scope 3 emissions & its intensity, in the following format", choices: null, isMandatory: false ,parent:true
             ,
             type:"table",
             label:"",
@@ -1172,9 +1174,9 @@ export const allCategories3 = [
             ],
 
           },
-          {text:"Note: Indicate if any independent assessment/ evaluation/assurance has been carried out by an external agency? (Y/N) If yes, name of the external agency", choices: null, isMandatory: true ,parent:false},
-          { text: "With respect to the ecologically sensitive areas reported at Question 10 of Essential Indicators above, provide details of significant direct & indirect impact of the entity on biodiversity in such areas along-with prevention and remediation activities", choices: null, isMandatory: true ,parent:true},
-          { text: "If the entity has undertaken any specific initiatives or used innovative technology or solutions to improve resource efficiency, or reduce impact due to emissions / effluent discharge / waste generated, please provide details of the same as well as outcome of such initiatives, as per the following format:", choices: null, isMandatory: true ,parent:true 
+          {text:"Note: Indicate if any independent assessment/ evaluation/assurance has been carried out by an external agency? (Y/N) If yes, name of the external agency", choices: null, isMandatory: false ,parent:false},
+          { text: "With respect to the ecologically sensitive areas reported at Question 10 of Essential Indicators above, provide details of significant direct & indirect impact of the entity on biodiversity in such areas along-with prevention and remediation activities", choices: null, isMandatory: false ,parent:true},
+          { text: "If the entity has undertaken any specific initiatives or used innovative technology or solutions to improve resource efficiency, or reduce impact due to emissions / effluent discharge / waste generated, please provide details of the same as well as outcome of such initiatives, as per the following format:", choices: null, isMandatory: false ,parent:true 
             ,
             type:"table",
             label:"",
@@ -1189,12 +1191,12 @@ export const allCategories3 = [
               ""
             ]
           },
-          { text: "Does the entity have a business continuity and disaster management plan? Give details in 100 words/ web link.", choices: null, isMandatory: true ,parent:true},
-          { text: "Disclose any significant adverse impact to the environment, arising from the value chain of the entity. What mitigation or adaptation measures have been taken by the entity in this regard.", choices: null, isMandatory: true ,parent:true},
-          { text: "Percentage of value chain partners (by value of business done with such partners) that were assessed for environmental impacts.", choices: null, isMandatory: true ,parent:true},
-          { text: "How many Green Credits have been generated or procured:", choices: null, isMandatory: true ,parent:true },
-          { text: "By the listed entity", choices: null, isMandatory: true ,parent:false },
-          { text: "By the top ten (in terms of value of purchases and sales,respectively) value chain partners”", choices: null, isMandatory: true ,parent:false },
+          { text: "Does the entity have a business continuity and disaster management plan? Give details in 100 words/ web link.", choices: null, isMandatory: false ,parent:true},
+          { text: "Disclose any significant adverse impact to the environment, arising from the value chain of the entity. What mitigation or adaptation measures have been taken by the entity in this regard.", choices: null, isMandatory: false ,parent:true},
+          { text: "Percentage of value chain partners (by value of business done with such partners) that were assessed for environmental impacts.", choices: null, isMandatory:false ,parent:true},
+          { text: "How many Green Credits have been generated or procured:", choices: null, isMandatory: false ,parent:true },
+          { text: "By the listed entity", choices: null, isMandatory: false ,parent:false },
+          { text: "By the top ten (in terms of value of purchases and sales,respectively) value chain partners”", choices: null, isMandatory: false ,parent:false },
 
           
         ],
@@ -1254,7 +1256,7 @@ export const allCategories3 = [
 
 
           },
-          { text: "Provide details of corrective action taken or underway on any issues related to anti-competitive conduct by the entity, based on adverse orders from regulatory authorities.", choices: null, isMandatory: true 
+          { text: "Provide details of corrective action taken or underway on any issues related to anti-competitive conduct by the entity, based on adverse orders from regulatory authorities.", choices: null, isMandatory: true,parent:true 
             ,
             type:"table",
             label:"",
@@ -1276,7 +1278,7 @@ export const allCategories3 = [
 
 
           },
-          { text: "Details of public policy positions advocated by the entity:", choices: null, isMandatory: true 
+          { text: "Details of public policy positions advocated by the entity:", choices: null, isMandatory: false,parent:true 
             ,
             type:"table",
             label:"",
@@ -1398,7 +1400,7 @@ export const allCategories3 = [
 
 
           },
-          { text: "Provide details of actions taken to mitigate any negative social impacts identified in the Social Impact Assessments (Reference: Question 1 of Essential Indicators above):", choices: null, isMandatory: true 
+          { text: "Provide details of actions taken to mitigate any negative social impacts identified in the Social Impact Assessments (Reference: Question 1 of Essential Indicators above):", choices: null, isMandatory: false,parent:true 
             ,
             type:"table",
             label:"",
@@ -1419,7 +1421,7 @@ export const allCategories3 = [
 
 
           },
-          { text: "Provide the following information on CSR projects undertaken by your entity in designated aspirational districts as identified by government bodies", choices: null, isMandatory: true
+          { text: "Provide the following information on CSR projects undertaken by your entity in designated aspirational districts as identified by government bodies", choices: null, isMandatory: false,parent:true
             ,
             type:"table",
             label:"",
@@ -1441,11 +1443,11 @@ export const allCategories3 = [
 
 
            },
-          { text: "Do you have a preferential procurement policy where you give preference to purchase from suppliers comprising marginalized /vulnerable groups? (Yes/No)", choices: null, isMandatory: true,parent:true },
-          { text: "From which marginalized /vulnerable groups do you procure?", choices: null, isMandatory: true ,parent:false},
-          { text: "What percentage of total procurement (by value) does it constitute?", choices: null, isMandatory: true ,parent:false},
+          { text: "Do you have a preferential procurement policy where you give preference to purchase from suppliers comprising marginalized /vulnerable groups? (Yes/No)", choices: null, isMandatory: false,parent:true },
+          { text: "From which marginalized /vulnerable groups do you procure?", choices: null, isMandatory: false ,parent:false},
+          { text: "What percentage of total procurement (by value) does it constitute?", choices: null, isMandatory: false ,parent:false},
 
-          { text: "Details of the benefits derived and shared from the intellectual properties owned or acquired by your entity (in the current financial year), based on traditional knowledge:", choices: null, isMandatory: true,parent:true
+          { text: "Details of the benefits derived and shared from the intellectual properties owned or acquired by your entity (in the current financial year), based on traditional knowledge:", choices: null, isMandatory: false,parent:true
             ,
             type:"table",
             label:"",
@@ -1468,7 +1470,7 @@ export const allCategories3 = [
 
 
            },
-          { text: "Details of corrective actions taken or underway, based on any adverse order in intellectual property related disputes wherein usage of traditional knowledge is involved.", choices: null, isMandatory: true ,parent:true
+          { text: "Details of corrective actions taken or underway, based on any adverse order in intellectual property related disputes wherein usage of traditional knowledge is involved.", choices: null, isMandatory: false,parent:true
             ,
             type:"table",
             label:"",
@@ -1486,7 +1488,7 @@ export const allCategories3 = [
 
 
           },
-          { text: "Details of beneficiaries of CSR Projects:", choices: null, isMandatory: true ,parent:true
+          { text: "Details of beneficiaries of CSR Projects:", choices: null, isMandatory:false ,parent:true
             ,
             type:"table",
             label:"",
@@ -1591,13 +1593,13 @@ export const allCategories3 = [
           {text:"Percentage of data breaches involving personally identifiable information of customers",choices:null,isMandatory:true,parent:false},
           {text:"Impact, if any, of the data breaches",choices:null,isMandatory:true,parent:false},
 
-          { text: "Channels / platforms where information on products and services of the entity can be accessed (provide web link, if available).", choices: null, isMandatory: true ,parent:true},
-          { text: "Steps taken to inform and educate consumers about safe and responsible usage of products and/or services.", choices: null, isMandatory: true ,parent:true},
-          { text: "Mechanisms in place to inform consumers of any risk of disruption/discontinuation of essential services.", choices: null, isMandatory: true ,parent:true},
-          { text: "Does the entity display product information on the product over and above what is mandated as per local laws? (Yes/No/Not Applicable) If yes, provide details in brief. Did your entity carry out any survey with regard to consumer satisfaction relating to the major products / services of the entity, significant locations of operation of the entity or the entity as a whole? (Yes/No)", choices: null, isMandatory: true ,parent:true},
-          { text: "Provide the following information relating to data breaches:", choices: null, isMandatory: true ,parent:true},
-          {text:"Number of instances of data breaches along-with impact",choices:null,isMandatory:true,parent:false},
-          {text:"Percentage of data breaches involving personally identifiable information of customers",choices:null,isMandatory:true,parent:false},
+          { text: "Channels / platforms where information on products and services of the entity can be accessed (provide web link, if available).", choices: null, isMandatory: false ,parent:true},
+          { text: "Steps taken to inform and educate consumers about safe and responsible usage of products and/or services.", choices: null, isMandatory: false ,parent:true},
+          { text: "Mechanisms in place to inform consumers of any risk of disruption/discontinuation of essential services.", choices: null, isMandatory: false ,parent:true},
+          { text: "Does the entity display product information on the product over and above what is mandated as per local laws? (Yes/No/Not Applicable) If yes, provide details in brief. Did your entity carry out any survey with regard to consumer satisfaction relating to the major products / services of the entity, significant locations of operation of the entity or the entity as a whole? (Yes/No)", choices: null, isMandatory: false ,parent:true},
+          { text: "Provide the following information relating to data breaches:", choices: null, isMandatory: false ,parent:true},
+          {text:"Number of instances of data breaches along-with impact",choices:null,isMandatory:false,parent:false},
+          {text:"Percentage of data breaches involving personally identifiable information of customers",choices:null,isMandatory:false,parent:false},
 
 
         ],
