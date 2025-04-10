@@ -309,9 +309,81 @@ export const allCategories3 = [
         questionsAnswer: "0/3",
         percentComplete: "0",
         question: [
-          { text: "Details of measures for the well-being of employees:", choices: null, isMandatory: true,parent:true },
-          { text: "Details of measures for the well-being of workers:", choices: null, isMandatory: true ,parent:false},
-          { text: "Spending on measures towards well-being of employees and workers (including permanent and other than permanent) in the following format –", choices: null, isMandatory: true ,parent:false},
+          { text: "Details of measures ", choices: null, isMandatory: true,parent:true,isNone:true},
+
+          { text: "Details of measures for the well-being of employees:", choices: null, isMandatory: true,parent:false,
+            type:"table",
+            label:"",
+            columns:[
+              "Category",
+              "Total (A)",
+              "Health insurance (Number (B))",
+              "Health insurance (% (B / A))",
+              "Accident insurance (Number (C))",
+              "Accident insurance (% (C / A))",
+              "Maternity Benefits (Number (D))",
+              "Maternity Benefits (% (D / A))",
+              "Paternity Benefits (Number (E))",
+              "Paternity Benefits (% (E / A))",
+              "Day Care Facilities (Number (F))",
+              "Day Care Facilities (% (F / A))"
+
+            ],
+            rows:[
+              "Permanent Workers (Male )",
+              "Permanent Workers (Female)",
+              "Permanent Workers (Total)",
+              "Other than Permanent Workers (Male )",
+              "Other than Permanent Workers (Female)",
+              "Other than Permanent Workers (Total)",
+            ] 
+
+          },
+          { text: "Details of measures for the well-being of workers:", choices: null, isMandatory: true ,parent:false
+            ,type:"table",
+          label:"",
+          columns:[
+            "Category",
+            "Total (A)",
+            "Health insurance (Number (B))",
+            "Health insurance (% (B / A))",
+            "Accident insurance (Number (C))",
+            "Accident insurance (% (C / A))",
+            "Maternity Benefits (Number (D))",
+            "Maternity Benefits (% (D / A))",
+            "Paternity Benefits (Number (E))",
+            "Paternity Benefits (% (E / A))",
+            "Day Care Facilities (Number (F))",
+            "Day Care Facilities (% (F / A))"
+
+          ],
+          rows:[
+            "Permanent Employees (Male )",
+            "Permanent Employees (Female)",
+            "Permanent Employees (Total)",
+            "Other than Permanent Workers (Male )",
+            "Other than Permanent Workers (Female)",
+            "Other than Permanent Workers (Total)",
+          ]
+
+
+          },
+          { text: "Spending on measures towards well-being of employees and workers (including permanent and other than permanent) in the following format –", choices: null, isMandatory: true ,parent:false
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "Category",
+              "FY 2043-25(Current Financial Year)",
+              "FY 2023-24(Previous Financial Year)"
+
+            ],
+            rows:[
+              "Cost incurred on wellbeing measures as a % of total revenue of the company",
+            ]
+
+          }
+          ,
           { text: "Details of retirement benefits, for Current and Previous FY", choices: null, isMandatory: true
             ,parent:true,
             type:"table",
@@ -369,9 +441,89 @@ export const allCategories3 = [
             ]
 
           },
-          { text: "Membership of employees and worker in association(s) or Unions recognised by the listed entity:", choices: null, isMandatory: true },
-          { text: "Details of training given to employees and workers:", choices: null, isMandatory: true },
-          { text: "Details of performance and career development reviews of employees and workers:", choices: null, isMandatory: true },
+          { text: "Membership of employees and worker in association(s) or Unions recognised by the listed entity:", choices: null, isMandatory: true ,parent:true
+            ,type:"table",
+            label:"",
+            columns:[
+              "Category",
+              "FY 2024-25(Current Financial Year)-(Total employees / workers in respective category(A))",
+              "FY 2024-25(Current Financial Year)-(No. of employees / workers in respective category, who are part of association(s) or Union(B))",
+              "FY 2024-25(Current Financial Year)-(% (B / A))",
+              "FY 2023-24(Previous Financial Year)-(Total employees / workers in respective category(C))",
+              "FY 2023-24(Previous Financial Year)-(No. of employees / workers in respective category, who are part of association(s) or Union(D))",
+              "FY 2023-24(Previous Financial Year)-(% (D / C))",
+
+            ],
+            rows:[
+              "Total Permanent Employees (Male)",
+              "Total Permanent Employees (Female)",
+              "Total Permanent Workers (Male)",
+              "Total Permanent Workers (Female)",
+
+            ]   
+          },
+          { text: "Details of training given to employees and workers:", choices: null, isMandatory: true  ,parent:true
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "Category",
+              "Total (A)",
+              "On Health and safety measures (No. (B))",
+              "On Health and safety measures (% (B / A))",
+              "On Skill upgradation (No. (C))",
+              "On Skill upgradation (% (C / A))",
+              "Total (D)",
+              "On Health and safety measures (No. (E))",
+              "On Health and safety measures (% (E / D))",
+              "On Skill upgradation (No. (F))",
+              "On Skill upgradation (% (F / D))"
+
+            ],
+            rows:[
+              "FY 2023-24(Current Financial Year)",
+              "Empolyees (Male)",
+              "Employees (Female)",
+              "Employees (Total)",
+              "Workers (Male)",
+              "Workers (Female)",
+              "Workers (Total)",
+
+              "FY 2022-23(Previous Financial Year)",
+              "Employees (Female)",
+              "Employees (Total)",
+              "Workers (Male)",
+              "Workers (Female)",
+              "Workers (Total)",
+            ]
+          },
+          { text: "Details of performance and career development reviews of employees and workers:", choices: null, isMandatory: true  ,parent:true
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "Category",
+              "FY 2024-25(Current Financial Year)-(Total (A))",
+              "FY 2024-25(Current Financial Year)-(No. (B))",
+              "FY 2024-25(Current Financial Year)-(% (B / A))",
+
+              "FY 2023-24(Previous Financial Year)-(Total (C))",
+              "FY 2023-24(Previous Financial Year)-(No. (D))",
+              "FY 2023-24(Previous Financial Year)-(% (D / C))",
+            ],
+            rows:[
+              "Total Permanent Employees (Male)",
+              "Total Permanent Employees (Female)",
+              "Total Permanent Employees (Total)",
+              "Total Permanent Workers(Male)",
+              "Total Permanent Workers(Female)",
+              "Total Permanent Workers(Total)",
+
+            ]
+
+
+
+          },
           { text: "Health and safety management system:", choices: null, isMandatory: true,parent:true  
 
           },
@@ -387,8 +539,11 @@ export const allCategories3 = [
             columns:[
               "Safety Incident/Number",
               "Category",
-              "FY 2024-25Current Financial Year",
-              "FY 2023-24Previous Financial Year"
+              "FY 2024-25Current Financial Year (Employees)",
+              "FY 2024-25Current Financial Year (Workers)",
+              "FY 2023-24Previous Financial Year (Employees)",
+              "FY 2023-24Previous Financial Year (Workers)"
+
             ],
             rows:[
               "Lost Time Injury Frequency Rate (LTIFR) (per one million-person hours worked)",
@@ -436,14 +591,45 @@ export const allCategories3 = [
 
           },
           { text: "Provide details of any corrective action taken or underway to address safety-related incidents (if any) and on significant risks / concerns arising from assessments of health & safety practices and working conditions.", choices: null, isMandatory: true,parent:true },
-          { text: "Does the entity extend any life insurance or any compensatory package in the event of death of (A) Employees (Y/N) ", choices: null, isMandatory: true },
-          { text: "(B) Workers (Y/N)", choices: null, isMandatory: true },
-          { text: "Provide the measures undertaken by the entity to ensure that statutory dues have been deducted and deposited by the value chain partners", choices: null, isMandatory: true },
-          { text: "Provide the number of employees / workers having suffered high consequence work-related injury / ill-health / fatalities (as reported in Q11 of Essential Indicators above), who have been are rehabilitated and placed in suitable employment or whose family members have been placed in suitable employment:", choices: null, isMandatory: true },
-          { text: "Does the entity provide transition assistance programs to facilitate continued employability and the management of career endings resulting from retirement or termination of employment? (Yes/ No)", choices: null, isMandatory: true },
-          { text: "Details on assessment of value chain partners:", choices: null, isMandatory: true },
-          { text: "Provide details of any corrective actions taken or underway to address significant risks / concerns arising from assessments of health and safety practices and working conditions of value chain partners.", choices: null, isMandatory: true },
-          { text: "", choices: null, isMandatory: true },
+          { text: "Does the entity extend any life insurance or any compensatory package in the event of death of (A) Employees (Y/N) ", choices: null, isMandatory: true ,parent:true},
+          { text: "(B) Workers (Y/N)", choices: null, isMandatory: true ,parent:true},
+          { text: "Provide the measures undertaken by the entity to ensure that statutory dues have been deducted and deposited by the value chain partners", choices: null, isMandatory: true ,parent:true},
+          { text: "Provide the number of employees / workers having suffered high consequence work-related injury / ill-health / fatalities (as reported in Q11 of Essential Indicators above), who have been are rehabilitated and placed in suitable employment or whose family members have been placed in suitable employment:", choices: null, isMandatory: true ,parent:true
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "Category",
+              "Total no. of affected employees/ workers (FY 2024-25(Current Financial Year))",
+              "Total no. of affected employees/ workers (FY 2023-24(Previous Financial Year))",
+              "No. of employees/workers that are rehabilitated and placed in suitable employment or whose family members have been placed in suitable employment (FY 2024-25(Current Financial Year))",
+              "No. of employees/workers that are rehabilitated and placed in suitable employment or whose family members have been placed in suitable employment (FY 2023-24(Previous Financial Year))"
+
+            ],
+            rows:[
+              "Employees",
+              "Workers",
+            ]
+
+
+
+          },
+          { text: "Does the entity provide transition assistance programs to facilitate continued employability and the management of career endings resulting from retirement or termination of employment? (Yes/ No)", choices: null, isMandatory: true ,parent:true},
+          { text: "Details on assessment of value chain partners:", choices: null, isMandatory: true ,parent:true
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "Category",
+              "% of value chain partners (by value of business done with such partners) that were assessed",
+            ],
+            rows:[
+              "Health & Safety Practices",
+              "Working Conditions"
+            ]
+
+          },
+          { text: "Provide details of any corrective actions taken or underway to address significant risks / concerns arising from assessments of health and safety practices and working conditions of value chain partners.", choices: null, isMandatory: true ,parent:true},
 
         ],
       },
@@ -462,10 +648,30 @@ export const allCategories3 = [
         percentComplete: "0",
         question: [
           { text: "Describe the processes for identifying key stakeholder groups of the entity.", choices: null, isMandatory: true },
-          { text: "List stakeholder groups identified as key for your entity and the frequency of engagement with each stakeholder group.", choices: null, isMandatory: true },
-          { text: "Provide the processes for consultation between stakeholders and the Board on economic, environmental, and social topics or if consultation is delegated, how is feedback from such consultations provided to the Board.", choices: null, isMandatory: true },
-          { text: "Whether stakeholder consultation is used to support the identification and management of environmental, and social topics (Yes / No). If so, provide details of instances as to how the inputs received from stakeholders on these topics were incorporated into policies and activities of the entity", choices: null, isMandatory: true },
-          { text: "Provide details of instances of engagement with, and actions taken to, address the concerns of vulnerable/ marginalized stakeholder groups.", choices: null, isMandatory: true },
+          { text: "List stakeholder groups identified as key for your entity and the frequency of engagement with each stakeholder group.", choices: null, isMandatory: true
+            ,parent:true,
+            type:"table",
+            label:"",
+            columns:[
+              "Stakeholder Group",
+              "Whether identified as Vulnerable & Marginalized Group (Yes/No)",
+              "Channels of communication(Email, SMS, Newspaper, Pamphlets, Advertisement, Community Meetings, Notice Board, Website), Other",
+              "Frequency of engagement(Annually/ Half yearly/ Quarterly / others – please specify)",
+              "Purpose and scope of engagement including key topics and concerns raised during such engagement"
+
+            ],
+            rows:[
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+
+           },
+          { text: "Provide the processes for consultation between stakeholders and the Board on economic, environmental, and social topics or if consultation is delegated, how is feedback from such consultations provided to the Board.", choices: null, isMandatory: true ,parent:true},
+          { text: "Whether stakeholder consultation is used to support the identification and management of environmental, and social topics (Yes / No). If so, provide details of instances as to how the inputs received from stakeholders on these topics were incorporated into policies and activities of the entity", choices: null, isMandatory: true ,parent:true},
+          { text: "Provide details of instances of engagement with, and actions taken to, address the concerns of vulnerable/ marginalized stakeholder groups.", choices: null, isMandatory: true ,parent:true},
 
         ],
       },
@@ -483,25 +689,194 @@ export const allCategories3 = [
         questionsAnswer: "0/2",
         percentComplete: "0",
         question: [
-          { text: "Businesses should respect and promote human rights", choices: null, isMandatory: true },
-          { text: "Employees and workers who have been provided training on human rights issues and policy(ies) of the entity, in the following format:", choices: null, isMandatory: true },
-          { text: "Details of minimum wages paid to employees and workers, in the following format:", choices: null, isMandatory: true },
-          { text: "Details of remuneration/salary/wages", choices: null, isMandatory: true },
-          { text: "a. Median remuneration / wages:", choices: null, isMandatory: true },
-          { text: "Gross wages paid to females as % of total wages paid by the entity, in the following format:", choices: null, isMandatory: true },
-          { text: "Do you have a focal point (Individual/ Committee) responsible for addressing human rights impacts or issues caused or contributed to by the business? (Yes/ No)", choices: null, isMandatory: true },
-          { text: "Describe the internal mechanisms in place to redress grievances related to human rights issues.", choices: null, isMandatory: true },
-          { text: "Number of Complaints on the following made by employees and workers:", choices: null, isMandatory: true },
-          { text: "Complaints filed under the Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013, in the following format:", choices: null, isMandatory: true },
-          { text: "Mechanisms to prevent adverse consequences to the complainant in discrimination and harassment cases.", choices: null, isMandatory: true },
-          { text: "Do human rights requirements form part of your business agreements and contracts? (Yes/ No)", choices: null, isMandatory: true },
-          { text: "Assessments for the year:", choices: null, isMandatory: true },
-          { text: "Provide details of any corrective actions taken or underway to address significant risks / concerns arising from the assessments at Question 10 above.", choices: null, isMandatory: true },
-          { text: "Details of a business process being modified / introduced as a result of addressing human rights grievances/complaints.", choices: null, isMandatory: true },
-          { text: "Details of the scope and coverage of any Human rights due-diligence conducted", choices: null, isMandatory: true },
-          { text: "Is the premise/office of the entity accessible to differently abled visitors, as per the requirements of the Rights of Persons with Disabilities Act, 2016?", choices: null, isMandatory: true },
-          { text: "Details on assessment of value chain partners:", choices: null, isMandatory: true },
-          { text: "Provide details of any corrective actions taken or underway to address significant risks / concerns arising from the assessments at Question 4 above.", choices: null, isMandatory: true },
+          { text: "Employees and workers who have been provided training on human rights issues and policy(ies) of the entity, in the following format:", choices: null, isMandatory: true,parent:true
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "Category",
+              "FY 2024-25Current Financial Year (Total (A))",
+              "FY 2024-25Current Financial Year (No. of employees / workers covered (B))",
+              "FY 2024-25Current Financial Year (% (B / A))",
+              "FY 2023-24Previous Financial Year (Total (C))",
+              "FY 2023-24Previous Financial Year (No. of employees / workers covered (D))",
+              "FY 2023-24Previous Financial Year (% (D / C))"
+            ],
+            rows:[
+              "Employees (Permanent)",
+              "Employees (Other than permanent)",
+              "Employees (Total)",
+              "Workers (Permanent)",
+              "Workers (Other than permanent)",
+              "Workers (Total)",
+            ]
+
+           },
+          { text: "Details of minimum wages paid to employees and workers, in the following format:", choices: null, isMandatory: true,parent:true, 
+            type:"table",
+            label:"",
+            columns:[
+              "Category",
+              "Total (A)",
+              "Equal to Minimum Wage (No. (B))",
+              "Equal to Minimum Wage (% (B / A))",
+              "More than Minimum Wage (No. (C))",
+              "More than Minimum Wage (% (C / A))",
+              "Total (D)",
+              "Equal to Minimum Wage (No. (E))",
+              "Equal to Minimum Wage (% (E / D))",
+              "More than Minimum Wage (No. (F))",
+              "More than Minimum Wage (% (F / D))",
+            ],
+            rows:[
+              "Employees (Permanent)",
+              "Employees (Male)",
+              "Employees (Female)",
+              "Employees (Other then permanent)",
+              "Employees (Male)",
+              "Employees (Female)",
+              "Employees (Total)",
+              "Workers (Permanent)",
+              "Workers (Male)",
+              "Workers (Female)",
+              "Workers (Other then permanent)",
+              "Workers (Male)",
+              "Workers (Female)",
+              "Workers (Total"
+
+
+            ]
+
+          },
+          { text: "Details of remuneration/salary/wages", choices: null, isMandatory: true,isNone:true,parent:true},
+          { text: "Median remuneration / wages:", choices: null, isMandatory: true,parent:false 
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "Category",
+              "Male (Number)",
+              "Male (Median remuneration/ salary/ wages of respective category)",
+
+              "Female (Number)",
+              "Female (Median remuneration/salary/ wages of respective category)",
+            ],
+            rows:[
+              "Board of Directors (BoD)",
+              "Key Managerial Personnel",
+              "Employees other than BoD and KMP",
+              "Workers",
+            ]
+
+          },
+          { text: "Gross wages paid to females as % of total wages paid by the entity, in the following format:", choices: null, isMandatory: true ,parent:false
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "Category",
+              "FY 2024-25(Current Financial Year)",
+              "FY 2023-24(Previous Financial Year)"
+
+            ],
+            rows:[
+              "Gross wages paid to females as % of total wages",
+            ]
+
+          },
+          { text: "Do you have a focal point (Individual/ Committee) responsible for addressing human rights impacts or issues caused or contributed to by the business? (Yes/ No)", choices: null, isMandatory: true ,parent:true},
+          { text: "Describe the internal mechanisms in place to redress grievances related to human rights issues.", choices: null, isMandatory: true ,parent:true},
+          { text: "Number of Complaints on the following made by employees and workers:", choices: null, isMandatory: true ,
+            parent:true,
+            type:"table",
+            label:"",
+            columns:[
+              "Category",
+              "FY 2024-25Current Financial Year (Filed during the year)",
+              "FY 2024-25Current Financial Year (Pending resolution at the end of year)",
+              "FY 2024-25Current Financial Year (Remarks)",
+
+              "FY 2023-24Previous Financial Year (Filed during the year)",
+              "FY 2023-24Previous Financial Year (Pending resolution at the end of year)",
+              "FY 2023-24Previous Financial Year (Remarks)",
+
+            ],
+            rows:[
+              "Sexual Harassment",
+              "Discrimination at workplace",
+              "Child Labour",
+              "Forced Labour/Involuntary Labour",
+              "Wages",
+              "Other human rights related issues"
+            ]
+
+          },
+          { text: "Complaints filed under the Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013, in the following format:", choices: null, isMandatory: true ,parent:true
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "Category",
+              "FY 2024-25(Current Financial Year)",
+              "FY 2023-24(Previous Financial Year)"
+
+            ],
+            rows:[
+              "Total Complaints reported under Sexual Harassment on of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013 (POSH) ",
+              "Complaints on POSH as a % of female employees / workers ",
+              "Complaints on POSH upheld",
+            ]
+
+
+
+          },
+          { text: "Mechanisms to prevent adverse consequences to the complainant in discrimination and harassment cases.", choices: null, isMandatory: true ,parent:true},
+          { text: "Do human rights requirements form part of your business agreements and contracts? (Yes/ No)", choices: null, isMandatory: true ,parent:true},
+          { text: "Assessments for the year:", choices: null, isMandatory: true,parent:true
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "Category",
+              "% of your plants and offices that were assessed (by entity or statutory authorities or third parties)",
+
+            ],
+            rows:[
+              "Child labour",
+              "Forced/involuntary labour",
+              "Sexual harassment",
+              "Discrimination at workplace",
+              "Wages",
+              "Others – please specify",
+            ]
+
+
+
+           },
+          { text: "Provide details of any corrective actions taken or underway to address significant risks / concerns arising from the assessments at Question 10 above.", choices: null, isMandatory: true ,parent:true},
+          { text: "Details of a business process being modified / introduced as a result of addressing human rights grievances/complaints.", choices: null, isMandatory: true ,parent:true},
+          { text: "Details of the scope and coverage of any Human rights due-diligence conducted", choices: null, isMandatory: true ,parent:true},
+          { text: "Is the premise/office of the entity accessible to differently abled visitors, as per the requirements of the Rights of Persons with Disabilities Act, 2016?", choices: null, isMandatory: true,parent:true },
+          { text: "Details on assessment of value chain partners:", choices: null, isMandatory: true,parent:true
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "  ",
+              "% of value chain partners (by value of business done with such partners) that were assessed",
+
+            ],
+            rows:[
+              "Child labour",
+              "Forced/involuntary labour",
+              "Sexual harassment",
+              "Discrimination at workplace",
+              "Wages",
+              "Others – please specify"
+            ]
+ 
+           },
+          { text: "Provide details of any corrective actions taken or underway to address significant risks / concerns arising from the assessments at Question 4 above.", choices: null, isMandatory: true ,parent:true},
 
         ],
       },
@@ -519,28 +894,308 @@ export const allCategories3 = [
         questionsAnswer: "0/0",
         percentComplete: "0",
         question: [
-          { text: "Businesses should respect and make efforts to protect and restore the environment", choices: null, isMandatory: true },
-          { text: "Details of total energy consumption (in Joules or multiples) and energy intensity, in the following format:", choices: null, isMandatory: true },
-          { text: "Does the entity have any sites / facilities identified as designated consumers (DCs) under the Performance, Achieve and Trade (PAT) Scheme of the Government of India? (Y/N) If yes, disclose whether targets set under the PAT scheme have been achieved. In case targets have not been achieved, provide the remedial action taken, if any.", choices: null, isMandatory: true },
-          { text: "Provide details of the following disclosures related to water, in the following format:", choices: null, isMandatory: true },
-          { text: "Provide the following details related to water discharged:", choices: null, isMandatory: true },
-          { text: "Has the entity implemented a mechanism for Zero Liquid Discharge? If yes, provide details of its coverage and implementation", choices: null, isMandatory: true },
-          { text: "Please provide details of air emissions (other than GHG emissions) by the entity, in the following format:", choices: null, isMandatory: true },
-          { text: "Provide details of greenhouse gas emissions (Scope 1 and Scope 2 emissions) & its intensity, in the following format:", choices: null, isMandatory: true },
-          { text: "Does the entity have any project related to reducing Green House Gas emission? If Yes, then provide details.", choices: null, isMandatory: true },
-          { text: "Provide details related to waste management by the entity, in the following format:", choices: null, isMandatory: true },
-          { text: "Briefly describe the waste management practices adopted in your establishments. Describe the strategy adopted by your company to reduce usage of hazardous and toxic chemicals in your products and processes and the practices adopted to manage such wastes.", choices: null, isMandatory: true },
-          { text: "If the entity has operations/offices in/around ecologically sensitive areas (such as national parks, wildlife sanctuaries, biosphere reserves, wetlands, biodiversity hotspots, forests, coastal regulation zones etc.) where environmental approvals / clearances are required, please specify details in the following format:", choices: null, isMandatory: true },
-          { text: "Details of environmental impact assessments of projects undertaken by the entity based on applicable laws, in the current financial year:", choices: null, isMandatory: true },
-          { text: "Is the entity compliant with the applicable environmental law/ regulations/ guidelines in India; such as the Water (Prevention and Control of Pollution) Act, Air (Prevention and Control of Pollution) Act, Environment protection act and rules thereunder (Y/N). If not, provide details of all such non-compliances, in the following format:", choices: null, isMandatory: true },
-          { text: "Water withdrawal, consumption and discharge in areas of water stress (in kilolitres):", choices: null, isMandatory: true },
-          { text: "Please provide details of total Scope 3 emissions & its intensity, in the following format", choices: null, isMandatory: true },
-          { text: "With respect to the ecologically sensitive areas reported at Question 10 of Essential Indicators above, provide details of significant direct & indirect impact of the entity on biodiversity in such areas along-with prevention and remediation activities", choices: null, isMandatory: true },
-          { text: "If the entity has undertaken any specific initiatives or used innovative technology or solutions to improve resource efficiency, or reduce impact due to emissions / effluent discharge / waste generated, please provide details of the same as well as outcome of such initiatives, as per the following format:", choices: null, isMandatory: true },
-          { text: "Does the entity have a business continuity and disaster management plan? Give details in 100 words/ web link.", choices: null, isMandatory: true },
-          { text: "Disclose any significant adverse impact to the environment, arising from the value chain of the entity. What mitigation or adaptation measures have been taken by the entity in this regard.", choices: null, isMandatory: true },
-          { text: "Percentage of value chain partners (by value of business done with such partners) that were assessed for environmental impacts.", choices: null, isMandatory: true },
-          { text: "How many Green Credits have been generated or procured:", choices: null, isMandatory: true },
+          { text: "Details of total energy consumption (in Joules or multiples) and energy intensity, in the following format:", choices: null, isMandatory: true ,parent:true
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "Parameter",
+              "FY 2024-25(Current Financial Year)",
+              "FY 2023-24(Previous Financial Year)"
+
+            ],
+            rows:[
+              "From renewable sources",
+              "Total electricity consumption (A)",
+              "Total fuel consumption (B)",
+              "Energy consumption through other sources (C)",
+              "Total energy consumed from renewable sources (A+B+C)",
+              "From non-renewable sources",
+              "Total electricity consumption (D)",
+              "Total fuel consumption (E)",
+              "Energy consumption through other sources (F)",
+              "Total energy consumed from non-renewable sources (D+E+F)",
+              "Total energy consumed (A+B+C+D+E+F)",
+              "Energy intensity per rupee of turnover(Total energy consumed / Revenue from operations)",
+              "Energy intensity per rupee of turnover adjusted for Purchasing Power Parity (PPP)(Total energy consumed / Revenue from operations adjusted for PPP)",
+              "Energy intensity in terms of physical output",
+              "Energy intensity (optional) – the relevant metric may be selected by the entity",
+              "Note: Indicate if any independent assessment/ evaluation/assurance has been carried out by an external agency? (Y/N) If yes, name of the external agency.",
+            ]
+
+
+
+          },
+          { text: "Does the entity have any sites / facilities identified as designated consumers (DCs) under the Performance, Achieve and Trade (PAT) Scheme of the Government of India? (Y/N) If yes, disclose whether targets set under the PAT scheme have been achieved. In case targets have not been achieved, provide the remedial action taken, if any.", choices: null, isMandatory: true,parent:true },
+          { text: "Provide details of the following disclosures related to water, in the following format:", choices: null, isMandatory: true ,parent:true
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "S. No.",
+              "Parameter",
+              "FY 2024-25(Current Financial Year)",
+              "FY 2023-24(Previous Financial Year)"
+
+            ],
+            rows:[
+              "Surface water",
+              "Groundwater",
+              "Third party water",
+              "Seawater / desalinated water",
+              "Other",
+              "Total volume of water withdrawal (in kilolitres) (i + ii + iii + iv + v)",
+              "Total volume of water consumption (in kilolitres)",
+              "Water intensity per rupee of turnover (Water consumed / REVENUE FROM OPERATIONS)",
+              "Water intensity per rupee of turnover adjusted for Purchasing Power Parity (PPP)(Total water consumption / Revenue from operations adjusted for PPP)",
+              "Water intensity in terms of physical output",
+              "Water intensity (optional) – the relevant metric may be selected by the entity",
+              "Note: Indicate if any independent assessment/ evaluation/assurance has been carried out by an external agency? (Y/N) If yes, name of the external agency."
+            ]
+
+
+          },
+          { text: "Provide the following details related to water discharged:", choices: null, isMandatory: true ,parent:true
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "Parameter",
+              "FY 2024-25(Current Financial Year)",
+              "FY 2023-24(Previous Financial Year)"
+
+            ],
+            rows:[
+              "Water discharge by destination and level of treatment (in kilolitres)",
+              "(i) To Surface water",
+              "'- No treatment",
+              "'- With treatment – please specify level of treatment",
+              "(ii) To Groundwater",
+              "'- No treatment",
+              "'- With treatment – please specify level of treatment",
+              "(iii) To Seawater",
+              "'- No treatment",
+              "'- With treatment – please specify level of treatment",
+              "(iv) Sent to third-parties ",
+              "'- No treatment",
+              "'- With treatment – please specify level of treatment",
+              "(v) Others",
+              "'- No treatment",
+              "'- With treatment – please specify level of treatment",
+              "Total water discharged (in kilolitres) ",
+              
+            ]
+
+          },
+          { text: "Has the entity implemented a mechanism for Zero Liquid Discharge? If yes, provide details of its coverage and implementation", choices: null, isMandatory: true,parent:true},
+          { text: "Please provide details of air emissions (other than GHG emissions) by the entity, in the following format:", choices: null, isMandatory: true ,parent:true
+            ,type:"table",
+            label:"",
+            columns:[
+              "Parameter",
+              "Please specify unit",
+              "FY 2024-25(Current Financial Year)",
+              "FY 2023-24(Previous Financial Year)",
+              ""
+
+            ],
+            rows:[
+              "NOx",
+              "SOx",
+              "Particulate Matter (PM)",
+              "Persistent organic pollutants (POP)",
+              "Volatile organic compounds (VOC)",
+              "Hazardous air pollutants (HAP)",
+              "Others – please specify",
+              "Note: Indicate if any independent assessment/ evaluation/assurance has been carried out by an external agency? (Y/N) If yes, name of the external agency"
+            ]
+
+
+          },
+          { text: "Provide details of greenhouse gas emissions (Scope 1 and Scope 2 emissions) & its intensity, in the following format:", choices: null, isMandatory: true ,parent:true
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "Parameter",
+              "Unit",
+              "FY 2023-24(Current Financial Year)",
+              "FY 2022-23(Previous Financial Year)"
+            ],
+            rows:[
+              "Total Scope 1 emissions (Break-up of the GHG into CO2, CH4, N2O, HFCs, PFCs, SF6, NF3, if available)",
+              "Total Scope 2 emissions(Break-up of the GHG into CO2, CH4, N2O, HFCs, PFCs, SF6, NF3, if available)",
+              "Total Scope 1 and Scope 2 emission intensity per rupee of turnover(Total Scope 1 and Scope 2 GHG emissions / Revenue from operations)",
+              "Total Scope 1 and Scope 2 emission intensity per rupee of turnover adjusted for Purchasing Power Parity (PPP)(Total Scope 1 and Scope 2 GHG emissions / Revenue from operations adjusted for PPP)",
+              "Total Scope 1 and Scope 2 emission intensity in terms of physical output",
+              "Total Scope 1 and Scope 2 emission intensity (optional) – the relevant metric may be selected by the entity",
+              "Note: Indicate if any independent assessment/ evaluation/assurance has been carried out by an external agency? (Y/N) If yes, name of the external agency.",
+            ]
+
+
+
+          },
+          { text: "Does the entity have any project related to reducing Green House Gas emission? If Yes, then provide details.", choices: null, isMandatory: true ,parent:true},
+          { text: "Provide details related to waste management by the entity, in the following format:", choices: null, isMandatory: true ,parent:true
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "Parameter",
+              "FY 2024-25(Current Financial Year)",
+              "FY 2023-24(Previous Financial Year)",
+
+            ],
+            rows:[
+              "Total Waste generated (in metric tonnes)",
+              "Plastic waste (A)",
+              "E-waste (B)",
+              "Bio-medical waste ©",
+              "Construction and demolition waste (D)",
+              "Battery waste (E)",
+              "Radioactive waste (F)",
+              "Other Hazardous waste. Please specify, if any. (G)",
+              "Other Non-hazardous waste generated (H). Please specify, if any.(Break-up by composition i.e. by materials relevant to the sector)",
+              "Total (A+B + C + D + E + F + G + H)",
+              "Waste intensity per rupee of turnover(Total waste generated / Revenue from operations)",
+              "Waste intensity per rupee of turnover adjusted for Purchasing Power Parity (PPP)(Total waste generated / Revenue from operations adjusted for PPP)",
+              "Waste intensity in terms of physical output",
+              "Waste intensity (optional) – the relevant metric may be selected by the entity",
+              "For each category of waste generated, total waste recovered through recycling, re-using or other recovery operations (in metric tonnes)",
+              "Category of waste",
+              "Recycled",
+              "Reused",
+              "Other recovery operations",
+              "Total",
+              "For each category of waste generated, total waste disposed by nature of disposal method (in metric tonnes)",
+              "Category of waste",
+              "Incineration",
+              "Landfill",
+              "Other disposal methods",
+              "Total",
+              "Note: Indicate if any independent assessment/ evaluation/assurance has been carried out by an external agency? (Y/N) If yes, name of the external agency.",
+            ]
+
+
+
+          },
+          { text: "Briefly describe the waste management practices adopted in your establishments. Describe the strategy adopted by your company to reduce usage of hazardous and toxic chemicals in your products and processes and the practices adopted to manage such wastes.", choices: null, isMandatory: true ,parent:true},
+          { text: "If the entity has operations/offices in/around ecologically sensitive areas (such as national parks, wildlife sanctuaries, biosphere reserves, wetlands, biodiversity hotspots, forests, coastal regulation zones etc.) where environmental approvals / clearances are required, please specify details in the following format:", choices: null, isMandatory: true ,parent:true
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "S. No.",
+              "Location of operations/ offices",
+              "Type of operations",
+              "Whether the conditions of environmental approval / clearance are being complied with? (Y/N)If no, the reasons thereof and corrective action taken, if any."
+
+            ],
+            rows:[
+              "",
+              "",
+              "",
+            ]
+
+
+
+          },
+          { text: "Details of environmental impact assessments of projects undertaken by the entity based on applicable laws, in the current financial year:", choices: null, isMandatory: true ,parent:true
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "S. No.",
+              "Name and brief details of project",
+              "EIA Notification No.",
+              "Date",
+              "Whether conducted by independent external agency (Yes / No)",
+              "Results communicated in public domain(Yes / No)",
+              "Relevant Web link"
+
+            ],
+            rows:[
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+
+
+
+          },
+          { text: "Is the entity compliant with the applicable environmental law/ regulations/ guidelines in India; such as the Water (Prevention and Control of Pollution) Act, Air (Prevention and Control of Pollution) Act, Environment protection act and rules thereunder (Y/N). If not, provide details of all such non-compliances, in the following format:", choices: null, isMandatory: true ,parent:true
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "S. No.",
+              "Specify the law / regulation / guidelines which was not complied with",
+              "Provide details of the non-compliance",
+              "Any fines / penalties / action taken by regulatory agencies such as pollution control boards or by courts",
+              "Corrective action taken, if any"
+
+            ],
+            rows:[
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+
+
+
+
+          },
+          { text: "Water withdrawal, consumption and discharge in areas of water stress (in kilolitres):", choices: null, isMandatory: true ,parent:true
+            
+
+
+          },
+          { text: "Please provide details of total Scope 3 emissions & its intensity, in the following format", choices: null, isMandatory: true ,parent:true
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "Parameter",
+              "Unit (Metric tonnes of CO2 equivalent)",
+              "FY 2024-25(Current Financial Year)",
+              "FY 2023-24(Previous Financial Year)"
+
+            ],
+            rows:[
+              "Total Scope 3 emissions(Break-up of the GHG into CO2, CH4, N2O, HFCs, PFCs, SF6, NF3, if available)",
+              "Total Scope 3 emissions per rupee of turnover",
+              "Total Scope 3 emission intensity (optional) – the relevant metric may be selected by the entity",
+            ],
+
+          },
+          {text:"Note: Indicate if any independent assessment/ evaluation/assurance has been carried out by an external agency? (Y/N) If yes, name of the external agency", choices: null, isMandatory: true ,parent:false},
+          { text: "With respect to the ecologically sensitive areas reported at Question 10 of Essential Indicators above, provide details of significant direct & indirect impact of the entity on biodiversity in such areas along-with prevention and remediation activities", choices: null, isMandatory: true ,parent:true},
+          { text: "If the entity has undertaken any specific initiatives or used innovative technology or solutions to improve resource efficiency, or reduce impact due to emissions / effluent discharge / waste generated, please provide details of the same as well as outcome of such initiatives, as per the following format:", choices: null, isMandatory: true ,parent:true 
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "S. No.",
+              "Initiative undertaken",
+              "Details of the initiative (Web-link, if any, may be provided along-with summary)",
+              "Outcome of the initiative"
+            ],
+            rows:[
+              "",
+              ""
+            ]
+          },
+          { text: "Does the entity have a business continuity and disaster management plan? Give details in 100 words/ web link.", choices: null, isMandatory: true ,parent:true},
+          { text: "Disclose any significant adverse impact to the environment, arising from the value chain of the entity. What mitigation or adaptation measures have been taken by the entity in this regard.", choices: null, isMandatory: true ,parent:true},
+          { text: "Percentage of value chain partners (by value of business done with such partners) that were assessed for environmental impacts.", choices: null, isMandatory: true ,parent:true},
+          { text: "How many Green Credits have been generated or procured:", choices: null, isMandatory: true ,parent:true },
+          { text: "By the listed entity", choices: null, isMandatory: true ,parent:false },
+          { text: "By the top ten (in terms of value of purchases and sales,respectively) value chain partners”", choices: null, isMandatory: true ,parent:false },
+
           
         ],
       },
@@ -558,10 +1213,93 @@ export const allCategories3 = [
         questionsAnswer: "0/0",
         percentComplete: "0",
         question: [
-          { text: "Number of affiliations with trade and industry chambers/ associations.", choices: null, isMandatory: true },
-          { text: "List the top 10 trade and industry chambers/ associations (determined based on the total members of such body) the entity is a member of/ affiliated to, in the following format", choices: null, isMandatory: true },
-          { text: "Provide details of corrective action taken or underway on any issues related to anti-competitive conduct by the entity, based on adverse orders from regulatory authorities.", choices: null, isMandatory: true },
-          { text: "Details of public policy positions advocated by the entity:", choices: null, isMandatory: true },
+          {text:"Trade and industry",choices:null,isMandatory:true,isNone:true,parent:true},
+          { text: "Number of affiliations with trade and industry chambers/ associations.", choices: null, isMandatory: true,parent:false
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "",
+              "",
+              ""
+
+            ],
+            rows:[
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+
+           },
+          { text: "List the top 10 trade and industry chambers/ associations (determined based on the total members of such body) the entity is a member of/ affiliated to, in the following format", choices: null, isMandatory: true,parent:false 
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "Name of the trade and industry chambers/ associations",
+              "Reach of trade and industry chambers/ associations(State/ National)",
+              ""
+
+            ],
+            rows:[
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+
+
+
+          },
+          { text: "Provide details of corrective action taken or underway on any issues related to anti-competitive conduct by the entity, based on adverse orders from regulatory authorities.", choices: null, isMandatory: true 
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "S. No.",
+              "Name of authority",
+              "Brief of the case",
+              "Corrective action taken"
+
+            ],
+            rows:[
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+
+
+
+          },
+          { text: "Details of public policy positions advocated by the entity:", choices: null, isMandatory: true 
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "S. No.",
+              "Public policy advocated",
+              "Method resorted for such advocacy",
+              "Whether information available in public domain? (Yes/No)",
+              "Frequency of Review by Board(Annually/ Half yearly/ Quarterly / Others – please specify)",
+              "Web Link, if available"
+
+            ],
+            rows:[
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+
+
+
+          },
         ],
       },
     ]
@@ -578,17 +1316,195 @@ export const allCategories3 = [
         questionsAnswer: "0/0",
         percentComplete: "0",
         question: [
-          { text: "Details of Social Impact Assessments (SIA) of projects undertaken by the entity based on applicable laws, in the current financial year.", choices: null, isMandatory: true },
-          { text: "Provide information on project(s) for which ongoing Rehabilitation and Resettlement (R&R) is being undertaken by your entity, in the following format", choices: null, isMandatory: true },
+          { text: "Details of Social Impact Assessments (SIA) of projects undertaken by the entity based on applicable laws, in the current financial year.", choices: null, isMandatory: true
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "S. No.",
+              "Name and brief details of project",
+              "SIA Notification No.",
+              "Date of notification",
+              "Whether conducted by independent external agency (Yes / No)",
+              "Results communicated in public domain(Yes / No)",
+              "Relevant Web link"
+
+            ],
+            rows:[
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+
+
+
+           },
+          { text: "Provide information on project(s) for which ongoing Rehabilitation and Resettlement (R&R) is being undertaken by your entity, in the following format", choices: null, isMandatory: true 
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "S. No.",
+              "Name of Project for which R&R is ongoing",
+              "State",
+              "District",
+              "No. of Project Affected Families (PAFs)",
+              "% of PAFs covered by R&R",
+              "Amounts paid to PAFs in the FY (In INR)"
+
+            ],
+            rows:[
+              "",
+              "",
+            ]
+
+          },
           { text: "Describe the mechanisms to receive and redress grievances of the community.", choices: null, isMandatory: true },
-          { text: "Percentage of input material (inputs to total inputs by value) sourced from suppliers", choices: null, isMandatory: true },
-          { text: "Job creation in smaller towns – Disclose wages paid to persons employed (including employees or workers employed on a permanent or non-permanent / on contract basis) in the following locations, as % of total wage cost", choices: null, isMandatory: true },
-          { text: "Provide details of actions taken to mitigate any negative social impacts identified in the Social Impact Assessments (Reference: Question 1 of Essential Indicators above):", choices: null, isMandatory: true },
-          { text: "Provide the following information on CSR projects undertaken by your entity in designated aspirational districts as identified by government bodies", choices: null, isMandatory: true },
-          { text: "Do you have a preferential procurement policy where you give preference to purchase from suppliers comprising marginalized /vulnerable groups? (Yes/No)", choices: null, isMandatory: true },
-          { text: "Details of the benefits derived and shared from the intellectual properties owned or acquired by your entity (in the current financial year), based on traditional knowledge:", choices: null, isMandatory: true },
-          { text: "Details of corrective actions taken or underway, based on any adverse order in intellectual property related disputes wherein usage of traditional knowledge is involved.", choices: null, isMandatory: true },
-          { text: "Details of beneficiaries of CSR Projects:", choices: null, isMandatory: true },
+          { text: "Percentage of input material (inputs to total inputs by value) sourced from suppliers", choices: null, isMandatory: true 
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "Category",
+              "FY 2024-25Current Financial Year",
+              "FY 2023-24Previous Financial Year"
+
+            ],
+            rows:[
+              "Directly sourced from MSMEs/ small producers",
+              "Directly from within India",
+            ]
+          },
+          { text: "Job creation in smaller towns – Disclose wages paid to persons employed (including employees or workers employed on a permanent or non-permanent / on contract basis) in the following locations, as % of total wage cost", choices: null, isMandatory: true 
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "Location",
+              "FY 2024-25Current Financial Year",
+              "FY 2023-24Previous Financial Year"
+
+            ],
+            rows:[
+              "Rural",
+              "Semi-urban",
+              "Urban",
+              "Metropolitan",
+              "(Categorized as per RBI Classification System - rural / semi-urban / urban / metropolitan)"
+            ]
+
+
+
+          },
+          { text: "Provide details of actions taken to mitigate any negative social impacts identified in the Social Impact Assessments (Reference: Question 1 of Essential Indicators above):", choices: null, isMandatory: true 
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "S. No.",
+              "Details of negative social impact identified",
+              "Corrective action taken"
+
+            ],
+            rows:[
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+
+
+
+          },
+          { text: "Provide the following information on CSR projects undertaken by your entity in designated aspirational districts as identified by government bodies", choices: null, isMandatory: true
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "S. No.",
+              "State",
+              "Aspirational District",
+              "Amount spent (In INR)"
+
+            ],
+            rows:[
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+
+
+
+           },
+          { text: "Do you have a preferential procurement policy where you give preference to purchase from suppliers comprising marginalized /vulnerable groups? (Yes/No)", choices: null, isMandatory: true,parent:true },
+          { text: "From which marginalized /vulnerable groups do you procure?", choices: null, isMandatory: true ,parent:false},
+          { text: "What percentage of total procurement (by value) does it constitute?", choices: null, isMandatory: true ,parent:false},
+
+          { text: "Details of the benefits derived and shared from the intellectual properties owned or acquired by your entity (in the current financial year), based on traditional knowledge:", choices: null, isMandatory: true,parent:true
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "S. No.",
+              "Intellectual Property based on traditional knowledge",
+              "Owned/ Acquired (Yes/No)",
+              "Benefit shared(Yes / No)",
+              "Basis of calculating benefit share",
+
+            ],
+            rows:[
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+
+
+
+           },
+          { text: "Details of corrective actions taken or underway, based on any adverse order in intellectual property related disputes wherein usage of traditional knowledge is involved.", choices: null, isMandatory: true ,parent:true
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "S. No.",
+              "Name of authority",
+              "Brief of the Case",
+              "Corrective action taken"
+
+            ],
+            rows:[
+              "",
+            ]
+
+
+
+          },
+          { text: "Details of beneficiaries of CSR Projects:", choices: null, isMandatory: true ,parent:true
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              "S. No.",
+              "CSR Project",
+              "No. of persons benefitted from CSR Projects",
+              "% of beneficiaries from vulnerable and marginalized groups"
+            ],
+            rows:[
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+
+          },
 
         ],
       },
@@ -606,18 +1522,83 @@ export const allCategories3 = [
         questionsAnswer: "0/0",
         percentComplete: "0",
         question: [
-          { text: "Describe the mechanisms in place to receive and respond to consumer complaints and feedback.", choices: null, isMandatory: true },
-          { text: "Turnover of products and/ services as a percentage of turnover from all products/service that carry information about:", choices: null, isMandatory: true },
-          { text: "Number of consumer complaints in respect of the following:", choices: null, isMandatory: true },
-          { text: "Details of instances of product recalls on account of safety issues:", choices: null, isMandatory: true },
-          { text: "Does the entity have a framework/policy on cyber security and risks related to data privacy? (Yes/No). If available, provide weblink of the policy.", choices: null, isMandatory: true },
-          { text: "Provide details of any corrective actions taken or underway on issues relating to advertising, and delivery of essential services; cyber security and data privacy of customers; re-occurrence of instances of product recalls; penalty / action taken by regulatory authorities on safety of products / services.", choices: null, isMandatory: true },
-          { text: "Provide the following information relating to data breaches:", choices: null, isMandatory: true },
-          { text: "Channels / platforms where information on products and services of the entity can be accessed (provide web link, if available).", choices: null, isMandatory: true },
-          { text: "Steps taken to inform and educate consumers about safe and responsible usage of products and/or services.", choices: null, isMandatory: true },
-          { text: "Mechanisms in place to inform consumers of any risk of disruption/discontinuation of essential services.", choices: null, isMandatory: true },
-          { text: "Does the entity display product information on the product over and above what is mandated as per local laws? (Yes/No/Not Applicable) If yes, provide details in brief. Did your entity carry out any survey with regard to consumer satisfaction relating to the major products / services of the entity, significant locations of operation of the entity or the entity as a whole? (Yes/No)", choices: null, isMandatory: true },
-          { text: "Provide the following information relating to data breaches:", choices: null, isMandatory: true },
+          { text: "Describe the mechanisms in place to receive and respond to consumer complaints and feedback.", choices: null, isMandatory: true,parent:true,},
+          { text: "Turnover of products and/ services as a percentage of turnover from all products/service that carry information about:", choices: null, isMandatory: true
+                        
+            ,type:"table",
+            label:"",
+            columns:[
+              " ",
+              "As a percentage to total turnover",
+
+            ],
+            rows:[
+              "Environmental and social parameters relevant to the product",
+              "Safe and responsible usage",
+              "Recycling and/or safe disposal",
+            ]
+
+           },
+          { text: "Number of consumer complaints in respect of the following:", choices: null, isMandatory: true ,parent:true           ,
+            type:"table",
+            label:"",
+            columns:[
+              "Category",
+              "FY 2024-25(Current Financial Year)-(Received during the year)",
+              "FY 2024-25(Current Financial Year)-(Pending resolution at end of year)",
+              "FY 2024-25(Current Financial Year)-(Remarks)",
+
+              "FY 2023-24(Previous Financial Year)-(Received during the year)",
+              "FY 2023-24(Previous Financial Year)-(Pending resolution at end of year)",
+              "FY 2023-24(Previous Financial Year)-(Remarks)"
+
+            ],
+            rows:[
+              "Data privacy",
+              "Advertising",
+              "Cyber-security",
+              "Delivery of essential services",
+              "Restrictive Trade Practices",
+              "Unfair Trade Practices",
+              "Other"
+            ]
+
+
+},
+          { text: "Details of instances of product recalls on account of safety issues:", choices: null, isMandatory: true,parent:true
+            ,
+            type:"table",
+            label:"",
+            columns:[
+              " ",
+              "Number",
+              "Reasons for recall",
+
+            ],
+            rows:[
+              "Voluntary recalls",
+              "Forced recalls",
+            ]
+
+
+
+           },
+          { text: "Does the entity have a framework/policy on cyber security and risks related to data privacy? (Yes/No). If available, provide weblink of the policy.", choices: null, isMandatory: true ,parent:true},
+          { text: "Provide details of any corrective actions taken or underway on issues relating to advertising, and delivery of essential services; cyber security and data privacy of customers; re-occurrence of instances of product recalls; penalty / action taken by regulatory authorities on safety of products / services.", choices: null, isMandatory: true,parent:true },
+          { text: "Provide the following information relating to data breaches:", choices: null, isMandatory: true ,parent:true},
+        
+          {text:"Number of instances of data breaches ",choices:null,isMandatory:true,parent:false},
+          {text:"Percentage of data breaches involving personally identifiable information of customers",choices:null,isMandatory:true,parent:false},
+          {text:"Impact, if any, of the data breaches",choices:null,isMandatory:true,parent:false},
+
+          { text: "Channels / platforms where information on products and services of the entity can be accessed (provide web link, if available).", choices: null, isMandatory: true ,parent:true},
+          { text: "Steps taken to inform and educate consumers about safe and responsible usage of products and/or services.", choices: null, isMandatory: true ,parent:true},
+          { text: "Mechanisms in place to inform consumers of any risk of disruption/discontinuation of essential services.", choices: null, isMandatory: true ,parent:true},
+          { text: "Does the entity display product information on the product over and above what is mandated as per local laws? (Yes/No/Not Applicable) If yes, provide details in brief. Did your entity carry out any survey with regard to consumer satisfaction relating to the major products / services of the entity, significant locations of operation of the entity or the entity as a whole? (Yes/No)", choices: null, isMandatory: true ,parent:true},
+          { text: "Provide the following information relating to data breaches:", choices: null, isMandatory: true ,parent:true},
+          {text:"Number of instances of data breaches along-with impact",choices:null,isMandatory:true,parent:false},
+          {text:"Percentage of data breaches involving personally identifiable information of customers",choices:null,isMandatory:true,parent:false},
+
 
         ],
       },

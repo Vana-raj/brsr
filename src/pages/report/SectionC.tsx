@@ -7,9 +7,18 @@ import { allCategories3 } from "../../utils/Options3";
 import { primaryColor } from '../../style/ColorCode';
 import SelectDropDown from "../../component/select/SelectDropDown";
 import TableInput from "../../component/InputTable/InputTable";
-// import "./Questionnaire.scss";
 import "../questionnaire/Questionnaire.scss"
+
+
 const { TextArea } = Input;
+
+interface QuestionSection {
+    key: string;
+    quesSection: string;
+    questionsAnswer: string;
+    percentComplete: string;
+    question: any[];
+}
 
 const SectionC: React.FC = () => {
     const [activeCategory, setActiveCategory] = useState<string>("details");
@@ -253,19 +262,23 @@ const SectionC: React.FC = () => {
         key: string,
         question: {
             text: string; choices: string[] | null; isMandatory: boolean, type: string, columns: [], rows: [],
-            parent?: boolean; label: string;
+            parent?: boolean;
+            isNone?: boolean;
         },
         questionIndex: number,
-        questionsArray: any[],
-        label:string
+        questionsArray: any[]
     ) => {
 
         const getQuestionNumber = () => {
             if (question.parent) {
-                // Parent question - use numerical numbering
-                return `${questionIndex + 1}.`;
+                let parentCount = 0;
+                for (let i = 0; i <= questionIndex; i++) {
+                    if (questionsArray[i].parent) {
+                        parentCount++;
+                    }
+                }
+                return `${parentCount}.`;
             } else {
-                // Child question - find nearest parent for alphabetical numbering
                 let lastParentIndex = -1;
                 for (let i = questionIndex - 1; i >= 0; i--) {
                     if (questionsArray[i].parent) {
@@ -277,18 +290,18 @@ const SectionC: React.FC = () => {
                 if (lastParentIndex === -1) return `${questionIndex + 1}.`;
 
                 const subQuestionIndex = questionIndex - lastParentIndex - 1;
-                const alphabet = String.fromCharCode(97 + subQuestionIndex);
+                const alphabet = String.fromCharCode(97 + subQuestionIndex); // 97 = 'a'
                 return `${alphabet}.`;
             }
         };
-        const questionKey = `${section}-${key}-${questionIndex}`;
+
+        const questionKey = `${section} -${key} -${questionIndex} `;
         const isFileUploaded = !!uploadedFiles[questionKey];
         const isAnswered = !!answers[questionKey];
         if (isViewMode && !isAnswered) {
             return null;
         }
         if (question?.type === 'table') {
-            console.log(label,'label')
             return (
                 <div>
                     <div className="question-text">
@@ -314,8 +327,8 @@ const SectionC: React.FC = () => {
                     </div>
                     <TableInput
                         columns={question?.columns}
-header={label}
                         rows={question?.rows}
+                        header={"S.No"}
                         value={answers[questionKey] || []}
                         onChange={(value: any) =>
                             handleInputChange(section, key, value, questionIndex)
@@ -346,88 +359,75 @@ header={label}
                         </button>
                     </Tooltip>
                 </div>
-                {question.choices === null ? (
-                    <div className="area-upload">
-                        <TextArea
-                            rows={3}
-                            placeholder="Type your answer here"
-                            size="small"
-                            onChange={(e) =>
-                                handleInputChange(section, key, e.target.value, questionIndex)
-                            }
-                            value={answers[questionKey] || ""}
-                        />
-
-                        <div className="upload-section">
-                            {!isFileUploaded && (
-                                <Tooltip title="Upload">
-                                    <Upload
-                                        showUploadList={false}
-                                        customRequest={(options) => {
-                                            const { onSuccess } = options;
-                                            setTimeout(() => onSuccess?.("ok"), 0);
-                                        }}
-                                        onChange={(info) => handleFileUpload(info, questionKey)}
-                                    >
-                                        <FileAddTwoTone className="upload-icon" />
-                                    </Upload>
-                                </Tooltip>
+                {question.isNone ? null : (
+                    question.choices === null ? (
+                        <div className="area-upload">
+                            <TextArea
+                                rows={3}
+                                placeholder="Type your answer here"
+                                size="small"
+                                onChange={(e) => handleInputChange(section, key, e.target.value, questionIndex)}
+                                value={answers[questionKey] || ""}
+                            />
+                            <div className="upload-section">
+                                {!isFileUploaded && (
+                                    <Tooltip title="Upload">
+                                        <Upload
+                                            showUploadList={false}
+                                            customRequest={(options) => {
+                                                const { onSuccess } = options;
+                                                setTimeout(() => onSuccess?.("ok"), 0);
+                                            }}
+                                            onChange={(info) => handleFileUpload(info, questionKey)}
+                                        >
+                                            <FileAddTwoTone className="upload-icon" />
+                                        </Upload>
+                                    </Tooltip>
+                                )}
+                            </div>
+                            {isFileUploaded && (
+                                <div className="uploaded-file-info">
+                                    <div className="uploaded-file-details">
+                                        File: {uploadedFiles[questionKey]?.name} ({uploadedFiles[questionKey]?.size})
+                                        <button
+                                            onClick={() => handleRemoveFile(questionKey)}
+                                            className="remove-file-icon"
+                                        >
+                                            <DeleteOutlined />
+                                        </button>
+                                    </div>
+                                </div>
                             )}
                         </div>
-                        {isFileUploaded && (
-                            <div className="uploaded-file-info">
-                                <div className="uploaded-file-details">
-                                    File: {uploadedFiles[questionKey]?.name} ({uploadedFiles[questionKey]?.size})
-                                    <button
-                                        onClick={() => handleRemoveFile(questionKey)}
-                                        className="remove-file-icon"
-                                    >
-                                        <DeleteOutlined />
-                                    </button>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                ) : question.choices.length > 4 ? (
-                    <SelectDropDown
-                        mode="multiple"
-                        options={question.choices.map((choice) => ({
-                            label: choice,
-                            value: choice,
-                        }))}
-                        placeholder="Select options"
-                        value={answers[`${section}-${key}-${questionIndex}`] || []}
-                        onChange={(value: any) =>
-                            handleInputChange(section, key, value, questionIndex)
-                        }
-                    />
-                ) : (
-                    <div className="question-options">
-                        {question.choices.map((option, idx) => (
-                            <label key={`${option}-${idx}`}>
-                                <Space direction="vertical">
-                                    <Radio
-                                        value={option}
-                                        checked={
-                                            answers[`${section}-${key}-${questionIndex}`] ===
-                                            option
-                                        }
-                                        onChange={() =>
-                                            handleInputChange(
-                                                section,
-                                                key,
-                                                option,
-                                                questionIndex
-                                            )
-                                        }
-                                        className="radio-qbutton"
-                                    >
-                                        {option}
-                                    </Radio>
-                                </Space>
-                            </label>
-                        ))}
-                    </div>
+                    ) : question.choices.length > 4 ? (
+                        <SelectDropDown
+                            mode="multiple"
+                            options={question.choices.map((choice) => ({
+                                label: choice,
+                                value: choice,
+                            }))}
+                            placeholder="Select options"
+                            value={answers[`${section}-${key}-${questionIndex}`] || []}
+                            onChange={(value) => handleInputChange(section, key, value, questionIndex)}
+                        />
+                    ) : (
+                        <div className="question-options">
+                            {question.choices.map((option, idx) => (
+                                <label key={`${option}-${idx}`}>
+                                    <Space direction="vertical">
+                                        <Radio
+                                            value={option}
+                                            checked={answers[`${section}-${key}-${questionIndex}`] === option}
+                                            onChange={() => handleInputChange(section, key, option, questionIndex)}
+                                            className="radio-qbutton"
+                                        >
+                                            {option}
+                                        </Radio>
+                                    </Space>
+                                </label>
+                            ))}
+                        </div>
+                    )
                 )}
 
             </div>
@@ -441,7 +441,7 @@ header={label}
         let nonEmptyCount = 0;
         if (currentCategory) {
             currentCategory.questions[currentSectionIndex]?.question.forEach((_, questionIndex) => {
-                const questionKey = `${activeCategory}-${questions.key}-${questionIndex}`;
+                const questionKey = `${activeCategory} -${questions.key} -${questionIndex} `;
                 if (answers[questionKey]) {
                     nonEmptyCount += 1;
                 }
@@ -475,7 +475,7 @@ header={label}
                                 <List.Item
                                     key={category.key}
                                     onClick={() => handleCategoryClick(category.key)}
-                                    className={`category-item ${activeCategory === category.key ? "active" : ""}`}
+                                    className={`category-item ${activeCategory === category.key ? "active" : ""} `}
                                 >
                                     {category.section}
                                 </List.Item>
@@ -497,22 +497,25 @@ header={label}
                                     percent={progressPercent}
                                     width={50}
                                     strokeColor={primaryColor}
-                                    format={() => `${countNonEmptyAnswers()}/${singleSectionTextArea}`}
+                                    format={() => `${countNonEmptyAnswers()}/${singleSectionTextArea}`
+                                    }
                                 />
 
-                            </div>
+                            </div >
                         }
                         bordered
                     >
-                        {questions?.question.map((q: any, idx: any) => {
-                            return (
-                                <div key={`${questions.key}-${idx}`}>
-                                    {renderQuestionInput(activeCategory, questions.key, q, idx, questions.question, q.label)}
-                                </div>
-                            );
-                        })}
+                        {
+                            questions?.question.map((q: any, idx: any) => {
+                                return (
+                                    <div key={`${questions.key}-${idx}`}>
+                                        {renderQuestionInput(activeCategory, questions.key, q, idx, questions.question)}
+                                    </div>
+                                );
+                            })
+                        }
 
-                        <div className="subbutton">
+                        < div className="subbutton" >
                             <div className="common-submit-btn">
                                 <CustomButton
                                     label="Submit Answers"
@@ -520,10 +523,10 @@ header={label}
                                     onClick={(item: any) => handleSubmitAll(item)}
                                 />
                             </div>
-                        </div>
+                        </div >
 
-                    </Card>
-                </div>
+                    </Card >
+                </div >
                 {/* )
                 } */}
             </div >

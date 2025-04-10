@@ -8,6 +8,8 @@ import { primaryColor } from '../../style/ColorCode';
 import SelectDropDown from "../../component/select/SelectDropDown";
 import TableInput from "../../component/InputTable/InputTable";
 import "./Questionnaire.scss";
+// import "../questionnaire/Questionnaire.scss"
+
 
 const { TextArea } = Input;
 
