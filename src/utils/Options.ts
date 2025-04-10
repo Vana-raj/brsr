@@ -57,7 +57,7 @@ export const allCategories = [
     questions: [
       {
         key: "details",
-        quesSection: "Details of the listed entity",
+        quesSection:"Details of the listed entity",
         questionsAnswer: "0/9",
         percentComplete: "0",
         question: [
