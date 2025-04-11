@@ -206,7 +206,21 @@ const SectionC: React.FC = () => {
             const updatedAnswers = { ...prevAnswers };
             Object.keys(updatedAnswers).forEach((key) => {
                 if (!submittedAnswers[key]) {
-                    updatedAnswers[key] = "";
+                    const value = updatedAnswers[key];
+
+                    if (typeof value === 'string') {
+                        if (value.trim() === "") {
+                            delete updatedAnswers[key];
+                        }
+                    } else if (Array.isArray(value)) {
+                        if (value.length === 0) {
+                            delete updatedAnswers[key];
+                        }
+                    } else {
+                        if (!value) {
+                            delete updatedAnswers[key];
+                        }
+                    }
                 }
             });
             return updatedAnswers;
@@ -295,7 +309,7 @@ const SectionC: React.FC = () => {
             }
         };
 
-        const questionKey = `${section} -${key} -${questionIndex} `;
+        const questionKey = `${section}-${key}-${questionIndex}`;
         const isFileUploaded = !!uploadedFiles[questionKey];
         const isAnswered = !!answers[questionKey];
         if (isViewMode && !isAnswered) {
@@ -325,15 +339,17 @@ const SectionC: React.FC = () => {
                             </button>
                         </Tooltip>
                     </div>
-                    <TableInput
-                        columns={question?.columns}
-                        rows={question?.rows}
-                        header={"S.No"}
-                        value={answers[questionKey] || []}
-                        onChange={(value: any) =>
-                            handleInputChange(section, key, value, questionIndex)
-                        }
-                    />
+                    <div className="table-input-container">
+                        <TableInput
+                            columns={question?.columns}
+                            rows={question?.rows}
+                            header={"S.No"}
+                            value={answers[questionKey] || []}
+                            onChange={(value: any) =>
+                                handleInputChange(section, key, value, questionIndex)
+                            }
+                        />
+                    </div>
                 </div>
             );
         }
@@ -441,7 +457,7 @@ const SectionC: React.FC = () => {
         let nonEmptyCount = 0;
         if (currentCategory) {
             currentCategory.questions[currentSectionIndex]?.question.forEach((_, questionIndex) => {
-                const questionKey = `${activeCategory} -${questions.key} -${questionIndex} `;
+                const questionKey = `${activeCategory}-${questions.key}-${questionIndex} `;
                 if (answers[questionKey]) {
                     nonEmptyCount += 1;
                 }

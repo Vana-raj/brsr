@@ -57,7 +57,7 @@ export const allCategories = [
     questions: [
       {
         key: "details",
-        quesSection:"Details of the listed entity",
+        quesSection: "Details of the listed entity",
         questionsAnswer: "0/9",
         percentComplete: "0",
         question: [
@@ -287,9 +287,13 @@ export const allCategories = [
         percentComplete: "0",
         question: [
           {
-            text: "Whether CSR is applicable as per section 135 of Companies Act, 2013: (Yes/No)", choices: ["Yes", "No"], isMandatory: true,
+            text: "CSR Details", choices: ["Yes", "No"], isMandatory: true,
             parent: true,
             isNone: true
+          },
+          {
+            text: "Whether CSR is applicable as per section 135 of Companies Act, 2013: (Yes/No)", choices: ["Yes", "No"], isMandatory: true,
+            parent: false,
           },
           {
             text: "Turnover (in Rs.)", choices: null, isMandatory: true,

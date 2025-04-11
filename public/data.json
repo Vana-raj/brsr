@@ -3,32 +3,32 @@
     "type": "user",
     "data": [
       {
-        "name": "Active Suppliers",
+        "name": "Environmental",
         "value": "232",
         "icon": "UserOutlined"
       },
       {
-        "name": "Low Rated Suppliers",
+        "name": "Social",
         "value": "35",
         "icon": "SettingOutlined"
       },
       {
-        "name": "High Rated Suppliers",
+        "name": "Governance",
         "value": "194",
         "icon": "CheckCircleOutlined"
       },
       {
-        "name": "Suppliers at Risk",
+        "name": "Energy Consumption",
         "value": "14",
         "icon": "UserOutlined"
       },
       {
-        "name": "Audits Completed",
+        "name": "Waste Management",
         "value": "202",
         "icon": "SettingOutlined"
       },
       {
-        "name": "On Time Delivery",
+        "name": "Diversity ratios",
         "value": "30",
         "icon": "CheckCircleOutlined"
       }
@@ -576,6 +576,59 @@
         "emissions": "300,000",
         "percentage": "84",
         "mitigation": "Enhance recycling programs"
+      }
+    ]
+  },
+  {
+    "supplier": [
+      {
+        "name": "Sales revenue",
+        "created_date": "27 Feb,2025",
+        "period": "FY 2024 -2026",
+        "progress": 17,
+        "status": "Save"
+      },
+      {
+        "name": "Pre-tax profit",
+        "created_date": "29 Feb,2025",
+        "period": "FY 2023 -2026",
+        "progress": 90,
+        "status": "Save"
+      },
+      {
+        "name": "Profit after tax",
+        "created_date": "02 Feb,2025",
+        "period": "FY 2025 -2026",
+        "progress": 62,
+        "status": "Draft"
+      },
+      {
+        "name": "Total assets",
+        "created_date": "11 Mar,2025",
+        "period": "FY 2024 -2025",
+        "progress": 99,
+        "status": "Save"
+      },
+      {
+        "name": "Current assets",
+        "created_date": "07 May,2025",
+        "period": "FY 2025 -2026",
+        "progress": 59,
+        "status": "Save"
+      },
+      {
+        "name": "Total short term liabilities",
+        "created_date": "27 Nov,2025",
+        "period": "FY 2020 -2025",
+        "progress": 99,
+        "status": "Draft"
+      },
+      {
+        "name": "Assets less liabilities",
+        "created_date": "27 Feb,2025",
+        "period": "FY 2022 -2025",
+        "progress": 7,
+        "status": "Draft"
       }
     ]
   }

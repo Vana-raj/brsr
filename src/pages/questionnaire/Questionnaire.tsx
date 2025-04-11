@@ -310,7 +310,7 @@ const Questionnaire: React.FC = () => {
             }
         };
 
-        const questionKey = `${section} -${key} -${questionIndex} `;
+        const questionKey = `${section}-${key}-${questionIndex}`;
         const isFileUploaded = !!uploadedFiles[questionKey];
         const isAnswered = !!answers[questionKey];
         if (isViewMode && !isAnswered) {
@@ -458,7 +458,7 @@ const Questionnaire: React.FC = () => {
         let nonEmptyCount = 0;
         if (currentCategory) {
             currentCategory.questions[currentSectionIndex]?.question.forEach((_, questionIndex) => {
-                const questionKey = `${activeCategory} -${questions.key} -${questionIndex} `;
+                const questionKey = `${activeCategory}-${questions.key}-${questionIndex} `;
                 if (answers[questionKey]) {
                     nonEmptyCount += 1;
                 }

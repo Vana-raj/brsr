@@ -53,13 +53,13 @@ export const data = {
 export const allCategories3 = [
   {
     key: "details",
-    section: "Ethical, Transparent, and Accountable Business Governance",
+    section: "Principle 1",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
       {
         key: "Business",
-        quesSection: "Businesses should conduct and govern themselves with integrity, and in a manner that is Ethical, Transparent and Accountable",
+        quesSection: "Principle 1 : Businesses should conduct and govern themselves with integrity, and in a manner that is Ethical, Transparent and Accountable",
         questionsAnswer: "0/9",
         percentComplete: "0",
         question: [
@@ -68,22 +68,36 @@ export const allCategories3 = [
             type: "table",
             label: "Percentage",
             columns: [
+              "Segment",
               "Total number of training and awareness programmes held",
               "Topics / principles covered under the training and its impact",
               "% of persons in respective category covered by the awareness programmes"
-
             ],
-            rows: [
-              "Segment",
-              "Board of Directors",
-              "Key Managerial Personnel",
-              "Employees other than BoD and KMPs",
-              "Workers"
-            ]
-
           },
 
-          { text: "Details of fines / penalties /punishment/ award/ compounding fees/ settlement amount paid in proceedings (by the entity or by directors / KMPs) with regulators/ law enforcement agencies/ judicial institutions, in the financial year, in the following format (Note: the entity shall make disclosures on the basis of materiality as specified in Regulation 30 of SEBI (Listing Obligations and Disclosure Obligations) Regulations, 2015 and as disclosed on the entity’s website", choices: null, isMandatory: true },
+          { text: "Details of fines / penalties /punishment/ award/ compounding fees/ settlement amount paid in proceedings (by the entity or by directors / KMPs) with regulators/ law enforcement agencies/ judicial institutions, in the financial year, in the following format (Note: the entity shall make disclosures on the basis of materiality as specified in Regulation 30 of SEBI (Listing Obligations and Disclosure Obligations) Regulations, 2015 and as disclosed on the entity’s website", choices: null, isMandatory: true, parent: true },
+          {
+            text: "Monetary", choices: null, isMandatory: true, parent: false,
+            type: "table",
+            label: "Percentage",
+            columns: [
+              "Category",
+              "NGRBC Principle",
+              "Name of the regulatory/ enforcement agencies/ judicial institutions",
+              "Amount (In INR)",
+            ],
+          },
+          {
+            text: "Non-Monetary", choices: null, isMandatory: true, parent: false,
+            type: "table",
+            label: "Percentage",
+            columns: [
+              "Category",
+              "NGRBC Principle",
+              "Name of the regulatory/ enforcement agencies/ judicial institutions",
+              "Brief of the Case",
+            ],
+          },
           {
             text: "Of the instances disclosed in Question 2 above, details of the Appeal/ Revision preferred in cases where monetary or non-monetary action has been appealed.", choices: null, isMandatory: true, parent: true,
             type: "table",
@@ -100,17 +114,17 @@ export const allCategories3 = [
             text: "Number of Directors/KMPs/employees/workers against whom disciplinary action was taken by any law enforcement agency for the charges of bribery/ corruption", choices: null, isMandatory: true, parent: true,
             type: "table",
             columns: [
-              "Category",
-              "FY 2024-25(Current Financial Year)",
-              "FY 2023-24(Previous Financial Year)"
+              "Directors FY 2024-25(Current Financial Year)",
+              "KMPs FY 2024-25(Current Financial Year)",
+              "Employees FY 2024-25(Current Financial Year)",
+              "Workers FY 2024-25(Current Financial Year)",
 
+              "Directors FY 2023-24(Previous Financial Year)",
+              "KMPs FY 2023-24(Previous Financial Year)",
+              "Employees FY 2023-24(Previous Financial Year)",
+              "Workers FY 2023-24(Previous Financial Year)"
             ],
-            rows: [
-              "Directors",
-              "KMPs",
-              "Employees",
-              "Workers",
-            ]
+
 
           },
           {
@@ -142,7 +156,7 @@ export const allCategories3 = [
             ]
           },
 
-          { text: "Open-ness of business", choices: null, isMandatory: true, parent: true },
+          { text: "Open-ness of business", choices: null, isMandatory: true, parent: true, isNone: true },
           {
             text: "Provide details of concentration of purchases and sales with trading houses, dealers, and related parties along-with loans and advances & investments, with related parties, in the following format:", choices: null, isMandatory: true, parent: false,
             type: "table",
@@ -182,13 +196,13 @@ export const allCategories3 = [
   },
   {
     key: "product_service",
-    section: "Sustainable & Safe Business Practices",
+    section: "Principle 2",
     questionsAnswer: "3/3",
     percentComplete: "90%",
     questions: [
       {
         key: "sustainable and safe",
-        quesSection: "Businesses should provide goods and services in a manner that is sustainable and safe",
+        quesSection: "Principle 2 : Businesses should provide goods and services in a manner that is sustainable and safe",
         questionsAnswer: "0/4",
         percentComplete: "0",
         question: [
@@ -202,12 +216,8 @@ export const allCategories3 = [
               "FY 2024-25(Current Financial Year)",
               "FY 2023-24(Previous Financial Year)",
               "Details of improvements in environmental and social impacts",
-
             ],
-            rows: [
-              "R&D",
-              "CapEx",
-            ]
+
           },
 
           { text: "Does the entity have procedures in place for sustainable sourcing? (Yes/No)", choices: null, isMandatory: true, parent: true },
@@ -219,6 +229,7 @@ export const allCategories3 = [
             type: "table",
             label: "",
             columns: [
+              "S.No",
               "NIC Code",
               "Name of Product /Service",
               "% of total Turnover contributed",
@@ -227,17 +238,6 @@ export const allCategories3 = [
               "Results communicated in public domain (Yes/No). If yes, provide the web-link."
 
             ],
-            rows: [
-              "",
-              "",
-              "",
-              "",
-              ""
-            ]
-
-
-
-
           },
           {
             text: "If there are any significant social or environmental concerns and/or risks arising from production or disposal of your products / services, as identified in the Life Cycle Perspective / Assessments (LCA) or through any other means, briefly describe the same along-with action taken to mitigate the same.", choices: null, isMandatory: false, parent: true,
@@ -248,12 +248,6 @@ export const allCategories3 = [
               "Description of the risk / concern",
               "Action Taken"
             ],
-            rows: [
-              "",
-              "",
-              "",
-              "",
-            ]
 
           },
           {
@@ -262,15 +256,9 @@ export const allCategories3 = [
             label: "",
             columns: [
               "Indicate input material",
-              "Recycled or re-used input material to total material",
+              "Recycled or re-used input material to total material(FY 2024-25(Current Financial Year))",
+              "Recycled or re-used input material to total material(FY 2023-24(Previous Financial Year))",
             ],
-            rows: [
-              "",
-              "",
-              "",
-              "",
-            ]
-
           },
           {
             text: "Of the products and packaging reclaimed at end of life of products, amount (in metric tonnes) reused, recycled, and safely disposed, as per the following format:", choices: null, isMandatory: false, parent: true,
@@ -278,20 +266,15 @@ export const allCategories3 = [
             label: "",
             columns: [
               "Category",
-              "Reused",
-              "Recycled",
-              "Safely Disposed",
-              "Reused",
-              "Recycled",
-              "Safely Disposed"
+              "Reused FY 2024-25",
+              "Recycled FY 2024-25",
+              "Safely Disposed FY 2024-25",
+              "Reused FY 2022-23",
+              "Recycled FY 2022-23",
+              "Safely Disposed FY 2022-23"
 
             ],
-            rows: [
-              "Plastics (including packaging)",
-              "E-waste",
-              "Hazardous waste",
-              "Other waste"
-            ]
+
 
           },
           {
@@ -314,13 +297,13 @@ export const allCategories3 = [
   },
   {
     key: "value chains",
-    section: "Employee Well-Being in Value Chains",
+    section: "Principle 3",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
       {
         key: "value chains",
-        quesSection: "Businesses should respect and promote the well-being of all employees, including those in their value chains",
+        quesSection: "Principle 3 : Businesses should respect and promote the well-being of all employees, including those in their value chains",
         questionsAnswer: "0/3",
         percentComplete: "0",
         question: [
@@ -668,13 +651,13 @@ export const allCategories3 = [
   },
   {
     key: "operations",
-    section: "Stakeholder-Focused Business Accountability",
+    section: "Principle 4",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
       {
         key: "stakeholders",
-        quesSection: "Businesses should respect the interests of and be responsive to all its stakeholders",
+        quesSection: "Principle 4 : Businesses should respect the interests of and be responsive to all its stakeholders",
         questionsAnswer: "0/3",
         percentComplete: "0",
         question: [
@@ -708,16 +691,17 @@ export const allCategories3 = [
         ],
       },
     ]
-  }, {
+  },
+  {
     key: "rights",
-    section: "Human Rights in Business",
+    section: "Principle 5",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
 
       {
         key: "rights-innovation",
-        quesSection: "Businesses should respect and promote human rights",
+        quesSection: "Principle 5 : Businesses should respect and promote human rights",
         questionsAnswer: "0/2",
         percentComplete: "0",
         question: [
@@ -923,13 +907,13 @@ export const allCategories3 = [
   },
   {
     key: "environment",
-    section: "Environmental Stewardship in Business",
+    section: "Principle 6",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
       {
         key: "environment",
-        quesSection: "Businesses should respect and make efforts to protect and restore the environment",
+        quesSection: "Principle 6 : Businesses should respect and make efforts to protect and restore the environment",
         questionsAnswer: "0/0",
         percentComplete: "0",
         question: [
@@ -1250,13 +1234,13 @@ export const allCategories3 = [
   },
   {
     key: "transparent",
-    section: "Responsible Policy Advocacy",
+    section: "Principle 7",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
       {
         key: "transparent",
-        quesSection: "Businesses, when engaging in influencing public and regulatory policy, should do so in a manner that is responsible and transparent",
+        quesSection: "Principle 7 : Businesses, when engaging in influencing public and regulatory policy, should do so in a manner that is responsible and transparent",
         questionsAnswer: "0/0",
         percentComplete: "0",
         question: [
@@ -1357,13 +1341,13 @@ export const allCategories3 = [
   },
   {
     key: "development",
-    section: "Inclusive Economic Growth",
+    section: "Principle 8",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
       {
         key: "development",
-        quesSection: "Businesses should promote inclusive growth and equitable development",
+        quesSection: "Principle 8 : Businesses should promote inclusive growth and equitable development",
         questionsAnswer: "0/0",
         percentComplete: "0",
         question: [
@@ -1581,13 +1565,13 @@ export const allCategories3 = [
   },
   {
     key: " responsible manner",
-    section: "Responsible Consumer Engagement",
+    section: "Principle 9",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
       {
         key: " responsible manner",
-        quesSection: "Businesses should engage with and provide value to their consumers in a responsible manner",
+        quesSection: "Principle 9 : Businesses should engage with and provide value to their consumers in a responsible manner",
         questionsAnswer: "0/0",
         percentComplete: "0",
         question: [

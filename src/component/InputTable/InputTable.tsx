@@ -4,7 +4,7 @@ import CustomButton from "../buttons/CustomButton";
 import InputField from "../inputfield/CustomInputField";
 import './InputTable.scss'
 
-const TableInput = ({ columns, rows, value, header, onChange }: any) => {
+const TableInput = ({ columns, rows, value, header, onChange, className = "custom-table" }: any) => {
     const [data, setData] = useState(() => {
         if (rows) {
             return rows.map((row: string) => ({ particulars: row }));
@@ -34,7 +34,7 @@ const TableInput = ({ columns, rows, value, header, onChange }: any) => {
 
     return (
         <div className="table-input-container">
-            <table className="custom-table">
+            <table className={className}>
                 <thead>
                     <tr>
                         {rows && <th>{header}</th>}

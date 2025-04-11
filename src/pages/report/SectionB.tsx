@@ -10,6 +10,7 @@ import TableInput from "../../component/InputTable/InputTable";
 import "../questionnaire/Questionnaire.scss"
 const { TextArea } = Input;
 
+
 const SectionB: React.FC = () => {
     const [activeCategory, setActiveCategory] = useState<string>("details");
     const [showQuestions, setShowQuestions] = useState<boolean>(false);
@@ -196,13 +197,26 @@ const SectionB: React.FC = () => {
             const updatedAnswers = { ...prevAnswers };
             Object.keys(updatedAnswers).forEach((key) => {
                 if (!submittedAnswers[key]) {
-                    updatedAnswers[key] = "";
+                    const value = updatedAnswers[key];
+
+                    if (typeof value === 'string') {
+                        if (value.trim() === "") {
+                            delete updatedAnswers[key];
+                        }
+                    } else if (Array.isArray(value)) {
+                        if (value.length === 0) {
+                            delete updatedAnswers[key];
+                        }
+                    } else {
+                        if (!value) {
+                            delete updatedAnswers[key];
+                        }
+                    }
                 }
             });
             return updatedAnswers;
         });
     };
-
     const handleCategoryClick = (categoryKey: string) => {
         confirmNavigation(() => {
 
@@ -316,15 +330,18 @@ const SectionB: React.FC = () => {
                             </button>
                         </Tooltip>
                     </div>
-                    <TableInput
-                        columns={question?.columns}
-                        header={label}
-                        rows={question?.rows}
-                        value={answers[questionKey] || []}
-                        onChange={(value: any) =>
-                            handleInputChange(section, key, value, questionIndex)
-                        }
-                    />
+                    <div className="table-input-container-b">
+                        <TableInput
+                            columns={question?.columns}
+                            header={label}
+                            className="cus-table"
+                            rows={question?.rows}
+                            value={answers[questionKey] || []}
+                            onChange={(value: any) =>
+                                handleInputChange(section, key, value, questionIndex)
+                            }
+                        />
+                    </div>
                 </div>
             );
         }
@@ -350,7 +367,7 @@ const SectionB: React.FC = () => {
                         </button>
                     </Tooltip>
                 </div>
-                
+
                 {question.isNone ? null : (
                     question.choices === null ? (
                         <div className="area-upload">

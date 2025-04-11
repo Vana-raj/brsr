@@ -3,7 +3,7 @@ import * as XLSX from 'xlsx';
 import { Progress, Tooltip } from 'antd'
 import Loader from '../../component/loader/Loader'
 import { ArrowLeftOutlined, DeleteOutlined, EditOutlined, PlusOutlined, UnorderedListOutlined } from '@ant-design/icons'
-import { bgColor } from '../../style/ColorCode';
+import { bgColor, primaryColor } from '../../style/ColorCode';
 import CustomTable from '../../component/table/CustomTable'
 import CustomButton from '../../component/buttons/CustomButton'
 import './Report.scss'
@@ -43,7 +43,7 @@ const Report: React.FC = () => {
           percent={progress}
           status={progress >= 100 ? 'success' : 'active'}
           showInfo={true}
-          strokeColor={progress >= 100 ? '#52c41a' : '#1890ff'}
+          strokeColor={progress >= 100 ? '#52c41a' : primaryColor}
           strokeWidth={15}
         />
       )

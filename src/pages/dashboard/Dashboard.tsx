@@ -1,376 +1,283 @@
-import React, { useEffect, useState } from "react";
-import { useCallback } from "react";
-import { useAppSelector } from "../../features/RDXHook";
-import CustomCard from "../../component/cards/CustomCard";
-import MeterCard from "../../component/cards/MeterCard";
-import CustomTable from "../../component/table/CustomTable";
+import React from "react";
+import { Row, Col, Card, Progress } from "antd";
+import { Line, Doughnut, Radar } from "react-chartjs-2";
 import {
-  AuditsIcon,
-  DeliveryIcon,
-  SuppliersIcon,
-  ThumbsDownIcon,
-  ThumbsUpIcon,
-  WarningIcon,
-} from "../../utils/CardIcons";
-import { useNavigate } from "react-router-dom";
-import CustomModal from "../../component/popup/CustomModel";
-import { DeleteOutlined, EditOutlined, UnorderedListOutlined } from "@ant-design/icons";
-import { Form, Switch, Tooltip } from "antd";
-import Loader from "../../component/loader/Loader";
-import EditRow from "./EditRow";
-import CustomButton from "../../component/buttons/CustomButton";
-import { fetchSupplierListData } from "../../features/action/SupplierAction";
-import { setSelectedRecord, setSuppliers } from "../../features/slices/SupplierSlice";
-import { useDispatch } from "react-redux";
-import { bgColor } from "../../style/ColorCode";
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  ArcElement,
+  RadialLinearScale,
+  Filler,
+  Tooltip,
+  Legend,
+} from "chart.js";
 import "./Dashboard.scss";
+import { primaryColor } from "../../style/ColorCode";
 
-const Dashboard: React.FC = () => {
-  const suppliers = useAppSelector((state) => state.suppliers?.data);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  ArcElement,
+  RadialLinearScale,
+  Filler,
+  Tooltip,
+  Legend
+);
 
-  const dispatch = useDispatch();
-  const [form] = Form.useForm();
-
-  const showModal = () => setIsTrue(true);
-  const hideModal = () => setIsTrue(false);
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [selectedValue, setSelectedValue] = useState<string>("This Month");
-  const [rowType, setRowType] = useState<string>('')
-  const [compliantPercentage, setCompliantPercentage] = useState<number>(0);
-  const [nonCompliantPercentage, setNonCompliantPercentage] = useState<number>(
-    0
-  );
-  const [isTrue, setIsTrue] = useState(false)
-  const [singleDeleteData, setSingleDeleteData] = useState<string | any>(null)
-  const [visibleRow, setVisibleRow] = useState<string | null>(null);
-  const handleDropdownChange = (value: string) => {
-    setSelectedValue(value);
-  };
-
-  const handleRowClick = (id: string, record: any) => {
-    navigate(`/supplier/${id}/overview`);
-    localStorage.setItem("record", JSON.stringify(record));
-    dispatch(setSelectedRecord(record));
-
-  };
-  const handleDetails = (id: string, record: any) => {
-    navigate(`/supplier/${id}/overview`);
-    localStorage.setItem("record", JSON.stringify(record));
-    dispatch(setSelectedRecord(record));
-
-  }
-
-  const handleMenuClick = (rowKey: string) => {
-    setVisibleRow(visibleRow === rowKey ? null : rowKey);
-  };
-
-  const handleEdit = (row: any, p0: string) => {
-    setRowType(p0)
-    setSingleDeleteData(row)
-    showModal()
-  };
-  const handleStatus = (row: any, p0: string) => {
-    setRowType(p0)
-    setSingleDeleteData(row)
-    showModal()
-  };
-
-  const handleDelete = (row: any, p0: string) => {
-    setRowType(p0)
-    setSingleDeleteData(row)
-    showModal()
-  };
-
-  const columns = [
-    {
-      title: "Suppliers",
-      dataIndex: "supplier",
-      key: "supplier",
-      sorter: (a: any, b: any) => a.supplier.localeCompare(b.supplier),
-      render: (text: string, record: any) => (
-        <span
-          className="supplier-name"
-          onClick={() => handleRowClick(record.key, record)}
-          role="button"
-        >
-          {text}
-        </span>
-      ),
-    },
-    {
-      title: "Industry",
-      dataIndex: "industry",
-      key: "industry",
-      sorter: (a: any, b: any) => a.industry.localeCompare(b.industry),
-    },
-    {
-      title: "Category",
-      dataIndex: "category",
-      key: "category",
-      sorter: (a: any, b: any) => a.industry.localeCompare(b.industry),
-    },
-    {
-      title: "Risk Score",
-      dataIndex: "riskScore",
-      key: "riskScore",
-      sorter: (a: any, b: any) => a.riskScore - b.riskScore,
-      render: (score: number) => (
-        <span
-          className={
-            score > 70 ? "risk-high" : score > 40 ? "risk-medium" : "risk-low"
-          }
-        >
-          {score}
-        </span>
-      ),
-    },
-    {
-      title: "Risk Level",
-      dataIndex: "riskLevel",
-      key: "riskLevel",
-      sorter: (a: any, b: any) => a.riskLevel.localeCompare(b.riskLevel),
-      render: (level: any) => (
-        <span
-          className={
-            level === "Low"
-              ? "risk-high"
-              : level === "Medium"
-                ? "risk-medium"
-                : level === "High"
-                  ? "risk-low"
-                  : ""
-          }
-        >
-          {level}
-        </span>
-      ),
-    },
-    {
-      title: "Compliance",
-      dataIndex: "compliance",
-      key: "compliance",
-      sorter: (a: any, b: any) => a.compliance.localeCompare(b.compliance),
-      render: (level: any) => (
-        <span
-          className={
-            level === "Compliant"
-              ? "risk-high"
-              : level === "Non-Compliant"
-                ? "risk-low"
-                : ""
-          }
-        >
-          {level}
-        </span>
-      ),
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      sorter: (a: any, b: any) => {
-        const statusA = a.status ? String(a.status) : '';
-        const statusB = b.status ? String(b.status) : '';
-        return statusA.localeCompare(statusB);
+const Dashboard = () => {
+  const radarData = {
+    labels: ["P1", "P2", "P3", "P4", "P8", "P9"],
+    datasets: [
+      {
+        label: "Radar im",
+        data: [65, 59, 90, 81, 56, 55],
+        backgroundColor: "rgba(74, 144, 226, 0.2)",
+        borderColor: primaryColor,
+        pointBackgroundColor: primaryColor,
       },
-      render: (_: any, record: any) => (
-        <Switch
-          checked={!record?.status}
-          size="small"
-          onClick={() => handleStatus(record, "status")}
-        />
-      ),
+      {
+        label: "Eggrevt consumit",
+        data: [28, 48, 40, 19, 96, 27],
+        backgroundColor: "rgba(160, 196, 255, 0.2)",
+        borderColor: "#a0c4ff",
+        pointBackgroundColor: "#a0c4ff",
+      },
+    ],
+  };
+
+  const doughnutData = {
+    labels: ["Women Employees", "Other"],
+    datasets: [
+      {
+        data: [35, 65],
+        backgroundColor: [primaryColor, "#e5e5e5"],
+        borderWidth: 0,
+      },
+    ],
+  };
+
+  const centerTextPlugin = {
+    id: "centerTextPlugin",
+    beforeDraw: function (chart: any) {
+      const { width, height, ctx } = chart;
+      ctx.restore();
+
+      const fontSize = (height / 100).toFixed(2);
+      ctx.font = `${fontSize}em sans-serif`;
+      ctx.textBaseline = "middle";
+
+      const text = "35%";
+      const textX = Math.round((width - ctx.measureText(text).width) / 2);
+      const textY = height / 2;
+
+      ctx.fillStyle = primaryColor;
+      ctx.fillText(text, textX, textY);
+      ctx.save();
     },
-    {
-      title: "Actions",
-      key: "actions",
-      render: (index: number, record: any) => (
-        <Tooltip
-          color={bgColor}
-          placement="leftBottom"
-          className="custom-tooltip"
-          title={
-            <div className="menu-options">
-              <div className="menu-item" role="button" onClick={() => handleDetails(record.key, record)}>
-                <UnorderedListOutlined className="list-icon" />
-                <div>View details</div>
-              </div>
-              <div className="menu-item" role="button" onClick={() => handleEdit(record, "edit")}>
-                <EditOutlined className="edit-icon" />
-                <div>Edit item</div>
-              </div>
-              <div className="menu-item" role="button" onClick={() => handleDelete(record, "delete")}>
-                <DeleteOutlined className="delete-icon" />
-                <div>Delete item</div>
-              </div>
-            </div>
-          }>
-
-          <div className="action-menu">
-            <span
-              className="three-dot-menu"
-              onClick={() => handleMenuClick(record.key)}
-            >
-              •••
-            </span>
-          </div>
-        </Tooltip>
-      ),
-    },
-  ];
-
-  const handleOk = async () => {
-    switch (rowType) {
-      case "delete":
-        console.log("Deleting:", singleDeleteData?.supplier);
-        break;
-      case "edit":
-        form.validateFields()
-          .then(values => {
-            const newUser: any = { key: String(suppliers.length + 1), ...values };
-            setSuppliers([...suppliers, newUser]);
-          })
-          .catch(error => {
-            console.log('errorr')
-          })
-        console.log("Editing:", singleDeleteData?.supplier);
-        break;
-      case "status":
-        console.log("Changing Status for:", singleDeleteData?.supplier);
-        break;
-      default:
-        break;
-    }
-    hideModal();
   };
 
 
-  const navigate = useNavigate();
-
-
-  const calculateCompliancePercentages = useCallback(() => {
-    const total = suppliers.length;
-    const compliantCount = suppliers.filter(
-      (row: any) => row.compliance === "Compliant"
-    ).length;
-    const nonCompliantCount = suppliers.filter(
-      (row: any) => row.compliance === "Non-Compliant"
-    ).length;
-
-    const compliantPct = Math.round((compliantCount / total) * 100);
-    const nonCompliantPct = Math.round((nonCompliantCount / total) * 100);
-
-    setCompliantPercentage(compliantPct);
-    setNonCompliantPercentage(nonCompliantPct);
-  }, [suppliers]);
-
-  useEffect(() => {
-    fetchSupplierListData({ setData, setLoading, calculateCompliancePercentages });
-  }, [calculateCompliancePercentages]);
-
-
-
-
-
-  if (loading) {
-    return <Loader />;
-  }
-
-  const icons = [
-    <SuppliersIcon key={"supplier"} />,
-    <ThumbsDownIcon key={"thumbsdown"} />,
-    <ThumbsUpIcon key={"thumbsup"} />,
-    <WarningIcon key={"warning"} />,
-    <AuditsIcon key={"audits"} />,
-    <DeliveryIcon key={"delivery"} />,
-  ];
-
-  const options = [
-    { label: "This Month", value: "1" },
-    { label: "Last Year", value: "2" },
-  ];
-
-  const getTitle = (rowType: string) => {
-    switch (rowType) {
-      case "delete":
-        return "Do you want to Delete this User?";
-      case "edit":
-        return "Edit";
-      case "status":
-        return "Do you want to change the Status?";
-      default:
-        return "";
-    }
-  };
-  const getCancelName = (rowType: string) => {
-    switch (rowType) {
-      case "delete":
-        return <><CustomButton key="cancel" type='default' onClick={hideModal} label={"No"} /><CustomButton key="ok" type="primary" onClick={handleOk} label={"Yes"} /></>;
-      case "edit":
-        return <><CustomButton key="cancel" type='default' onClick={hideModal} label={"Cancel"} /><CustomButton key="ok" type="primary" onClick={handleOk} label={"edit"} /></>;
-      case "status":
-        return <><CustomButton key="cancel" type='default' onClick={hideModal} label={"No"} /><CustomButton key="ok" type="primary" onClick={handleOk} label={"Yes"} /></>;
-      default:
-        return "";
-    }
+  const lineData = {
+    labels: [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+    ],
+    datasets: [
+      {
+        label: "Emissions",
+        data: [10, 12, 9, 14, 18, 20, 19, 21, 23, 25, 24, 28],
+        borderColor: primaryColor,
+        tension: 0.4,
+        fill: false,
+      },
+      {
+        label: "Energy Consumption",
+        data: [6, 7, 5, 8, 10, 11, 10, 12, 13, 14, 15, 17],
+        borderColor: "#a0c4ff",
+        tension: 0.4,
+        fill: false,
+      },
+    ],
   };
 
-  const getComponent: any = (rowType: string) => {
-    switch (rowType) {
-      case "delete":
-        return <div>{singleDeleteData?.supplier}</div>
-      case "edit":
-        return <EditRow singleDeleteData={singleDeleteData} form={form} />;
-      case "status":
-        return <div>{singleDeleteData?.status}</div>;
-      default:
-        return "";
-    }
-  };
   return (
-    <div className="Dashboard-main">
-      <div className="cards-flex">
-        <div className="multi-cards">
-          {data &&
-            data[0]?.data?.map((item: any, index: number) => (
-              <CustomCard
-                key={index}
-                title={item?.name || "Default Title"}
-                content={item?.value || "Default Content"}
-                icon={icons[index]}
-                isLow={item?.value}
-              />
-            ))}
-        </div>
-        <div className="single-card">
-          <MeterCard
-            title="Compliance"
-            options={options}
-            value={selectedValue || ""}
-            compliantPercentage={compliantPercentage}
-            nonCompliantPercentage={nonCompliantPercentage}
-            onChange={handleDropdownChange}
-          />
-        </div>
-      </div>
-      <CustomTable
-        title="Supplier List"
-        columns={columns}
-        data={suppliers}
-        bordered={false}
-        pagination={true}
-      />
+    <div className="dashboard-container">
+      <h2 className="dashboard-title">BRSR Dashboard</h2>
 
-      <CustomModal
-        visible={isTrue}
-        onClose={hideModal}
-        onCancel={hideModal}
-        title={getTitle(rowType)}
-        content={getComponent(rowType)}
-        onOk={handleOk}
-        footer={getCancelName(rowType)}
-      />
+      {/* Top Two Rows: Left column (two rows) + Radar Card on right */}
+      <Row gutter={[16, 16]} className="top-two-rows">
+        <Col span={18} className="top-two-columns">
+          <Row gutter={[16, 16]} className="row1">
+            <Col span={8}>
+              <Card className="small-card">
+                <h3>85%</h3>
+                <p>Overall Compliance</p>
+              </Card>
+            </Col>
+            <Col span={8}>
+              <Card className="small-card">
+                <h3>245</h3>
+                <p>Total Metrics</p>
+              </Card>
+            </Col>
+            <Col span={8}>
+              <Card className="small-card">
+                <h3>16</h3>
+                <p>Missing Entries</p>
+              </Card>
+            </Col>
+          </Row>
+          <Row gutter={[16, 16]} className="row2">
+            <Col span={8}>
+              <Card className="horizontal-card">
+                <div>
+                  <h4>P1 Business Ethics</h4>
+                </div>
+                <div>
+                  <Progress percent={80}
+                    strokeWidth={15}
+                    showInfo={false} strokeColor={primaryColor} />
+                  <Progress percent={60}
+                    strokeWidth={15}
+                    showInfo={false} strokeColor={primaryColor} />
+                  <Progress percent={40}
+                    strokeWidth={15}
+                    showInfo={false} strokeColor={primaryColor} />
+                </div>
+              </Card>
+            </Col>
+            <Col span={8}>
+              <Card className="horizontal-card">
+                <h4>P2 Sustainability</h4>
+                <div className="chart-wrapper">
+                  <Doughnut
+                    data={doughnutData}
+                    options={{
+                      responsive: true,
+                      maintainAspectRatio: false,
+                    }}
+                  />
+                </div>
+              </Card>
+            </Col>
+            <Col span={8}>
+              <Card className="horizontal-card">
+                <h4>P3 Employee Well-bg</h4>
+                <Progress percent={70}
+                  strokeWidth={15}
+                  showInfo={false} strokeColor={primaryColor} />
+                <Progress percent={8}
+                  strokeWidth={15}
+                  showInfo={false} strokeColor={primaryColor} />
+                <Progress percent={90}
+                  strokeWidth={15}
+                  showInfo={false} strokeColor={primaryColor} />
+              </Card>
+            </Col>
+          </Row>
+        </Col>
+        <Col span={6}>
+          <Card className="radar-card">
+            <div className="chart-wrapper">
+              <Radar
+                data={radarData}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: { legend: { position: "bottom" } },
+                }}
+              />
+            </div>
+            <div className="radar-legend">
+              <p>
+                <span className="dot dot-blue"></span> Radar im – 84 cm
+              </p>
+              <p>
+                <span className="dot dot-purple"></span> Eggrevt consumit
+              </p>
+            </div>
+          </Card>
+        </Col>
+
+      </Row>
+
+      {/* Third Row: Full-Width Row with Three Cards */}
+      <Row gutter={[16, 16]} className="bottom-row">
+        <Col span={8}>
+          <Card className="line-chart-card">
+            <h4>Emissions & Energy Consumption</h4>
+            <div className="chart-wrapper">
+              <Line
+                data={lineData}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+                }}
+              />
+            </div>
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card className="chart-card">
+            <h4>Diversity & Inclusion</h4>
+            <div className="chart-wrapper">
+              <Doughnut
+                data={doughnutData}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: true },
+                  },
+                }}
+                plugins={[centerTextPlugin]}
+              />
+
+            </div>
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card className="table-card">
+            <h4>Disclosures</h4>
+            <table className="disclosure-table">
+              <thead>
+                <tr>
+                  <th>Entity</th>
+                  <th>Fiscal Year</th>
+                  <th>Business Unit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Example</td>
+                  <td>2023-24</td>
+                  <td>BU1</td>
+                </tr>
+                <tr>
+                  <td>Example</td>
+                  <td>2023-23</td>
+                  <td>BU1</td>
+                </tr>
+                <tr>
+                  <td>Example</td>
+                  <td>2023-24</td>
+                  <td>Completed</td>
+                </tr>
+                <tr>
+                  <td>Example</td>
+                  <td>2022-23</td>
+                  <td>Pending</td>
+                </tr>
+              </tbody>
+            </table>
+          </Card>
+        </Col>
+      </Row>
     </div>
   );
 };
