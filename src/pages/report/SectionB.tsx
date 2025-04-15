@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, Input, List, Modal, Progress, Space, Table, Tooltip, Upload, message } from "antd";
 import { Radio } from "antd";
-import { ArrowLeftOutlined, BoldOutlined, CheckOutlined, CopyTwoTone, DeleteOutlined, FileAddTwoTone } from "@ant-design/icons";
+import { CheckOutlined, CopyTwoTone, DeleteOutlined, FileAddTwoTone } from "@ant-design/icons";
 import CustomButton from "../../component/buttons/CustomButton";
 import { allCategories2 } from "../../utils/Options2";
 import { primaryColor } from '../../style/ColorCode';

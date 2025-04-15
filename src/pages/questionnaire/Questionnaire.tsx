@@ -281,7 +281,8 @@ const Questionnaire: React.FC = () => {
             isNone?: boolean;
         },
         questionIndex: number,
-        questionsArray: any[]
+        questionsArray: any[],
+        qusSection: string,
     ) => {
 
         const getQuestionNumber = () => {
@@ -320,7 +321,7 @@ const Questionnaire: React.FC = () => {
             return (
                 <div>
                     <div className="question-text">
-                        <div>{getQuestionNumber()} {question.text}
+                        <div>{qusSection}. {getQuestionNumber()} {question.text}
 
                             {question.isMandatory && <span className="mandatory-asterisk">*</span>}
                             {isAnswered && (
@@ -340,7 +341,7 @@ const Questionnaire: React.FC = () => {
                             </button>
                         </Tooltip>
                     </div>
-                    <div className="table-input-container">
+                    <div >
                         <TableInput
                             columns={question?.columns}
                             rows={question?.rows}
@@ -357,7 +358,7 @@ const Questionnaire: React.FC = () => {
         return (
             <div>
                 <div className="question-text">
-                    <div>{getQuestionNumber()} {question.text}
+                    <div>{qusSection}. {getQuestionNumber()} {question.text}
                         {question.isMandatory && <span className="mandatory-asterisk">*</span>}
                         {isAnswered && (
                             <Tooltip title="Answered">
@@ -526,7 +527,7 @@ const Questionnaire: React.FC = () => {
                             questions?.question.map((q: any, idx: any) => {
                                 return (
                                     <div key={`${questions.key}-${idx}`}>
-                                        {renderQuestionInput(activeCategory, questions.key, q, idx, questions.question)}
+                                        {renderQuestionInput(activeCategory, questions.key, q, idx, questions.question, questions.section)}
                                     </div>
                                 );
                             })

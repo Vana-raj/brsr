@@ -1,4 +1,29 @@
 .table-input-container {
+  max-width: 100%;
+  overflow-x: scroll;
+  border-radius: 4px;
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2); 
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .ant-table {
+    min-width: max-content;
+    white-space: nowrap;
+    
+    .ant-table-thead > tr > th,
+    .ant-table-tbody > tr > td {
+      white-space: nowrap;
+    }
+  }
     .custom-table {
       width: max-content;
       border-collapse: collapse;
@@ -27,7 +52,9 @@
       }
     }
 
-    .add-row {
-        padding-bottom: 10px;
-    }
+  }
+  .add-row {
+      padding-bottom: 10px;
+      padding-top: 10px;
+
   }

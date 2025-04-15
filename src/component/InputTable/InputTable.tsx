@@ -33,52 +33,53 @@ const TableInput = ({ columns, rows, value, header, onChange, className = "custo
     };
 
     return (
-        <div className="table-input-container">
-            <table className={className}>
-                <thead>
-                    <tr>
-                        {rows && <th>{header}</th>}
-                        {columns?.map((col: string, idx: number) => (
-                            <th key={idx}>{col}</th>
-                        ))}
-                        {!rows && <th>Actions</th>}
-                    </tr>
-                </thead>
-                <tbody>
-                    {data.map((row: any, index: number) => (
-                        console.log(row, 'row'),
-                        <tr key={index}>
-                            {rows && <td>{header === "Policy" ? row.particulars : index + 1}</td>}
-                            {columns.map((col: string, colIndex: number) => (
-                                <td key={colIndex}>
-                                    <InputField
-                                        value={row[col] || ""}
-                                        onChange={(e: any) =>
-                                            handleCellChange(index, col, e.target.value)
-                                        }
-                                    />
-                                </td>
+        <>
+            <div className="table-input-container">
+                <table className={className}>
+                    <thead>
+                        <tr>
+                            {rows && <th>{header}</th>}
+                            {columns?.map((col: string, idx: number) => (
+                                <th key={idx}>{col}</th>
                             ))}
-                            {!rows && (
-                                <td>
-                                    <CustomButton
-                                        icon={<DeleteOutlined />}
-                                        onClick={() => deleteRow(index)}
-                                        label={""}
-                                        disabled={data.length === 1}
-                                    />
-                                </td>
-                            )}
+                            {!rows && <th>Actions</th>}
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {data.map((row: any, index: number) => (
+                            <tr key={index}>
+                                {rows && <td>{header === "Policy" ? row.particulars : index + 1}</td>}
+                                {columns.map((col: string, colIndex: number) => (
+                                    <td key={colIndex}>
+                                        <InputField
+                                            value={row[col] || ""}
+                                            onChange={(e: any) =>
+                                                handleCellChange(index, col, e.target.value)
+                                            }
+                                        />
+                                    </td>
+                                ))}
+                                {!rows && (
+                                    <td>
+                                        <CustomButton
+                                            icon={<DeleteOutlined />}
+                                            onClick={() => deleteRow(index)}
+                                            label={""}
+                                            disabled={data.length === 1}
+                                        />
+                                    </td>
+                                )}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
             {!rows && (
                 <div className="add-row">
                     <CustomButton label={"+ Add Row"} onClick={addRow} />
                 </div>
             )}
-        </div>
+        </>
     );
 };
 

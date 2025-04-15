@@ -60,6 +60,7 @@ export const allCategories = [
         quesSection: "Details of the listed entity",
         questionsAnswer: "0/9",
         percentComplete: "0",
+        section: "A I",
         question: [
           { text: "Corporate Identity Number (CIN) of the Listed Entity", choices: null, isMandatory: true },
           { text: "Name of the Listed Entity", choices: null, isMandatory: true },
@@ -99,6 +100,7 @@ export const allCategories = [
         quesSection: "Products / Services",
         questionsAnswer: "0/4",
         percentComplete: "0",
+        section: "A II",
         question: [
           {
             text: "Details of business activities (accounting for 90% of the turnover):", choices: ["Yes", "No", "In Progress"], isMandatory: false,
@@ -135,6 +137,7 @@ export const allCategories = [
         quesSection: "Operations",
         questionsAnswer: "0/0",
         percentComplete: "0",
+        section: "A III",
         question: [
           {
             text: "No. of locations where plants and/or operations/ offices of the entity are situated:", columns: [
@@ -170,6 +173,7 @@ export const allCategories = [
         quesSection: "Employees",
         questionsAnswer: "0/3",
         percentComplete: "0",
+        section: "A IV",
         question: [
           {
             text: "Details as at the end of Financial Year:",
@@ -257,6 +261,7 @@ export const allCategories = [
         quesSection: "Holding, Subsidiary and Associate Companies (including joint ventures)",
         questionsAnswer: "0/0",
         percentComplete: "0",
+        section: "A V",
         question: [
           {
             text: "How many products have undergone a carbon footprint assessment?", type: "table", choices: null, isMandatory: true,
@@ -285,6 +290,7 @@ export const allCategories = [
         quesSection: "CSR Details",
         questionsAnswer: "0/4",
         percentComplete: "0",
+        section: "A VI",
         question: [
           {
             text: "CSR Details", choices: ["Yes", "No"], isMandatory: true,
@@ -317,6 +323,7 @@ export const allCategories = [
         quesSection: "Transparency and Disclosures Compliances",
         questionsAnswer: "0/5",
         percentComplete: "0",
+        section: "A VII",
         question: [
           {
             text: "Complaints/Grievances on any of the principles (Principles 1 to 9) under the National Guidelines on Responsible Business Conduct:", choices: null, isMandatory: true,
@@ -353,6 +360,7 @@ export const allCategories = [
         quesSection: "Monitoring",
         questionsAnswer: "0/2",
         percentComplete: "0",
+        section: "A VIII",
         question: [
           { text: "What percentage of electricity used at your site in the last calendar year came from renewable sources?", choices: ["0-25%", "26-50%", "51-75%", "76-100%"], isMandatory: true },
           { text: "What percentage of heating/cooling used at your site in the last calendar year came from renewable sources?", choices: ["0-25%", "26-50%", "51-75%", "76-100%"], isMandatory: true },

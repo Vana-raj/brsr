@@ -339,7 +339,7 @@ const SectionC: React.FC = () => {
                             </button>
                         </Tooltip>
                     </div>
-                    <div className="table-input-container">
+                    <div >
                         <TableInput
                             columns={question?.columns}
                             rows={question?.rows}
