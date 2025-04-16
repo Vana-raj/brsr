@@ -53,7 +53,7 @@ export const data = {
 export const allCategories3 = [
   {
     key: "details",
-    section: "Principle 1",
+    section: "C-I.Principle 1",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
@@ -197,7 +197,7 @@ export const allCategories3 = [
   },
   {
     key: "product_service",
-    section: "Principle 2",
+    section: "C-II.Principle 2",
     questionsAnswer: "3/3",
     percentComplete: "90%",
     questions: [
@@ -299,7 +299,7 @@ export const allCategories3 = [
   },
   {
     key: "value chains",
-    section: "Principle 3",
+    section: "C-III.Principle 3",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
@@ -654,7 +654,7 @@ export const allCategories3 = [
   },
   {
     key: "operations",
-    section: "Principle 4",
+    section: "C-IV.Principle 4",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
@@ -698,7 +698,7 @@ export const allCategories3 = [
   },
   {
     key: "rights",
-    section: "Principle 5",
+    section: "C-V.Principle 5",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
@@ -912,7 +912,7 @@ export const allCategories3 = [
   },
   {
     key: "environment",
-    section: "Principle 6",
+    section: "C-VI.Principle 6",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
@@ -1240,7 +1240,7 @@ export const allCategories3 = [
   },
   {
     key: "transparent",
-    section: "Principle 7",
+    section: "C-VII.Principle 7",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
@@ -1348,7 +1348,7 @@ export const allCategories3 = [
   },
   {
     key: "development",
-    section: "Principle 8",
+    section: "C-VIII.Principle 8",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
@@ -1573,7 +1573,7 @@ export const allCategories3 = [
   },
   {
     key: " responsible manner",
-    section: "Principle 9",
+    section: "C-IX.Principle 9",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [

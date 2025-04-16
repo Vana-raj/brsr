@@ -51,13 +51,13 @@ export const data = {
 export const allCategories = [
   {
     key: "details",
-    section: "Details of the listed entity",
+    section: " A-I.Details of the listed entity",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
       {
         key: "details",
-        quesSection: "Details of the listed entity",
+        quesSection: " Details of the listed entity",
         questionsAnswer: "0/9",
         percentComplete: "0",
         section: "A I",
@@ -91,7 +91,7 @@ export const allCategories = [
   },
   {
     key: "product_service",
-    section: "Products / Services",
+    section: "A-II. Products / Services",
     questionsAnswer: "3/3",
     percentComplete: "90%",
     questions: [
@@ -128,7 +128,7 @@ export const allCategories = [
   },
   {
     key: "operations",
-    section: "Operations",
+    section: "A-III. Operations",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
@@ -164,7 +164,7 @@ export const allCategories = [
   },
   {
     key: "employees",
-    section: "Employees",
+    section: "A-IV. Employees",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
@@ -252,7 +252,7 @@ export const allCategories = [
   },
   {
     key: "holding",
-    section: "Holding, Subsidiary and Associate Companies (including joint ventures)",
+    section: "A-V. Holding, Subsidiary and Associate Companies (including joint ventures)",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
@@ -281,7 +281,7 @@ export const allCategories = [
   },
   {
     key: "csr_details",
-    section: "CSR Details",
+    section: "A-VI. CSR Details",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
@@ -314,7 +314,7 @@ export const allCategories = [
   },
   {
     key: "transparency",
-    section: "Transparency and Disclosures Compliances",
+    section: "A-VII. Transparency and Disclosures Compliances",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
