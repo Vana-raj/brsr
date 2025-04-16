@@ -63,6 +63,7 @@ export const allCategories2 = [
         quesSection: "Policy and management processes",
         questionsAnswer: "0/9",
         percentComplete: "0",
+        section: "B I",
         question: [
           {
             text: "Whether your entity’s policy/policies cover each principle and its core elements of the NGRBCs. (Yes/No)", choices: ["Yes", "No", "In Progress"],
@@ -108,6 +109,7 @@ export const allCategories2 = [
         quesSection: "Governance, leadership and oversight",
         questionsAnswer: "0/4",
         percentComplete: "0",
+        section: "B II",
         question: [
           {
             text: "Statement by director responsible for the business responsibility report, highlighting ESG related challenges, targets and achievements (listed entity has flexibility regarding the placement of this disclosure)", choices: ["Yes", "No", "In Progress"], isMandatory: false,

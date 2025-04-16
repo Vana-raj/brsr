@@ -62,6 +62,7 @@ export const allCategories3 = [
         quesSection: "Principle 1 : Businesses should conduct and govern themselves with integrity, and in a manner that is Ethical, Transparent and Accountable",
         questionsAnswer: "0/9",
         percentComplete: "0",
+        section: "C I",
         question: [
           {
             text: "Percentage coverage by training and awareness programmes on any of the Principles during the financial year:", choices: null, isMandatory: true, parent: true,
@@ -205,6 +206,7 @@ export const allCategories3 = [
         quesSection: "Principle 2 : Businesses should provide goods and services in a manner that is sustainable and safe",
         questionsAnswer: "0/4",
         percentComplete: "0",
+        section: "C II",
         question: [
           {
             text: "Percentage of R&D and capital expenditure (capex) investments in specific technologies to improve the environmental and social impacts of product and processes to total R&D and capex investments made by the entity, respectively.", choices: null, isMandatory: true,
@@ -306,6 +308,7 @@ export const allCategories3 = [
         quesSection: "Principle 3 : Businesses should respect and promote the well-being of all employees, including those in their value chains",
         questionsAnswer: "0/3",
         percentComplete: "0",
+        section: "C III",
         question: [
           { text: "Details of measures ", choices: null, isMandatory: true, parent: true, isNone: true },
 
@@ -660,6 +663,7 @@ export const allCategories3 = [
         quesSection: "Principle 4 : Businesses should respect the interests of and be responsive to all its stakeholders",
         questionsAnswer: "0/3",
         percentComplete: "0",
+        section: "C IV",
         question: [
           { text: "Describe the processes for identifying key stakeholder groups of the entity.", choices: null, isMandatory: false },
           {
@@ -704,6 +708,7 @@ export const allCategories3 = [
         quesSection: "Principle 5 : Businesses should respect and promote human rights",
         questionsAnswer: "0/2",
         percentComplete: "0",
+        section: "C V",
         question: [
           {
             text: "Employees and workers who have been provided training on human rights issues and policy(ies) of the entity, in the following format:", choices: null, isMandatory: true, parent: true
@@ -916,6 +921,7 @@ export const allCategories3 = [
         quesSection: "Principle 6 : Businesses should respect and make efforts to protect and restore the environment",
         questionsAnswer: "0/0",
         percentComplete: "0",
+        section: "C VI",
         question: [
           {
             text: "Details of total energy consumption (in Joules or multiples) and energy intensity, in the following format:", choices: null, isMandatory: true, parent: true
@@ -1243,6 +1249,7 @@ export const allCategories3 = [
         quesSection: "Principle 7 : Businesses, when engaging in influencing public and regulatory policy, should do so in a manner that is responsible and transparent",
         questionsAnswer: "0/0",
         percentComplete: "0",
+        section: "C VII",
         question: [
           { text: "Trade and industry", choices: null, isMandatory: true, isNone: true, parent: true },
           {
@@ -1350,6 +1357,7 @@ export const allCategories3 = [
         quesSection: "Principle 8 : Businesses should promote inclusive growth and equitable development",
         questionsAnswer: "0/0",
         percentComplete: "0",
+        section: "C VIII",
         question: [
           {
             text: "Details of Social Impact Assessments (SIA) of projects undertaken by the entity based on applicable laws, in the current financial year.", choices: null, isMandatory: true
@@ -1574,6 +1582,7 @@ export const allCategories3 = [
         quesSection: "Principle 9 : Businesses should engage with and provide value to their consumers in a responsible manner",
         questionsAnswer: "0/0",
         percentComplete: "0",
+        section: "C IX",
         question: [
           { text: "Describe the mechanisms in place to receive and respond to consumer complaints and feedback.", choices: null, isMandatory: true, parent: true, isNone: true },
           {

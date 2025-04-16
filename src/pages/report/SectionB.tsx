@@ -1,15 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { Card, Input, List, Modal, Progress, Space, Table, Tooltip, Upload, message } from "antd";
 import { Radio } from "antd";
-import { CheckOutlined, CopyTwoTone, DeleteOutlined, FileAddTwoTone } from "@ant-design/icons";
+import { ArrowLeftOutlined, BoldOutlined, CheckOutlined, CopyTwoTone, DeleteOutlined, FileAddTwoTone } from "@ant-design/icons";
 import CustomButton from "../../component/buttons/CustomButton";
 import { allCategories2 } from "../../utils/Options2";
 import { primaryColor } from '../../style/ColorCode';
 import SelectDropDown from "../../component/select/SelectDropDown";
 import TableInput from "../../component/InputTable/InputTable";
 import "../questionnaire/Questionnaire.scss"
+
+
 const { TextArea } = Input;
 
+interface QuestionSection {
+    key: string;
+    quesSection: string;
+    questionsAnswer: string;
+    percentComplete: string;
+    question: any[];
+}
 
 const SectionB: React.FC = () => {
     const [activeCategory, setActiveCategory] = useState<string>("details");
@@ -217,6 +226,7 @@ const SectionB: React.FC = () => {
             return updatedAnswers;
         });
     };
+
     const handleCategoryClick = (categoryKey: string) => {
         confirmNavigation(() => {
 
@@ -266,12 +276,12 @@ const SectionB: React.FC = () => {
         key: string,
         question: {
             text: string; choices: string[] | null; isMandatory: boolean, type: string, columns: [], rows: [],
+            parent?: boolean;
             isNone?: boolean;
-            parent?: boolean; label: string;
         },
         questionIndex: number,
         questionsArray: any[],
-        label: string
+        qusSection: string,
     ) => {
 
         const getQuestionNumber = () => {
@@ -299,6 +309,7 @@ const SectionB: React.FC = () => {
                 return `${alphabet}.`;
             }
         };
+
         const questionKey = `${section}-${key}-${questionIndex}`;
         const isFileUploaded = !!uploadedFiles[questionKey];
         const isAnswered = !!answers[questionKey];
@@ -306,11 +317,10 @@ const SectionB: React.FC = () => {
             return null;
         }
         if (question?.type === 'table') {
-            console.log(label, 'label')
             return (
                 <div>
                     <div className="question-text">
-                        <div>{getQuestionNumber()} {question.text}
+                        <div>{qusSection}. {getQuestionNumber()} {question.text}
 
                             {question.isMandatory && <span className="mandatory-asterisk">*</span>}
                             {isAnswered && (
@@ -330,12 +340,11 @@ const SectionB: React.FC = () => {
                             </button>
                         </Tooltip>
                     </div>
-                    <div className="table-input-container-b">
+                    <div >
                         <TableInput
                             columns={question?.columns}
-                            header={label}
-                            className="cus-table"
                             rows={question?.rows}
+                            header={"S.No"}
                             value={answers[questionKey] || []}
                             onChange={(value: any) =>
                                 handleInputChange(section, key, value, questionIndex)
@@ -348,7 +357,7 @@ const SectionB: React.FC = () => {
         return (
             <div>
                 <div className="question-text">
-                    <div>{getQuestionNumber()} {question.text}
+                    <div>{qusSection}. {getQuestionNumber()} {question.text}
                         {question.isMandatory && <span className="mandatory-asterisk">*</span>}
                         {isAnswered && (
                             <Tooltip title="Answered">
@@ -367,7 +376,6 @@ const SectionB: React.FC = () => {
                         </button>
                     </Tooltip>
                 </div>
-
                 {question.isNone ? null : (
                     question.choices === null ? (
                         <div className="area-upload">
@@ -383,7 +391,10 @@ const SectionB: React.FC = () => {
                                     <Tooltip title="Upload">
                                         <Upload
                                             showUploadList={false}
-                                            customRequest={({ onSuccess }) => setTimeout(() => onSuccess?.("ok"), 0)}
+                                            customRequest={(options) => {
+                                                const { onSuccess } = options;
+                                                setTimeout(() => onSuccess?.("ok"), 0);
+                                            }}
                                             onChange={(info) => handleFileUpload(info, questionKey)}
                                         >
                                             <FileAddTwoTone className="upload-icon" />
@@ -447,7 +458,7 @@ const SectionB: React.FC = () => {
         let nonEmptyCount = 0;
         if (currentCategory) {
             currentCategory.questions[currentSectionIndex]?.question.forEach((_, questionIndex) => {
-                const questionKey = `${activeCategory}-${questions.key}-${questionIndex}`;
+                const questionKey = `${activeCategory}-${questions.key}-${questionIndex} `;
                 if (answers[questionKey]) {
                     nonEmptyCount += 1;
                 }
@@ -481,7 +492,7 @@ const SectionB: React.FC = () => {
                                 <List.Item
                                     key={category.key}
                                     onClick={() => handleCategoryClick(category.key)}
-                                    className={`category-item ${activeCategory === category.key ? "active" : ""}`}
+                                    className={`category-item ${activeCategory === category.key ? "active" : ""} `}
                                 >
                                     {category.section}
                                 </List.Item>
@@ -503,22 +514,25 @@ const SectionB: React.FC = () => {
                                     percent={progressPercent}
                                     width={50}
                                     strokeColor={primaryColor}
-                                    format={() => `${countNonEmptyAnswers()}/${singleSectionTextArea}`}
+                                    format={() => `${countNonEmptyAnswers()}/${singleSectionTextArea}`
+                                    }
                                 />
 
-                            </div>
+                            </div >
                         }
                         bordered
                     >
-                        {questions?.question.map((q: any, idx: any) => {
-                            return (
-                                <div key={`${questions.key}-${idx}`}>
-                                    {renderQuestionInput(activeCategory, questions.key, q, idx, questions.question, q.label)}
-                                </div>
-                            );
-                        })}
+                        {
+                            questions?.question.map((q: any, idx: any) => {
+                                return (
+                                    <div key={`${questions.key}-${idx}`}>
+                                        {renderQuestionInput(activeCategory, questions.key, q, idx, questions.question, questions.section)}
+                                    </div>
+                                );
+                            })
+                        }
 
-                        <div className="subbutton">
+                        < div className="subbutton" >
                             <div className="common-submit-btn">
                                 <CustomButton
                                     label="Submit Answers"
@@ -526,10 +540,10 @@ const SectionB: React.FC = () => {
                                     onClick={(item: any) => handleSubmitAll(item)}
                                 />
                             </div>
-                        </div>
+                        </div >
 
-                    </Card>
-                </div>
+                    </Card >
+                </div >
                 {/* )
                 } */}
             </div >
