@@ -43,21 +43,21 @@ const CompanyDetailsForm = () => {
         return false;
     };
 
-    const [text, setText] = useState<string | any>('');
+    // const [text, setText] = useState<string | any>('');
 
-    const handleSubmit = async () => {
-        if (!text.trim()) {
-            alert("Please enter text before submitting.");
-            return;
-        }
+    // const handleSubmit = async () => {
+    //     if (!text.trim()) {
+    //         alert("Please enter text before submitting.");
+    //         return;
+    //     }
 
-        try {
-            const response = await postDatas(text, setLoading);
-            console.log("API Response:", response);
-        } catch (error) {
-            console.error("API Error:", error);
-        }
-    }
+    //     try {
+    //         const response = await postDatas(text, setLoading);
+    //         console.log("API Response:", response);
+    //     } catch (error) {
+    //         console.error("API Error:", error);
+    //     }
+    // }
 
     const handleConfirm = () => {
         if (tempData) {

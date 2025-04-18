@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Card, Input, List, Modal, Progress, Space, Table, Tooltip, Upload, message } from "antd";
+import { Card, Input, List, Modal, Progress, Space, Tooltip, Upload, message } from "antd";
 import { Radio } from "antd";
-import { ArrowLeftOutlined, BoldOutlined, CheckOutlined, CopyTwoTone, DeleteOutlined, FileAddTwoTone } from "@ant-design/icons";
+import { CheckOutlined, CopyTwoTone, DeleteOutlined, FileAddTwoTone } from "@ant-design/icons";
 import CustomButton from "../../component/buttons/CustomButton";
 import { allCategories } from "../../utils/Options";
 import { primaryColor } from '../../style/ColorCode';
@@ -85,17 +85,61 @@ const Questionnaire: React.FC = () => {
     };
 
 
-    const handleFileUpload = (info: any, questionKey: string) => {
-        if (info.file.status !== "uploading") {
-            const { name, size } = info.file;
-            const fileSize = `${(size / 1024).toFixed(2)} KB`;
+    const handleFileUpload = async (info: any, questionKey: string) => {
+        const { file } = info;
 
-            setUploadedFiles((prevFiles) => ({
-                ...prevFiles,
-                [questionKey]: { name, size: fileSize },
+        // Check if the file is in the right status and exists
+        if (!file || file.status === "uploading") {
+            return;
+        }
+
+        try {
+            const formData = new FormData();
+            // Use originFileObj for the actual file data
+            formData.append('file', file.originFileObj || file);
+
+            const response = await fetch('http://127.0.0.1:8000/upload-pdf/', {
+                method: 'POST',
+                body: formData,
+                // headers: { 
+                //     'Authorization': 'Bearer your-token',
+                //     // Don't set Content-Type header - let the browser set it with boundary
+                // }
+            });
+
+            if (!response.ok) {
+                throw new Error(`Upload failed with status ${response.status}`);
+            }
+
+            const responseData = await response.json();
+            const fileSize = `${(file.size / 1024).toFixed(2)} KB`;
+
+            // Update uploaded files state
+            setUploadedFiles(prev => ({
+                ...prev,
+                [questionKey]: {
+                    name: file.name,
+                    size: fileSize
+                },
             }));
 
-            message.success(`${name} uploaded successfully.`);
+            // Process response data
+            if (responseData.answers) {
+                const updatedAnswers = { ...answers };
+
+                Object.entries(responseData.answers).forEach(([key, value]) => {
+                    // Make sure the key matches your question format
+                    updatedAnswers[key] = value;
+                });
+
+                setAnswers(updatedAnswers);
+                localStorage.setItem('answeredQuestions', JSON.stringify(updatedAnswers));
+            }
+
+            message.success(`${file.name} processed successfully!`);
+        } catch (error) {
+            console.error('Upload error:', error);
+            message.error(`Upload failed: ${error}`);
         }
     };
 
@@ -509,7 +553,19 @@ const Questionnaire: React.FC = () => {
                             </div>
                         }
                         extra={
-                            <div style={{ textAlign: "center" }}>
+                            <div style={{ textAlign: "center", display: "flex", gap: "10px", alignItems: 'center' }}>
+                                <Tooltip title="Upload">
+                                    <Upload
+                                        showUploadList={false}
+                                        customRequest={(options) => {
+                                            const { onSuccess } = options;
+                                            setTimeout(() => onSuccess?.("ok"), 0);
+                                        }}
+                                        onChange={(info) => handleFileUpload(info, '')}
+                                    >
+                                        <FileAddTwoTone className="upload-icon" />
+                                    </Upload>
+                                </Tooltip>
                                 <Progress
                                     type="circle"
                                     percent={progressPercent}

@@ -4,7 +4,7 @@ import { Card, Input, Checkbox, message } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone, LockOutlined, UserOutlined } from '@ant-design/icons';
 import AeiforoLogo from '../../assets/images/Aeiforo-logo.png';
 import CustomButton from '../../component/buttons/CustomButton';
-import { loginApi } from '../../features/action/SupplierAction';
+// import { loginApi } from '../../features/action/SupplierAction';
 import './Login.scss';
 
 const LoginPage = () => {
@@ -27,7 +27,7 @@ const LoginPage = () => {
     }, []);
 
 
-    const [username, setUsername] = useState('');
+    // const [username, setUsername] = useState('');
 
     const correctUsername = 'admin@demo.com';
     const correctPassword = 'admin@123';
