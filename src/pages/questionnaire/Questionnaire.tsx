@@ -8,10 +8,58 @@ import { primaryColor } from '../../style/ColorCode';
 import SelectDropDown from "../../component/select/SelectDropDown";
 import TableInput from "../../component/InputTable/InputTable";
 import "./Questionnaire.scss";
-// import "../questionnaire/Questionnaire.scss"
 
 
 const { TextArea } = Input;
+
+interface Question {
+    text: string;
+    choices: string[] | null;
+    isMandatory: boolean;
+    type?: string;
+    columns?: any[];
+    rows?: any[];
+    parent?: boolean;
+    isNone?: boolean;
+}
+interface Category {
+    key: string;
+    section: string;
+    questionsAnswer?: string;
+    percentComplete?: string;
+    questions: Array<{
+        key: string;
+        quesSection: string;
+        questionsAnswer?: string;
+        percentComplete?: string;
+        section?: string;
+        question: Question[];
+    }>;
+}
+interface QuestionData {
+    question: string;
+    answer: string;
+}
+interface QuestionAnswer {
+    question: string;
+    answer: string | string[] | Record<string, any>;
+}
+
+interface Subsection {
+    subtitle?: string;
+    questions: Record<string, QuestionAnswer>;
+}
+
+interface Section {
+    title?: string;
+    [key: string]: Subsection | string | undefined;
+}
+
+interface ApiResponse {
+    section_a?: Section;
+    section_b?: Section;
+    section_c?: Section;
+}
 
 interface QuestionSection {
     key: string;
@@ -37,9 +85,23 @@ const Questionnaire: React.FC = () => {
     const [submittedAnswers, setSubmittedAnswers] = useState<Record<string, boolean>>({});
 
 
-    const handleRowClick = (record: any, sectionIndex: number) => {
-        setShowQuestions(true);
-        setCurrentSectionIndex(sectionIndex);
+    const findQuestionByKey = (formKey: string): Question | null => {
+        const parts = formKey.split('_');
+        if (parts.length < 3) return null;
+
+        const [categoryKey, sectionKey, questionIndex] = parts;
+        const category = allCategories.find(cat => cat.key === categoryKey);
+        if (!category) return null;
+
+        const section = (category.questions as Array<{ key: string, question: Question[] }>).find(
+            (sec) => sec.key === sectionKey
+        );
+        if (!section || !Array.isArray(section.question)) return null;
+
+        const index = parseInt(questionIndex);
+        if (isNaN(index)) return null;
+
+        return section.question[index] || null;
     };
 
     const confirmNavigation = (action: () => void) => {
@@ -51,31 +113,8 @@ const Questionnaire: React.FC = () => {
         }
     };
 
-
-    const handleBackToCategories = () => {
-        confirmNavigation(() => {
-            const savedAnswers = localStorage.getItem('answeredQuestions');
-            if (savedAnswers) {
-                setAnswers(JSON.parse(savedAnswers));
-            }
-            setActiveCategory(activeCategory || "");
-            setShowQuestions(false);
-            setCurrentSectionIndex(0);
-            handleClearUnsubmittedAnswers()
-        });
-
-    };
-
-    const handleNextSection = () => {
-        setCurrentSectionIndex((prev) => Math.min(prev + 1, allCategories[0].questions.length - 1));
-    };
-
-    const handlePreviousSection = () => {
-        setCurrentSectionIndex((prev) => Math.max(prev - 1, 0));
-    };
-
     const handleInputChange = (section: string, key: string, value: any, questionIndex: number) => {
-        const questionKey = `${section}-${key}-${questionIndex}`;
+        const questionKey = generateQuestionKey(section, key, questionIndex);
         setAnswers((prevAnswers) => ({
             ...prevAnswers,
             [questionKey]: value,
@@ -88,70 +127,47 @@ const Questionnaire: React.FC = () => {
     const handleFileUpload = async (info: any, questionKey: string) => {
         const { file } = info;
 
-        // Check if the file is in the right status and exists
-        if (!file || file.status === "uploading") {
-            return;
-        }
+        if (!file || file.status === "uploading") return;
 
         try {
             const formData = new FormData();
-            // Use originFileObj for the actual file data
             formData.append('file', file.originFileObj || file);
 
-            const response = await fetch('http://127.0.0.1:8000/upload-pdf/', {
+            const response = await fetch('http://192.168.2.75:8000/upload-pdf/', {
                 method: 'POST',
                 body: formData,
-                // headers: { 
-                //     'Authorization': 'Bearer your-token',
-                //     // Don't set Content-Type header - let the browser set it with boundary
-                // }
             });
 
-            if (!response.ok) {
-                throw new Error(`Upload failed with status ${response.status}`);
-            }
+            if (!response.ok) throw new Error(`Upload failed with status ${response.status}`);
 
-            const responseData = await response.json();
+            const responseData: ApiResponse = await response.json();
             const fileSize = `${(file.size / 1024).toFixed(2)} KB`;
 
-            // Update uploaded files state
             setUploadedFiles(prev => ({
                 ...prev,
-                [questionKey]: {
-                    name: file.name,
-                    size: fileSize
-                },
+                [questionKey]: { name: file.name, size: fileSize },
             }));
-
-            // Process response data
-            if (responseData.answers) {
-                const updatedAnswers = { ...answers };
-
-                Object.entries(responseData.answers).forEach(([key, value]) => {
-                    // Make sure the key matches your question format
-                    updatedAnswers[key] = value;
+            const newAnswers = transformApiResponseToAnswers(responseData);
+            setAnswers(prev => {
+                const updated = { ...prev };
+                Object.entries(newAnswers).forEach(([key, value]) => {
+                    if (value !== undefined && value !== null && value !== "") {
+                        updated[key] = value;
+                    }
                 });
+                return updated;
+            });
 
-                setAnswers(updatedAnswers);
-                localStorage.setItem('answeredQuestions', JSON.stringify(updatedAnswers));
-            }
+            localStorage.setItem('answeredQuestions', JSON.stringify({
+                ...answers,
+                ...newAnswers
+            }));
 
             message.success(`${file.name} processed successfully!`);
         } catch (error) {
             console.error('Upload error:', error);
-            message.error(`Upload failed: ${error}`);
+            message.error(`Upload failed: ${error instanceof Error ? error.message : String(error)}`);
         }
-    };
-
-
-    const handleRemoveFile = (questionKey: string) => {
-        setUploadedFiles((prevFiles) => {
-            const updatedFiles = { ...prevFiles };
-            delete updatedFiles[questionKey];
-            return updatedFiles;
-        });
-
-        message.success("File removed successfully.");
     };
 
     const handleCopyText = (text: string) => {
@@ -180,9 +196,46 @@ const Questionnaire: React.FC = () => {
         }
     };
 
+    const transformApiResponseToAnswers = (apiResponse: ApiResponse) => {
+        const answers: { [key: string]: any } = {};
 
+        (Object.entries(apiResponse) as Array<[keyof ApiResponse, Section]>).forEach(([sectionKey, sectionData]) => {
+            if (!sectionData) return;
 
-    const hasNonEmptyValues = Object.values(answers).some(value => value !== "");
+            (Object.entries(sectionData) as Array<[string, Subsection | string]>).forEach(([subsectionKey, subsectionData]) => {
+                if (subsectionKey === 'title' || typeof subsectionData !== 'object' || !subsectionData) return;
+
+                const questionsData = subsectionData.questions;
+                if (!questionsData) return;
+
+                (Object.entries(questionsData) as Array<[string, QuestionAnswer]>).forEach(([questionNum, questionData]) => {
+                    const apiKey = `${sectionKey}-${subsectionKey}-${questionNum}`;
+                    const formKey = mapApiKeyToFormKey(apiKey);
+
+                    if (questionData?.answer && questionData.answer !== "Not found") {
+                        if (Array.isArray(questionData.answer)) {
+                            answers[formKey] = questionData.answer;
+                        } else if (typeof questionData.answer === 'object' && questionData.answer !== null) {
+                            answers[formKey] = questionData.answer;
+                        } else if (typeof questionData.answer === 'string') {
+                            answers[formKey] = questionData.answer;
+                            const currentQuestion = findQuestionByKey(formKey);
+                            if (currentQuestion?.choices) {
+                                const matchingOption = currentQuestion.choices.find(
+                                    (choice: string) => choice.toLowerCase() === questionData.answer.toString().toLowerCase()
+                                );
+                                if (matchingOption) {
+                                    answers[formKey] = matchingOption;
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        });
+
+        return answers;
+    };
 
     const handleSubmitAll = (item: any) => {
         setTrust(item?.isTrusted);
@@ -201,7 +254,7 @@ const Questionnaire: React.FC = () => {
                 let answered = 0;
                 const total = section.question.length;
                 section.question.forEach((_: any, questionIndex: any) => {
-                    const questionKey = `${activeCategory}-${section.key}-${questionIndex}`;
+                    const questionKey = `${activeCategory}_${section.key}_${questionIndex}`;
                     if (answers[questionKey]) {
                         answered += 1;
                         anyAnswered = true;
@@ -289,12 +342,27 @@ const Questionnaire: React.FC = () => {
         })
     };
 
+    const generateQuestionKey = (section: string, key: string, index: number): string => {
+        return `${section}_${key}_${index}`.toLowerCase();
+    };
 
+    const cleanAnswerKeys = (answers: { [key: string]: any }) => {
+        const cleaned: { [key: string]: any } = {};
+
+        Object.entries(answers).forEach(([key, value]) => {
+            const cleanKey = key.toLowerCase().replace(/-/g, '_');
+            if (!cleaned[cleanKey]) {
+                cleaned[cleanKey] = value;
+            }
+        });
+
+        return cleaned;
+    };
 
     useEffect(() => {
         const savedAnswers: any = localStorage.getItem('answeredQuestions');
         if (savedAnswers) {
-            setAnswers(JSON.parse(savedAnswers));
+            setAnswers(cleanAnswerKeys(JSON.parse(savedAnswers)));
         }
     }, []);
 
@@ -313,14 +381,50 @@ const Questionnaire: React.FC = () => {
         }
     }, [trust, submittedAnswers]);
 
+    const mapApiKeyToFormKey = (apiKey: string): string => {
+        const parts = apiKey.split('-');
+        if (parts.length < 3) return apiKey.toLowerCase().replace(/-/g, '_');
 
+        const sectionMap: Record<string, string> = {
+            'section_a': 'details',
+            'section_b': 'product_service',
+            'section_c': 'operations',
+            'section_d': 'employees',
+            'section_e': 'holding',
+            'section_f': 'csr_details',
+            'section_g': 'transparency'
+        };
 
+        const subsectionMap: Record<string, string> = {
+            'one': 'details',
+            'two': 'product_service',
+            'three': 'operations',
+            'four': 'employees',
+            'five': 'holding',
+            'six': 'csr_details',
+            'seven': 'transparency'
+        };
 
+        const section = parts[0];
+        const subsection = parts[1];
+        const questionNum = parseInt(parts[2]) - 1;
+
+        if (section in sectionMap && subsection in subsectionMap) {
+            return `${sectionMap[section]}_${subsectionMap[subsection]}_${questionNum}`;
+        }
+
+        return apiKey.toLowerCase().replace(/-/g, '_');
+    };
     const renderQuestionInput = (
         section: string,
         key: string,
         question: {
-            text: string; choices: string[] | null; isMandatory: boolean, type: string, columns: [], rows: [],
+            text: string;
+            choices: string[] | null;
+            isMandatory: boolean,
+            type: string,
+            columns: [],
+            rows: [],
             parent?: boolean;
             isNone?: boolean;
         },
@@ -350,12 +454,12 @@ const Questionnaire: React.FC = () => {
                 if (lastParentIndex === -1) return `${questionIndex + 1}.`;
 
                 const subQuestionIndex = questionIndex - lastParentIndex - 1;
-                const alphabet = String.fromCharCode(97 + subQuestionIndex); // 97 = 'a'
+                const alphabet = String.fromCharCode(97 + subQuestionIndex);
                 return `${alphabet}.`;
             }
         };
-
-        const questionKey = `${section}-${key}-${questionIndex}`;
+        const questionKey = generateQuestionKey(section, key, questionIndex);
+        const answerValue = answers[questionKey];
         const isFileUploaded = !!uploadedFiles[questionKey];
         const isAnswered = !!answers[questionKey];
         if (isViewMode && !isAnswered) {
@@ -387,13 +491,11 @@ const Questionnaire: React.FC = () => {
                     </div>
                     <div >
                         <TableInput
-                            columns={question?.columns}
-                            rows={question?.rows}
+                            columns={question.columns || []}
+                            rows={question.rows || []}
                             header={"S.No"}
-                            value={answers[questionKey] || []}
-                            onChange={(value: any) =>
-                                handleInputChange(section, key, value, questionIndex)
-                            }
+                            value={Array.isArray(answerValue) ? answerValue : []}
+                            onChange={(value: any) => handleInputChange(section, key, value, questionIndex)}
                         />
                     </div>
                 </div>
@@ -431,35 +533,6 @@ const Questionnaire: React.FC = () => {
                                 onChange={(e) => handleInputChange(section, key, e.target.value, questionIndex)}
                                 value={answers[questionKey] || ""}
                             />
-                            <div className="upload-section">
-                                {!isFileUploaded && (
-                                    <Tooltip title="Upload">
-                                        <Upload
-                                            showUploadList={false}
-                                            customRequest={(options) => {
-                                                const { onSuccess } = options;
-                                                setTimeout(() => onSuccess?.("ok"), 0);
-                                            }}
-                                            onChange={(info) => handleFileUpload(info, questionKey)}
-                                        >
-                                            <FileAddTwoTone className="upload-icon" />
-                                        </Upload>
-                                    </Tooltip>
-                                )}
-                            </div>
-                            {isFileUploaded && (
-                                <div className="uploaded-file-info">
-                                    <div className="uploaded-file-details">
-                                        File: {uploadedFiles[questionKey]?.name} ({uploadedFiles[questionKey]?.size})
-                                        <button
-                                            onClick={() => handleRemoveFile(questionKey)}
-                                            className="remove-file-icon"
-                                        >
-                                            <DeleteOutlined />
-                                        </button>
-                                    </div>
-                                </div>
-                            )}
                         </div>
                     ) : question.choices.length > 4 ? (
                         <SelectDropDown
@@ -469,7 +542,7 @@ const Questionnaire: React.FC = () => {
                                 value: choice,
                             }))}
                             placeholder="Select options"
-                            value={answers[`${section}-${key}-${questionIndex}`] || []}
+                            value={answers[`${section}_${key}_${questionIndex}`] || []}
                             onChange={(value) => handleInputChange(section, key, value, questionIndex)}
                         />
                     ) : (
@@ -479,7 +552,7 @@ const Questionnaire: React.FC = () => {
                                     <Space direction="vertical">
                                         <Radio
                                             value={option}
-                                            checked={answers[`${section}-${key}-${questionIndex}`] === option}
+                                            checked={answerValue === option}
                                             onChange={() => handleInputChange(section, key, option, questionIndex)}
                                             className="radio-qbutton"
                                         >
@@ -503,7 +576,7 @@ const Questionnaire: React.FC = () => {
         let nonEmptyCount = 0;
         if (currentCategory) {
             currentCategory.questions[currentSectionIndex]?.question.forEach((_, questionIndex) => {
-                const questionKey = `${activeCategory}-${questions.key}-${questionIndex} `;
+                const questionKey = `${activeCategory}_${questions.key}_${questionIndex} `;
                 if (answers[questionKey]) {
                     nonEmptyCount += 1;
                 }
