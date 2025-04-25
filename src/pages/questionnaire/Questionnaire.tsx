@@ -23,51 +23,27 @@ interface Question {
     parent?: boolean;
     isNone?: boolean;
 }
-interface Category {
-    key: string;
+interface ApiQuestion {
+    questionNo: string;
+    question: string;
+    questionOptions: Array<{ option: string; value: any }>;
+    questionAnswer: string | null;
+}
+
+interface ApiPart {
+    partNo: string;
+    subtitle: string;
+    questions: ApiQuestion[];
+}
+
+interface ApiSection {
+    title: string;
     section: string;
-    questionsAnswer?: string;
-    percentComplete?: string;
-    questions: Array<{
-        key: string;
-        quesSection: string;
-        questionsAnswer?: string;
-        percentComplete?: string;
-        section?: string;
-        question: Question[];
-    }>;
-}
-interface QuestionData {
-    question: string;
-    answer: string;
-}
-interface QuestionAnswer {
-    question: string;
-    answer: string | string[] | Record<string, any>;
-}
-
-interface Subsection {
-    subtitle?: string;
-    questions: Record<string, QuestionAnswer>;
-}
-
-interface Section {
-    title?: string;
-    [key: string]: Subsection | string | undefined;
+    parts: ApiPart[];
 }
 
 interface ApiResponse {
-    section_a?: Section;
-    section_b?: Section;
-    section_c?: Section;
-}
-
-interface QuestionSection {
-    key: string;
-    quesSection: string;
-    questionsAnswer: string;
-    percentComplete: string;
-    question: any[];
+    data: ApiSection[];
 }
 
 const Questionnaire: React.FC = () => {
@@ -137,7 +113,7 @@ const Questionnaire: React.FC = () => {
             const formData = new FormData();
             formData.append('file', file.originFileObj || file);
 
-            const response = await fetch('http://192.168.2.75:8000/upload-pdf/', {
+            const response = await fetch('http://192.168.2.75:8000/extract/', {
                 method: 'POST',
                 body: formData,
             });
@@ -204,39 +180,82 @@ const Questionnaire: React.FC = () => {
         }
     };
 
-    const transformApiResponseToAnswers = (apiResponse: ApiResponse) => {
+    const transformApiResponseToAnswers = (apiResponse: any) => {
         const answers: { [key: string]: any } = {};
 
-        (Object.entries(apiResponse) as Array<[keyof ApiResponse, Section]>).forEach(([sectionKey, sectionData]) => {
-            if (!sectionData) return;
+        if (!apiResponse.data || !Array.isArray(apiResponse.data)) return answers;
 
-            (Object.entries(sectionData) as Array<[string, Subsection | string]>).forEach(([subsectionKey, subsectionData]) => {
-                if (subsectionKey === 'title' || typeof subsectionData !== 'object' || !subsectionData) return;
+        apiResponse.data.forEach((sectionData: any) => {
+            const sectionKey = sectionData.section; // "section_a" or "section_b"
 
-                const questionsData = subsectionData.questions;
-                if (!questionsData) return;
+            const categoryMap: Record<string, string> = {
+                'section_a': 'general_disclosures',
+                'section_b': 'management_process'
+            };
 
-                (Object.entries(questionsData) as Array<[string, QuestionAnswer]>).forEach(([questionNum, questionData]) => {
-                    const apiKey = `${sectionKey}-${subsectionKey}-${questionNum}`;
-                    const formKey = mapApiKeyToFormKey(apiKey);
+            const category = categoryMap[sectionKey] || sectionKey.toLowerCase();
 
-                    if (questionData?.answer && questionData.answer !== "Not found") {
-                        if (Array.isArray(questionData.answer)) {
-                            answers[formKey] = questionData.answer;
-                        } else if (typeof questionData.answer === 'object' && questionData.answer !== null) {
-                            answers[formKey] = questionData.answer;
-                        } else if (typeof questionData.answer === 'string') {
-                            answers[formKey] = questionData.answer;
-                            const currentQuestion = findQuestionByKey(formKey);
-                            if (currentQuestion?.choices) {
-                                const matchingOption = currentQuestion.choices.find(
-                                    (choice: string) => choice.toLowerCase() === questionData.answer.toString().toLowerCase()
-                                );
-                                if (matchingOption) {
-                                    answers[formKey] = matchingOption;
-                                }
-                            }
+            if (!sectionData.parts || !Array.isArray(sectionData.parts)) return;
+
+            sectionData.parts.forEach((part: any) => {
+                // Handle both numeric and string partNo
+                const partNo = typeof part.partNo === 'number'
+                    ? part.partNo.toString()
+                    : part.partNo.toLowerCase();
+
+                // Map part numbers to question keys
+                const partMap: Record<string, Record<string, string>> = {
+                    'section_a': {
+                        'one': 'details',
+                        'two': 'products_services',
+                        'three': 'operations',
+                        'four': 'employees',
+                        'five': 'holding_companies',
+                        'six': 'csr_details',
+                        'seven': 'transparency'
+                    },
+                    'section_b': {
+                        '1': 'policy_management',
+                        '2': 'governance_leadership'
+                    }
+                };
+
+                const subKey = partMap[sectionKey]?.[partNo] || partNo;
+
+                if (!part.questions || !Array.isArray(part.questions)) return;
+
+                part.questions.forEach((question: any) => {
+                    const answer = question.questionAnswer;
+                    if (answer === null || answer === undefined) return;
+
+                    // Generate question key
+                    const questionIndex = parseInt(question.questionNo.split('.')[0]) - 1;
+                    const formKey = `${category}_${subKey}_${questionIndex}`;
+
+                    const currentQuestion = findQuestionByKey(formKey);
+                    if (!currentQuestion) return;
+
+                    // Handle different question types
+                    if (currentQuestion.type === 'table') {
+                        // Table handling logic
+                        try {
+                            const parsed = typeof answer === 'string' ? JSON.parse(answer) : answer;
+                            answers[formKey] = Array.isArray(parsed) ? parsed : [parsed];
+                        } catch {
+                            answers[formKey] = [{ value: answer }];
                         }
+                    }
+                    else if (currentQuestion.choices) {
+                        // Radio/Select handling
+                        const cleanAnswer = String(answer).toLowerCase().trim();
+                        const match = currentQuestion.choices.find((c: string) =>
+                            c.toLowerCase().trim() === cleanAnswer
+                        );
+                        answers[formKey] = match || answer;
+                    }
+                    else {
+                        // TextArea handling
+                        answers[formKey] = answer;
                     }
                 });
             });
@@ -244,6 +263,43 @@ const Questionnaire: React.FC = () => {
 
         return answers;
     };
+
+    // Updated key mapping function
+    const generateFormKey = (sectionKey: string, subsectionKey: string, questionNo: string): string => {
+        // Map section keys to form categories
+        const sectionMap: Record<string, string> = {
+            'section_a': 'details',
+            'section_b': 'product_service',
+            'section_c': 'operations',
+            'section_d': 'employees',
+            'section_e': 'holding',
+            'section_f': 'csr_details',
+            'section_g': 'transparency'
+        };
+
+        // Map subsection numbers to form keys
+        const subsectionMap: Record<string, string> = {
+            'one': 'details',
+            'two': 'product_service',
+            'three': 'operations',
+            'four': 'employees',
+            'five': 'holding',
+            'six': 'csr_details',
+            'seven': 'transparency'
+        };
+
+        // Get base category key
+        const categoryKey = sectionMap[sectionKey] || sectionKey.toLowerCase();
+
+        // Get subsection key
+        const subKey = subsectionMap[subsectionKey] || subsectionKey.toLowerCase();
+
+        // Handle question numbers like "1", "2.a", "4.1" etc.
+        const questionIndex = parseInt(questionNo.split('.')[0]) - 1;
+
+        return `${categoryKey}_${subKey}_${questionIndex}`;
+    };
+
 
     const handleSubmitAll = (item: any) => {
         setTrust(item?.isTrusted);
@@ -555,19 +611,18 @@ const Questionnaire: React.FC = () => {
                                 value: choice,
                             }))}
                             placeholder="Select options"
-                            value={answers[`${section}_${key}_${questionIndex}`] || []}
+                            value={Array.isArray(answerValue) ? answerValue : []}
                             onChange={(value) => handleInputChange(section, key, value, questionIndex)}
                         />
                     ) : (
                         <div className="question-options">
-                            {question.choices.map((option, idx) => (
-                                <label key={`${option}-${idx}`}>
+                            {question.choices.map((option) => (
+                                <label key={option}>
                                     <Space direction="vertical">
                                         <Radio
                                             value={option}
                                             checked={answerValue === option}
                                             onChange={() => handleInputChange(section, key, option, questionIndex)}
-                                            className="radio-qbutton"
                                         >
                                             {option}
                                         </Radio>
@@ -614,7 +669,7 @@ const Questionnaire: React.FC = () => {
     }
     return (
         <div className="questionnaire-main">
-            <div className="questionnaire-title">BRSR</div>
+            {/* <div className="questionnaire-title">BRSR</div> */}
             <div className="questionnaire-container">
                 <div className="category-card">
                     <Card title={"Categories"} bordered>
