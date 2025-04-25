@@ -102,7 +102,6 @@ const CustomTable: React.FC<CustomTableProps> = ({
           const importedData = XLSX.utils.sheet_to_json(worksheet);
 
           setFilteredData(importedData);
-          console.log(importedData, 'import')
         } catch (error) {
           console.error('Invalid file format', error);
         }

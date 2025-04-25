@@ -1,5 +1,19 @@
 @import '../../style/utils/Variables.scss';
 
+@media (max-width: 480px) {
+  .top-sections {
+    flex-wrap: wrap;
+    .section-cards {
+    flex-wrap: wrap;
+
+    }
+
+    .progress-cards {
+      width: 100% !important;
+    }
+  }
+}
+
 .main-report {
 padding: $commonPadding;
 .back-btn {
@@ -118,7 +132,7 @@ padding: $commonPadding;
             width: 30%;
 
 .progress-card {
-  padding: 8px;
+  padding: 9px;
   border: $border;
   border-radius: 10px;
   background: white;
@@ -148,6 +162,34 @@ padding: $commonPadding;
             color: $secondary;
           }
         }
+      }
+
+      .first-percentage {
+        font-size: 14px;
+        font-weight: bold;
+        color: #09B96D;
+        line-height: 1;
+        display: block;
+        margin-bottom: 2px;
+      }
+      
+      .second-percentage {
+        font-size: 14px;
+        color: #ec70b4;
+        line-height: 1;
+        margin: 2px 0;
+        font-weight: bold;
+  
+      }
+      
+      .thirt-percentage {
+        font-size: 14px;
+        color: #0058EA;
+        line-height: 1;
+        display: block;
+        margin-top: 2px;
+        font-weight: bold;
+
       }
 }
 

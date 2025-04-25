@@ -67,7 +67,7 @@ const CircularChart: React.FC<CircularChartProps> = ({
       },
       {
         data: [percentageMiddle, 100 - percentageMiddle],
-        backgroundColor: ["#ec70b4", "#ffff"],
+        backgroundColor: ["#0058EA", "#ffff"],
         borderColor: '#ffffff',
         borderWidth: 2,
         borderRadius: 10,
@@ -75,7 +75,7 @@ const CircularChart: React.FC<CircularChartProps> = ({
       },
       {
         data: [percentageCompleted, 100 - percentageCompleted],
-        backgroundColor: ["#0058EA", "#ffff"],
+        backgroundColor: ["#ec70b4", "#ffff"],
         borderColor: '#ffffff',
         borderWidth: 2,
         borderRadius: 10,

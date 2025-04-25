@@ -3,13 +3,15 @@ import * as XLSX from 'xlsx';
 import { Progress, Tooltip } from 'antd'
 import Loader from '../../component/loader/Loader'
 import { ArrowLeftOutlined, DeleteOutlined, EditOutlined, PlusOutlined, UnorderedListOutlined } from '@ant-design/icons'
-import { bgColor } from '../../style/ColorCode';
+import { bgColor, primaryColor } from '../../style/ColorCode';
 import CustomTable from '../../component/table/CustomTable'
 import CustomButton from '../../component/buttons/CustomButton'
 import './Report.scss'
 import Questionnaire from '../questionnaire/Questionnaire';
 import MeterCard from '../../component/cards/MeterCard';
 import CircularChart from '../../component/circlepercentagechart/CircleChart';
+import SectionB from './SectionB';
+import SectionC from './SectionC';
 const Report: React.FC = () => {
   const columns = [
     {
@@ -41,7 +43,7 @@ const Report: React.FC = () => {
           percent={progress}
           status={progress >= 100 ? 'success' : 'active'}
           showInfo={true}
-          strokeColor={progress >= 100 ? '#52c41a' : '#1890ff'}
+          strokeColor={progress >= 100 ? '#52c41a' : primaryColor}
           strokeWidth={15}
         />
       )
@@ -104,7 +106,6 @@ const Report: React.FC = () => {
   const handleAddData = (sectionType: string) => [
     setAddData(sectionType)
   ]
-  console.log(addData, 'addData')
   const handleImport = () => {
     const input = document.createElement("input");
     input.type = "file";
@@ -129,7 +130,6 @@ const Report: React.FC = () => {
           const worksheet = workbook.Sheets[sheetName];
           const importedData: unknown[] = XLSX.utils.sheet_to_json(worksheet);
 
-          console.log("Imported data:", importedData);
 
         } catch (error) {
           console.error("Invalid file format", error instanceof Error ? error.message : error);
@@ -197,11 +197,11 @@ const Report: React.FC = () => {
               >
                 <div className="section-header">
                   <div className='xbrl-header'>SECTION A</div>
-                  <span>0%</span>
+                  <span>40%</span>
                 </div>
                 <p>General Disclosures</p>
                 <Progress
-                  percent={0}
+                  percent={40}
                   status="active"
                   showInfo={false}
                   strokeColor="#1890ff"
@@ -222,11 +222,11 @@ const Report: React.FC = () => {
               >
                 <div className="section-header">
                   <div className='xbrl-header'>SECTION B</div>
-                  <span>0%</span>
+                  <span>50%</span>
                 </div>
                 <p>Management & Process Disclosures</p>
                 <Progress
-                  percent={0}
+                  percent={50}
                   status="active"
                   showInfo={false}
                   strokeColor="#1890ff"
@@ -246,12 +246,12 @@ const Report: React.FC = () => {
                 onClick={() => handleAddData('section_c')}
               >
                 <div className="section-header">
-                  <div className='xbrl-header'>SECTION C</div>
-                  <span>7%</span>
+                  <div className='xbrl-header'>SECTION C </div>
+                  <span>60%</span>
                 </div>
                 <p>Principle wise performance disclosure</p>
                 <Progress
-                  percent={7}
+                  percent={60}
                   status="active"
                   showInfo={false}
                   strokeColor="#1890ff"
@@ -280,15 +280,15 @@ const Report: React.FC = () => {
                 <div>
                   <div className="Legend-first">
                     <div className="first-box"></div>
-                    <span className="legend-box-compliant"></span>Section A
+                    <span className="legend-box-compliant"></span>Section A <span className='first-percentage'>40% </span>
                   </div>
                   <div className="Legend-second">
                     <div className="second-box"></div>
-                    <span className="legend-box-non-compliant"></span>Section B
+                    <span className="legend-box-non-compliant"></span>Section B <span className='thirt-percentage'>60% </span>
                   </div>
                   <div className="Legend-first">
                     <div className="third-box"></div>
-                    <span className="legend-box-compliant"></span>Section C
+                    <span className="legend-box-compliant"></span>Section C <span className='second-percentage '>50% </span>
                   </div>
                 </div>
 
@@ -298,6 +298,13 @@ const Report: React.FC = () => {
           {addData === "section_a" &&
             <Questionnaire />
           }
+          {addData === "section_b" &&
+            <SectionB />
+          }
+          {addData === "section_c" &&
+            <SectionC />
+          }
+
         </div>
       }
     </div>

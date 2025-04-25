@@ -31,7 +31,7 @@ const NavBar: React.FC = () => {
     const searchConfig: SearchRoute[] = [
         { keys: ['dashboard', 'home'], path: '/dashboard' },
         { keys: ['reports', 'document'], path: '/reports' },
-        { keys: ['quality', 'standard'], path: '/quality' },
+        // { keys: ['quality', 'standard'], path: '/quality' },
         { keys: ['analytics', 'stats'], path: '/analytics' },
         { keys: ['profile', 'account'], path: '/profile' },
         { keys: ['supplier', 'vendor'], path: '/supplier-management' },
@@ -253,10 +253,11 @@ const NavBar: React.FC = () => {
                                 className={activeLink === 'reports' ? 'active' : ''}
                                 onClick={() => handleLinkClick('reports')}
                             >
-                                Report
+                                BRSR
                             </Link>
                         </li>
-                        <li>
+                       
+                        {/* <li>
                             <Link
                                 to="/quality"
                                 className={activeLink === 'quality' ? 'active' : ''}
@@ -265,6 +266,7 @@ const NavBar: React.FC = () => {
                                 Quality
                             </Link>
                         </li>
+                        */}
                         <li>
                             <Link
                                 to="/analytics"

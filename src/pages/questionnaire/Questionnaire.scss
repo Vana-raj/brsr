@@ -12,6 +12,9 @@
 
   .question-card {
     width: 100% !important;
+    .ant-card-head-wrapper {
+      gap: $commonGap;
+     }
   }
 
   .subbutton {
@@ -28,7 +31,7 @@
   }
 }
 .questionnaire-main {
-
+  margin-top:-20px;
     .questionnaire-title {
       padding-bottom: 15px;
       padding-left: 5px;
@@ -43,9 +46,11 @@
     gap: 20px;
   
     .category-card {
-      width: 30%;
+      width: 300px;
       .ant-card {
         height: 100%;
+      width: 300px;
+
       }
   
       .category-item {
@@ -79,6 +84,9 @@
 
         .ant-card-head {
          color: $textColor;
+         .ant-card-head-wrapper {
+          gap: $commonGap;
+         }
       }
 .ant-card-body {
   padding: 25px;
@@ -375,6 +383,7 @@ text-align: left;
 .common-submit-btn {
   display: flex;
   gap: 10px;
+  padding-top: 20px;
 }
 
 .copy-border {
@@ -433,4 +442,63 @@ text-align: left;
   color: $error;
   font-weight: $bold;
   font-size: 18px;
+}
+
+.table-input-container-b {
+  .cus-table {
+    width: max-content;
+    border-collapse: collapse;
+    margin: 10px 0;
+    
+
+    th,
+    td {
+      border: 1px solid #d9d9d9;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #fafafa;
+      font-weight: 600;
+      width: 4%;
+
+    }
+   
+    tr:first-child th:first-child,
+    tr:first-child td:first-child {
+      width: 10% !important; 
+    }
+
+    td:nth-of-type(8),
+    td:nth-of-type(9) {
+      width: 4%!important;
+ }
+
+
+    tr:nth-child(2) td:nth-child(2),
+    tr:nth-child(3) td:nth-child(3),
+    tr:nth-child(4) td:nth-child(4),
+    tr:nth-child(5) td:nth-child(5),
+    tr:nth-child(6) td:nth-child(6),
+    tr:nth-child(7) td:nth-child(7),
+    tr:nth-child(8) td:nth-child(8){
+      width: 5px!important;
+
+    }
+  }
+
+  .ant-input {
+    border: none;
+    box-shadow: none;
+    padding: 0;
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
+  .add-row {
+    padding-bottom: 10px;
+  }
 }

@@ -51,15 +51,16 @@ export const data = {
 export const allCategories = [
   {
     key: "details",
-    section: "Details of the listed entity",
+    section: " A-I.Details of the listed entity",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
       {
         key: "details",
-        quesSection: "Details of the listed entity",
+        quesSection: " Details of the listed entity",
         questionsAnswer: "0/9",
         percentComplete: "0",
+        section: "A I",
         question: [
           { text: "Corporate Identity Number (CIN) of the Listed Entity", choices: null, isMandatory: true },
           { text: "Name of the Listed Entity", choices: null, isMandatory: true },
@@ -90,7 +91,7 @@ export const allCategories = [
   },
   {
     key: "product_service",
-    section: "Products / Services",
+    section: "A-II. Products / Services",
     questionsAnswer: "3/3",
     percentComplete: "90%",
     questions: [
@@ -99,125 +100,35 @@ export const allCategories = [
         quesSection: "Products / Services",
         questionsAnswer: "0/4",
         percentComplete: "0",
-        question: [
-          { text: "Details of business activities (accounting for 90% of the turnover):", choices: ["Yes", "No", "In Progress"], isMandatory: false },
-          { text: "Products/Services sold by the entity (accounting for 90% of the entity’s Turnover):", choices: null, isMandatory: false },
-        ],
-      },
-      {
-        key: "risk-screening",
-        quesSection: "Risk Screening",
-        questionsAnswer: "0/3",
-        percentComplete: "0",
-        question: [
-          { text: "Do you have a sustainability risk assessment process for suppliers?", choices: ["Yes", "No", "In Progress", "Under development"], isMandatory: false },
-          { text: "Are suppliers categorized based on sustainability risk levels (high, medium, low)?", choices: ["Yes", "No", "In Progress", "Under development"], isMandatory: false },
-          {
-            text: "What are the most significant sustainability risks across your supplier base?", choices: ["Environmental impacts",
-              "Social impacts",
-              "Governance and compliance risks",
-              "Financial and market risks"], isMandatory: false
-          },
-          {
-            text: "How frequently are high-risk suppliers monitored for compliance and improvements?", choices: ["Monthly",
-              "Quarterly",
-              "Annually",
-              "Not monitored"], isMandatory: false
-          },
-        ],
-      },
-      {
-        key: "certification-compliance",
-        quesSection: "Certification Compliance",
-        questionsAnswer: "0/3",
-        percentComplete: "0",
+        section: "A II",
         question: [
           {
-            text: "Does your company hold any recognized environmental certifications?", choices: ["Yes, currently certified",
-              "Certification in progress",
-              "No, but planning to apply",
-              "No, and no plans to apply"], isMandatory: false
+            text: "Details of business activities (accounting for 90% of the turnover):", choices: ["Yes", "No", "In Progress"], isMandatory: false,
+            type: "table",
+            columns: [
+              "S. No.",
+              "Description of Main Activity",
+              "Description of Business Activity",
+              "% of Turnover of the entity",
+            ],
           },
           {
-            text: "Does your company hold any social certifications?", choices: ["Yes, currently certified",
-              "Certification in progress",
-              "No, but planning to apply",
-              "No, and no plans to apply"], isMandatory: false
-          },
-          {
-            text: "Does your company adhere to any sustainability reporting or management standards?", choices: ["Yes, currently certified",
-              "Certification in progress",
-              "No, but planning to apply",
-              "No, and no plans to apply"], isMandatory: false
-          },
-          {
-            text: "Does your company hold any governance or supply chain certifications?", choices: ["Yes, currently certified",
-              "Certification in progress",
-              "No, but planning to apply",
-              "No, and no plans to apply"], isMandatory: false
-          },
-          {
-            text: "How often are you audited for compliance with these certifications?", choices: ["Annually",
-              "Bi-annually",
-              "Less frequently",
-              "Not audited"], isMandatory: false
-          },
-          {
-            text: "Are there any additional certifications you are pursuing? If yes, please apply.", choices: null, isMandatory: false
+            text: "Products/Services sold by the entity (accounting for 90% of the entity’s Turnover):", choices: ["Yes", "No", "In Progress"],
+            type: "table",
+            columns: [
+              "S. No.",
+              "Product/Service",
+              "NIC Code",
+              "% of total Turnover contributed",
+            ], isMandatory: false
           },
         ],
-      },
-      {
-        key: "sustainbility-performance",
-        quesSection: "Sustainability Performance",
-        questionsAnswer: "0/3",
-        percentComplete: "0",
-        question: [
-          {
-            text: "Do you provide annual sustainability performance reports?", choices: ["Yes, public reports",
-              "Yes, internal reports only",
-              "No, but planning to start",
-              "No, and no plans to start"], isMandatory: false
-          },
-          {
-            text: "What KPIs do you use to measure your sustainability performance?", choices: ["Environmental Impact KPIs",
-              "Resource Efficiency and Innovation KPIs",
-              "Governance and Compliance KPIs",
-              "Social and Economic Impact KPIs"], isMandatory: false
-          },
-          {
-            text: "How transparent are you about your sustainability progress and challenges?", choices: ["Fully transparent",
-              "Partially transparent",
-              "Not transparent",
-              "Committed to increasing transparency in the future"], isMandatory: false
-          },
-        ],
-      },
-      {
-        key: "collabration-innovation",
-        quesSection: "Collaboration & Innovation",
-        questionsAnswer: "0/2",
-        percentComplete: "0",
-        question: [
-          {
-            text: "Do you engage in sustainability innovation (e.g., circular economy, low-carbon products)?", choices: ["Yes, fully engaged",
-              "Partially engaged",
-              "Not engaged",
-              "Planning to engage in the near future"], isMandatory: false
-          },
-          {
-            text: "What challenges do you face in improving sustainability performance", choices: ["Financial Constraints",
-              "Technical Gaps",
-              "Regulatory and Compliance Barriers",
-              "Monitoring and Reporting Challenges"], isMandatory: false
-          },
-        ],
-      },
+      }
     ],
   },
   {
     key: "operations",
-    section: "Operations",
+    section: "A-III. Operations",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
@@ -226,18 +137,34 @@ export const allCategories = [
         quesSection: "Operations",
         questionsAnswer: "0/0",
         percentComplete: "0",
+        section: "A III",
         question: [
-          { text: "No. of locations where plants and/or operations/ offices of the entity are situated:", choices: null, isMandatory: true },
-          { text: "Markets served by the entity(No. of Locations)", choices: null, isMandatory: true },
-          { text: "What is the contribution of exports as a percentage of the total turnover of the entity?", choices: null, isMandatory: true },
-          { text: "Markets served by the entity(A brief on types of customers)", choices: null, isMandatory: true },
+          {
+            text: "No. of locations where plants and/or operations/ offices of the entity are situated:", columns: [
+              "Location",
+              "No. of plants",
+              "No. of offices",
+              "Total",
+            ], type: "table", choices: null, isMandatory: true, parent: true,
+          },
+          {
+            text: "Markets served by the entity", choices: null,
+            isMandatory: true, parent: true, isNone: true,
+          },
+          {
+            text: "No. of Locations", columns: [
+              "Location",
+              "Number"
+            ], type: "table", choices: null, isMandatory: true, parent: false
+          },
+          { text: "What is the contribution of exports as a percentage of the total turnover of the entity?", choices: null, isMandatory: true, parent: false },
         ],
       },
     ]
   },
   {
     key: "employees",
-    section: "Employees",
+    section: "A-IV. Employees",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
@@ -246,17 +173,86 @@ export const allCategories = [
         quesSection: "Employees",
         questionsAnswer: "0/3",
         percentComplete: "0",
+        section: "A IV",
         question: [
-          { text: "What is your current CDP score for Climate Change?", choices: null, isMandatory: false },
-          { text: "What is your current CDP score for Water?", choices: null, isMandatory: false },
-          { text: "What is your current CDP score for Forests?", choices: null, isMandatory: false },
-        ],
-      },
+          {
+            text: "Details as at the end of Financial Year:",
+            choices: null,
+            isMandatory: true,
+            type: "sectionHeader",
+            parent: true,
+            isNone: true
+          },
+          {
+            text: "Employees and workers (including differently abled):",
+            type: "table",
+            columns: [
+              "Particulars",
+              "Total (A)",
+              "Male (No. (B))",
+              "Female (No. (B))",
+              "Male % (B/A)",
+              "Female % (C/A)",
+              "N"
+            ],
+            "isMandatory": true,
+            rows: [
+              "Employees - Permanent (D)",
+              "Employees - Other than Permanent (E)",
+              "Total employees (D + E)",
+            ],
+            parent: false
+          },
+          {
+            text: "Differently abled Employees and workers:",
+            type: "table",
+            columns: [
+              "Particulars",
+              "Total (A)",
+              "Male (No. (B))",
+              "Female (No. (B))",
+              "Male % (B/A)",
+              "Female % (C/A)",
+              "N"
+            ],
+            isMandator: true,
+            rows: [
+              "Differently-abled Employees - Permanent (D)",
+              "Differently-abled Employees - Other than Permanent (E)",
+              "Total employees (D + E)",
+            ],
+            parent: false
+          },
+          {
+            text: "Participation/Inclusion/Representation of women", choices: null, type: "table", isMandatory: true, parent: true, columns: [
+              "Total",
+              "No. and percentage of Females (No. (B)",
+              "No. and percentage of Females % (B / A)",
+              "Total",
+            ],
+          },
+          {
+            text: "Turnover rate for permanent employees and workers (Disclose trends for the past 3 years)", choices: null, type: "table", isMandatory: true, parent: true, columns: [
+              "Category",
+              " FY (2024-25) Male",
+              " FY (2024-25) Female",
+              " FY (2024-25) Total",
+              " FY (2023-24) Male",
+              " FY (2023-24) Female",
+              " FY (2023-24) Total",
+              " FY (2022-23) Male",
+              " FY (2022-23) Female",
+              " FY (2022-23) Total",
+            ],
+          },
+
+        ]
+      }
     ]
   },
   {
     key: "holding",
-    section: "Holding, Subsidiary and Associate Companies (including joint ventures)",
+    section: "A-V. Holding, Subsidiary and Associate Companies (including joint ventures)",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
@@ -265,22 +261,18 @@ export const allCategories = [
         quesSection: "Holding, Subsidiary and Associate Companies (including joint ventures)",
         questionsAnswer: "0/0",
         percentComplete: "0",
+        section: "A V",
         question: [
-          { text: "How many products have undergone a carbon footprint assessment?", choices: null, isMandatory: true },
-          { text: "What is the product name, type, and function?", choices: null, isMandatory: true },
-          { text: "What is the weight or volume of the product? (kg/L)", choices: null, isMandatory: true },
-          { text: "What is the declared carbon footprint of the product (kg CO2e)?", choices: null, isMandatory: true },
-          { text: "What raw materials are used in production?", choices: null, isMandatory: false },
-          { text: "Provide % of raw materials sourced locally, regionally, and internationally.", choices: null, isMandatory: false },
-          { text: "What is the embodied carbon of the raw materials (kg CO2e) used in the product?", choices: null, isMandatory: false },
-          { text: "Are suppliers certified for sustainable practices?", choices: ["Yes", "No", "In Progress", "Not applicable"], isMandatory: false },
-          { text: "Do suppliers disclose their carbon footprint data? ", choices: ["Yes", "No", "In Progress", "Not applicable"], isMandatory: true },
-          { text: "What is the average transport distance for raw materials and finished goods (km)?", choices: null, isMandatory: false },
-          { text: "Are logistics providers certified for sustainability? ", choices: ["Yes", "No", "In Progress", "Not applicable"], isMandatory: false },
-          { text: "What is the total energy consumption (kWh) during production?", choices: null, isMandatory: true },
-          { text: "What percentage of energy used during production comes from renewable sources?", choices: null, isMandatory: false },
-          { text: "Are emissions mitigation technologies employed?", choices: ["Yes", "No", "In Progress", "Not applicable"], isMandatory: false },
-          { text: "What emissions are associated with end-of-life processes (kg CO2e)?", choices: null, isMandatory: false },
+          {
+            text: "How many products have undergone a carbon footprint assessment?", type: "table", choices: null, isMandatory: true,
+            parent: true, columns: [
+              "S. No.",
+              " Name of the holding / subsidiary / associate companies / joint ventures (A)",
+              " Indicate whether holding/ Subsidiary/ Associate/ Joint Venture",
+              "% of shares held by listed entity",
+              "Does the entity indicated at column A, participate in the Business Responsibility initiatives of the listed entity? (Yes/No)",
+            ],
+          },
 
 
         ],
@@ -289,7 +281,7 @@ export const allCategories = [
   },
   {
     key: "csr_details",
-    section: "CSR Details",
+    section: "A-VI. CSR Details",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
@@ -298,19 +290,31 @@ export const allCategories = [
         quesSection: "CSR Details",
         questionsAnswer: "0/4",
         percentComplete: "0",
+        section: "A VI",
         question: [
-          { text: "Does your company hold an ISO 14001 certification for environmental management?", choices: ["Yes", "No", "In Progress", "Not applicable"], isMandatory: true },
-          { text: "Has your company obtained any other environmental management system certifications, eg EMAS (Eco-Management and Audit Scheme) ?", choices: null, isMandatory: true },
-          { text: "Does your company hold an ISO 50001 certification for energy management?", choices: ["Yes", "No", "In Progress", "Not applicable"], isMandatory: true },
-          { text: "Has your company obtained any other energy-related certifications/framework (e.g., IPMVP – International Performance Measurement and Verification Protocol)?", choices: null, isMandatory: true },
-
+          {
+            text: "CSR Details", choices: ["Yes", "No"], isMandatory: true,
+            parent: true,
+            isNone: true
+          },
+          {
+            text: "Whether CSR is applicable as per section 135 of Companies Act, 2013: (Yes/No)", choices: ["Yes", "No"], isMandatory: true,
+            parent: false,
+          },
+          {
+            text: "Turnover (in Rs.)", choices: null, isMandatory: true,
+            parent: false,
+          }, {
+            text: "Net worth (in Rs.)", choices: null, isMandatory: true,
+            parent: false,
+          },
         ],
       },
     ]
   },
   {
     key: "transparency",
-    section: "Transparency and Disclosures Compliances",
+    section: "A-VII. Transparency and Disclosures Compliances",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
@@ -319,22 +323,36 @@ export const allCategories = [
         quesSection: "Transparency and Disclosures Compliances",
         questionsAnswer: "0/5",
         percentComplete: "0",
+        section: "A VII",
         question: [
-          { text: "Does your company have a formal environmental policy that includes a commitment to legal compliance, continuous measurement, and continuous improvement in environmental performance?", choices: null, isMandatory: true },
           {
-            text: "Which of the following areas are included in your environmental policy?", choices: ["Legal compliance",
-              "Continuous measurement of environmental performance",
-              "Continuous improvement in environmental performance",
-              "Waste management",
-              "Water management",
-              "Resource efficiency",
-              "Biodiversity conservation",
-              "Energy management",
-              "Other (please specify)"], isMandatory: false
+            text: "Complaints/Grievances on any of the principles (Principles 1 to 9) under the National Guidelines on Responsible Business Conduct:", choices: null, isMandatory: true,
+            type: "table",
+            columns: [
+              "Stakeholder group from whom complaint is received ",
+              "Grievance Redressal Mechanism in Place (Yes/No) (If Yes, then provide web-link for grievance redress policy)",
+              "Number of complaints filed during the year(FY 2024-25)",
+              "Number of complaints pending resolution at close of the year(FY 2024-25)",
+              "Remark(FY 2024-25)",
+              "Number of complaints filed during the year(FY 2023-24)",
+              "Number of complaints pending resolution at close of the year(FY 2023-24)",
+              "Remark(FY 2023-24)",
+            ],
+            parent: true,
           },
-          { text: "Does your company organize training for employees on the environmental policy?", choices: ["Yes", "No", "In Progress", "Not applicable"], isMandatory: true },
-          { text: "Does your site have an environmental management system (EMS) in place?", choices: ["Yes", "No", "In Progress", "Not applicable"], isMandatory: true },
-          { text: "Does your site have an energy management system (EnMS) in place?", choices: ["Yes", "No", "In Progress", "Not applicable"], isMandatory: true },
+          {
+            text: "Overview of the entity’s material responsible business conduct issues", choices: null, isMandatory: false, parent: true, isNone: true
+          },
+          {
+            text: "Please indicate material responsible business conduct and sustainability issues pertaining to environmental and social matters that present a risk or an opportunity to your business, rationale for identifying the same, approach to adapt or mitigate the risk along-with its financial implications, as per the following format.", choices: null, isMandatory: false, parent: false, type: "table", columns: [
+              "S. No.",
+              "Material issue identified",
+              "Indicate whether risk or opportunity (R/O)",
+              "Rationale for identifying the risk / opportunity",
+              "In case of risk, approach to adapt or mitigate",
+              "Financial implications of the risk or opportunity (Indicate positive or negative implications)"
+            ],
+          },
         ],
       },
       {
@@ -342,6 +360,7 @@ export const allCategories = [
         quesSection: "Monitoring",
         questionsAnswer: "0/2",
         percentComplete: "0",
+        section: "A VIII",
         question: [
           { text: "What percentage of electricity used at your site in the last calendar year came from renewable sources?", choices: ["0-25%", "26-50%", "51-75%", "76-100%"], isMandatory: true },
           { text: "What percentage of heating/cooling used at your site in the last calendar year came from renewable sources?", choices: ["0-25%", "26-50%", "51-75%", "76-100%"], isMandatory: true },
