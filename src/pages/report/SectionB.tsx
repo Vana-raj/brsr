@@ -481,7 +481,6 @@ const SectionB: React.FC = () => {
 
     return (
         <div className="questionnaire-main">
-            <div className="questionnaire-title">BRSR</div>
             <div className="questionnaire-container">
                 <div className="category-card">
                     <Card title={"Categories"} bordered>
