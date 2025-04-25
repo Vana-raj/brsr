@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Card, Input, List, Modal, Progress, Space, Tooltip, Upload, message } from "antd";
 import { Radio } from "antd";
-import { CheckOutlined, CopyTwoTone, DeleteOutlined, FileAddTwoTone } from "@ant-design/icons";
+import { CheckOutlined, CopyTwoTone, FileAddTwoTone } from "@ant-design/icons";
+import { Card, Input, List, Modal, Progress, Space, Tooltip, Upload, message } from "antd";
 import CustomButton from "../../component/buttons/CustomButton";
 import { allCategories } from "../../utils/Options";
 import { primaryColor } from '../../style/ColorCode';
 import SelectDropDown from "../../component/select/SelectDropDown";
 import TableInput from "../../component/InputTable/InputTable";
+import Loader from "../../component/loader/Loader";
 import "./Questionnaire.scss";
 
 
@@ -78,6 +79,8 @@ const Questionnaire: React.FC = () => {
     const [isViewMode, setIsViewMode] = useState(false);
     const [singleSectionTextArea, setsingleSectionTextArea] = useState<any>();
     const [trust, setTrust] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+
 
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
     const [isUnsavedModalVisible, setIsUnsavedModalVisible] = useState(false);
@@ -128,6 +131,7 @@ const Questionnaire: React.FC = () => {
         const { file } = info;
 
         if (!file || file.status === "uploading") return;
+        setLoading(true);
 
         try {
             const formData = new FormData();
@@ -147,6 +151,7 @@ const Questionnaire: React.FC = () => {
                 ...prev,
                 [questionKey]: { name: file.name, size: fileSize },
             }));
+
             const newAnswers = transformApiResponseToAnswers(responseData);
             setAnswers(prev => {
                 const updated = { ...prev };
@@ -167,8 +172,11 @@ const Questionnaire: React.FC = () => {
         } catch (error) {
             console.error('Upload error:', error);
             message.error(`Upload failed: ${error instanceof Error ? error.message : String(error)}`);
+        } finally {
+            setLoading(false);
         }
     };
+
 
     const handleCopyText = (text: string) => {
         if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
@@ -415,6 +423,7 @@ const Questionnaire: React.FC = () => {
 
         return apiKey.toLowerCase().replace(/-/g, '_');
     };
+
     const renderQuestionInput = (
         section: string,
         key: string,
@@ -501,6 +510,10 @@ const Questionnaire: React.FC = () => {
                 </div>
             );
         }
+        if (loading) {
+            return <Loader />;
+        }
+
         return (
             <div>
                 <div className="question-text">
@@ -596,7 +609,9 @@ const Questionnaire: React.FC = () => {
     const progressPercent = singleSectionTextArea > 0
         ? Math.round((countNonEmptyAnswers() / singleSectionTextArea) * 100)
         : 0;
-
+    if (loading) {
+        return <Loader />;
+    }
     return (
         <div className="questionnaire-main">
             <div className="questionnaire-title">BRSR</div>

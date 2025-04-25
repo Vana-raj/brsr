@@ -61,7 +61,6 @@ export const postDatas = async (
       },
     });
 
-    console.log("Response:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error during POST call:", error);

@@ -130,7 +130,6 @@ const Report: React.FC = () => {
           const worksheet = workbook.Sheets[sheetName];
           const importedData: unknown[] = XLSX.utils.sheet_to_json(worksheet);
 
-          console.log("Imported data:", importedData);
 
         } catch (error) {
           console.error("Invalid file format", error instanceof Error ? error.message : error);
