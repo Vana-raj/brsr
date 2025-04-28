@@ -113,7 +113,7 @@ const Questionnaire: React.FC = () => {
             const formData = new FormData();
             formData.append('file', file.originFileObj || file);
 
-            const response = await fetch('http://192.168.2.75:8000/extract/', {
+            const response = await fetch('https://5729-125-17-238-190.ngrok-free.app/extract/', {
                 method: 'POST',
                 body: formData,
             });
