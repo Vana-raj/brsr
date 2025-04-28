@@ -185,76 +185,64 @@ const Questionnaire: React.FC = () => {
 
         if (!apiResponse.data || !Array.isArray(apiResponse.data)) return answers;
 
-        apiResponse.data.forEach((sectionData: any) => {
-            const sectionKey = sectionData.section; // "section_a" or "section_b"
+        // Map API parts to form categories
+        const sectionPartMap: Record<string, Record<string, string>> = {
+            'section_a': {
+                'one': 'details',
+                'two': 'product_service',
+                'three': 'operations',
+                'four': 'employees',
+                'five': 'holding',
+                'six': 'csr_details',
+                'seven': 'transparency'
+            },
+            'section_b': {
+                'one': 'policy_management',
+                'two': 'governance_leadership'
+            }
+        };
 
-            const categoryMap: Record<string, string> = {
-                'section_a': 'general_disclosures',
-                'section_b': 'management_process'
-            };
+        apiResponse.data.forEach((section: any) => {
+            const sectionKey = section.section; // 'section_a' or 'section_b'
+            const partsMap = sectionPartMap[sectionKey] || {};
 
-            const category = categoryMap[sectionKey] || sectionKey.toLowerCase();
+            section.parts?.forEach((part: any) => {
+                const partNo = String(part.partNo).toLowerCase();
+                const categoryKey = partsMap[partNo];
 
-            if (!sectionData.parts || !Array.isArray(sectionData.parts)) return;
-
-            sectionData.parts.forEach((part: any) => {
-                // Handle both numeric and string partNo
-                const partNo = typeof part.partNo === 'number'
-                    ? part.partNo.toString()
-                    : part.partNo.toLowerCase();
-
-                // Map part numbers to question keys
-                const partMap: Record<string, Record<string, string>> = {
-                    'section_a': {
-                        'one': 'details',
-                        'two': 'products_services',
-                        'three': 'operations',
-                        'four': 'employees',
-                        'five': 'holding_companies',
-                        'six': 'csr_details',
-                        'seven': 'transparency'
-                    },
-                    'section_b': {
-                        '1': 'policy_management',
-                        '2': 'governance_leadership'
-                    }
-                };
-
-                const subKey = partMap[sectionKey]?.[partNo] || partNo;
-
-                if (!part.questions || !Array.isArray(part.questions)) return;
+                if (!categoryKey || !part.questions) return;
 
                 part.questions.forEach((question: any) => {
                     const answer = question.questionAnswer;
                     if (answer === null || answer === undefined) return;
 
-                    // Generate question key
+                    // Generate question index from questionNo
                     const questionIndex = parseInt(question.questionNo.split('.')[0]) - 1;
-                    const formKey = `${category}_${subKey}_${questionIndex}`;
+                    const formKey = `${categoryKey}_${categoryKey}_${questionIndex}`;
 
-                    const currentQuestion = findQuestionByKey(formKey);
-                    if (!currentQuestion) return;
+                    // Find matching question in allCategories
+                    const targetQuestion = allCategories
+                        .find(c => c.key === categoryKey)
+                        ?.questions?.[0] // Each category has one question group
+                        ?.question?.[questionIndex];
 
-                    // Handle different question types
-                    if (currentQuestion.type === 'table') {
-                        // Table handling logic
+                    if (!targetQuestion) return;
+
+                    if (targetQuestion && 'type' in targetQuestion && targetQuestion.type === 'table') {
                         try {
-                            const parsed = typeof answer === 'string' ? JSON.parse(answer) : answer;
-                            answers[formKey] = Array.isArray(parsed) ? parsed : [parsed];
+                            answers[formKey] = typeof answer === 'string' ? JSON.parse(answer) : answer;
                         } catch {
                             answers[formKey] = [{ value: answer }];
                         }
                     }
-                    else if (currentQuestion.choices) {
-                        // Radio/Select handling
+                    else if (targetQuestion && 'choices' in targetQuestion && targetQuestion.choices) {
                         const cleanAnswer = String(answer).toLowerCase().trim();
-                        const match = currentQuestion.choices.find((c: string) =>
+                        const match = targetQuestion.choices.find((c: string) =>
                             c.toLowerCase().trim() === cleanAnswer
                         );
                         answers[formKey] = match || answer;
                     }
-                    else {
-                        // TextArea handling
+                    else if (targetQuestion) {
                         answers[formKey] = answer;
                     }
                 });
@@ -264,9 +252,7 @@ const Questionnaire: React.FC = () => {
         return answers;
     };
 
-    // Updated key mapping function
     const generateFormKey = (sectionKey: string, subsectionKey: string, questionNo: string): string => {
-        // Map section keys to form categories
         const sectionMap: Record<string, string> = {
             'section_a': 'details',
             'section_b': 'product_service',
@@ -277,7 +263,6 @@ const Questionnaire: React.FC = () => {
             'section_g': 'transparency'
         };
 
-        // Map subsection numbers to form keys
         const subsectionMap: Record<string, string> = {
             'one': 'details',
             'two': 'product_service',
@@ -288,13 +273,10 @@ const Questionnaire: React.FC = () => {
             'seven': 'transparency'
         };
 
-        // Get base category key
         const categoryKey = sectionMap[sectionKey] || sectionKey.toLowerCase();
 
-        // Get subsection key
         const subKey = subsectionMap[subsectionKey] || subsectionKey.toLowerCase();
 
-        // Handle question numbers like "1", "2.a", "4.1" etc.
         const questionIndex = parseInt(questionNo.split('.')[0]) - 1;
 
         return `${categoryKey}_${subKey}_${questionIndex}`;
