@@ -23,6 +23,7 @@ interface Question {
     parent?: boolean;
     isNone?: boolean;
 }
+
 interface ApiQuestion {
     questionNo: string;
     question: string;
@@ -63,26 +64,6 @@ const Questionnaire: React.FC = () => {
     const [pendingAction, setPendingAction] = useState<() => void | null>();
     const [submittedAnswers, setSubmittedAnswers] = useState<Record<string, boolean>>({});
 
-
-    const findQuestionByKey = (formKey: string): Question | null => {
-        const parts = formKey.split('_');
-        if (parts.length < 3) return null;
-
-        const [categoryKey, sectionKey, questionIndex] = parts;
-        const category = allCategories.find(cat => cat.key === categoryKey);
-        if (!category) return null;
-
-        const section = (category.questions as Array<{ key: string, question: Question[] }>).find(
-            (sec) => sec.key === sectionKey
-        );
-        if (!section || !Array.isArray(section.question)) return null;
-
-        const index = parseInt(questionIndex);
-        if (isNaN(index)) return null;
-
-        return section.question[index] || null;
-    };
-
     const confirmNavigation = (action: () => void) => {
         if (hasUnsavedChanges && showQuestions) {
             setPendingAction(() => action);
@@ -113,14 +94,27 @@ const Questionnaire: React.FC = () => {
             const formData = new FormData();
             formData.append('file', file.originFileObj || file);
 
-            const response = await fetch('https://brsr-production.up.railway.app/extract/', {
+            const response = await fetch('http://192.168.2.75/extract/', {
                 method: 'POST',
                 body: formData,
             });
 
-            if (!response.ok) throw new Error(`Upload failed with status ${response.status}`);
+            if (!response.ok) {
+                throw new Error(`Upload failed with status ${response.status}`);
+            }
 
-            const responseData: ApiResponse = await response.json();
+            let responseData: ApiResponse;
+            try {
+                responseData = await response.json();
+            } catch (jsonError) {
+                throw new Error("Failed to parse JSON response.");
+            }
+
+            // Check if the expected structure exists
+            if (!responseData?.data || !Array.isArray(responseData.data)) {
+                throw new Error("Invalid response structure received from the server.");
+            }
+
             const fileSize = `${(file.size / 1024).toFixed(2)} KB`;
 
             setUploadedFiles(prev => ({
@@ -129,6 +123,7 @@ const Questionnaire: React.FC = () => {
             }));
 
             const newAnswers = transformApiResponseToAnswers(responseData);
+
             setAnswers(prev => {
                 const updated = { ...prev };
                 Object.entries(newAnswers).forEach(([key, value]) => {
@@ -152,6 +147,7 @@ const Questionnaire: React.FC = () => {
             setLoading(false);
         }
     };
+
 
 
     const handleCopyText = (text: string) => {
@@ -180,106 +176,98 @@ const Questionnaire: React.FC = () => {
         }
     };
 
+
+
+    type SectionAMap = {
+        one: { category: 'details'; startIndex: number };
+        two: { category: 'product_service'; startIndex: number };
+        three: { category: 'operations'; startIndex: number };
+        four: { category: 'employees'; startIndex: number };
+        five: { category: 'holding'; startIndex: number };
+        six: { category: 'csr_details'; startIndex: number };
+        seven: { category: 'transparency'; startIndex: number };
+    };
+
+    type SectionBMap = {
+        one: { category: 'policy_management'; startIndex: number };
+        two: { category: 'governance_leadership'; startIndex: number };
+    };
+
+    const sectionPartMap: Record<string, Record<string, { category: string; startIndex: number }>> = {
+        'section_a': {
+            'one': { category: 'details', startIndex: 0 },
+            'two': { category: 'product_service', startIndex: 0 },
+            'three': { category: 'operations', startIndex: 0 },
+            'four': { category: 'employees', startIndex: 0 },
+            'five': { category: 'holding', startIndex: 0 },
+            'six': { category: 'csr_details', startIndex: 1 },
+            'seven': { category: 'transparency', startIndex: 0 }
+        },
+        'section_b': {
+            'one': { category: 'policy_management', startIndex: 0 },
+            'two': { category: 'governance_leadership', startIndex: 0 }
+        }
+    };
+
+    type SectionKey = keyof typeof sectionPartMap;
+    type SectionAPartKey = keyof SectionAMap;
+    type SectionBPartKey = keyof SectionBMap;
+
     const transformApiResponseToAnswers = (apiResponse: any) => {
         const answers: { [key: string]: any } = {};
-
         if (!apiResponse.data || !Array.isArray(apiResponse.data)) return answers;
 
-        // Map API parts to form categories
-        const sectionPartMap: Record<string, Record<string, string>> = {
-            'section_a': {
-                'one': 'details',
-                'two': 'product_service',
-                'three': 'operations',
-                'four': 'employees',
-                'five': 'holding',
-                'six': 'csr_details',
-                'seven': 'transparency'
-            },
-            'section_b': {
-                'one': 'policy_management',
-                'two': 'governance_leadership'
-            }
-        };
-
         apiResponse.data.forEach((section: any) => {
-            const sectionKey = section.section; // 'section_a' or 'section_b'
-            const partsMap = sectionPartMap[sectionKey] || {};
+            const sectionKey = section.section as SectionKey;
 
-            section.parts?.forEach((part: any) => {
-                const partNo = String(part.partNo).toLowerCase();
-                const categoryKey = partsMap[partNo];
+            if (sectionKey === 'section_a') {
+                const partsMap = sectionPartMap.section_a;
 
-                if (!categoryKey || !part.questions) return;
+                section.parts?.forEach((part: any) => {
+                    const partKey = part.partNo.toLowerCase() as SectionAPartKey;
+                    const partConfig = partsMap[partKey];
+                    if (!partConfig || !part.questions) return;
 
-                part.questions.forEach((question: any) => {
-                    const answer = question.questionAnswer;
-                    if (answer === null || answer === undefined) return;
+                    const { category, startIndex } = partConfig;
+                    const categoryConfig = allCategories.find(c => c.key === category);
 
-                    // Generate question index from questionNo
-                    const questionIndex = parseInt(question.questionNo.split('.')[0]) - 1;
-                    const formKey = `${categoryKey}_${categoryKey}_${questionIndex}`;
+                    part.questions.forEach((question: any, qIndex: number) => {
+                        const answer = question.questionAnswer;
+                        if (!answer || answer === "Not provided in the text") return;
 
-                    // Find matching question in allCategories
-                    const targetQuestion = allCategories
-                        .find(c => c.key === categoryKey)
-                        ?.questions?.[0] // Each category has one question group
-                        ?.question?.[questionIndex];
-
-                    if (!targetQuestion) return;
-
-                    if (targetQuestion && 'type' in targetQuestion && targetQuestion.type === 'table') {
-                        try {
-                            answers[formKey] = typeof answer === 'string' ? JSON.parse(answer) : answer;
-                        } catch {
-                            answers[formKey] = [{ value: answer }];
-                        }
-                    }
-                    else if (targetQuestion && 'choices' in targetQuestion && targetQuestion.choices) {
-                        const cleanAnswer = String(answer).toLowerCase().trim();
-                        const match = targetQuestion.choices.find((c: string) =>
-                            c.toLowerCase().trim() === cleanAnswer
-                        );
-                        answers[formKey] = match || answer;
-                    }
-                    else if (targetQuestion) {
+                        const questionIndex = startIndex + qIndex;
+                        const sectionKey = categoryConfig?.questions[0]?.key || category;
+                        const formKey = `${category}_${sectionKey}_${questionIndex}`;
                         answers[formKey] = answer;
-                    }
+                    });
                 });
-            });
+            }
+
+            if (sectionKey === 'section_b') {
+                const partsMap = sectionPartMap.section_b;
+
+                section.parts?.forEach((part: any) => {
+                    const partKey = part.partNo.toLowerCase() as SectionBPartKey;
+                    const partConfig = partsMap[partKey];
+                    if (!partConfig || !part.questions) return;
+
+                    const { category, startIndex } = partConfig;
+                    const categoryConfig = allCategories.find(c => c.key === category);
+
+                    part.questions.forEach((question: any, qIndex: number) => {
+                        const answer = question.questionAnswer;
+                        if (!answer || answer === "Not provided in the text") return;
+
+                        const questionIndex = startIndex + qIndex;
+                        const sectionKey = categoryConfig?.questions[0]?.key || category;
+                        const formKey = `${category}_${sectionKey}_${questionIndex}`;
+                        answers[formKey] = answer;
+                    });
+                });
+            }
         });
 
         return answers;
-    };
-
-    const generateFormKey = (sectionKey: string, subsectionKey: string, questionNo: string): string => {
-        const sectionMap: Record<string, string> = {
-            'section_a': 'details',
-            'section_b': 'product_service',
-            'section_c': 'operations',
-            'section_d': 'employees',
-            'section_e': 'holding',
-            'section_f': 'csr_details',
-            'section_g': 'transparency'
-        };
-
-        const subsectionMap: Record<string, string> = {
-            'one': 'details',
-            'two': 'product_service',
-            'three': 'operations',
-            'four': 'employees',
-            'five': 'holding',
-            'six': 'csr_details',
-            'seven': 'transparency'
-        };
-
-        const categoryKey = sectionMap[sectionKey] || sectionKey.toLowerCase();
-
-        const subKey = subsectionMap[subsectionKey] || subsectionKey.toLowerCase();
-
-        const questionIndex = parseInt(questionNo.split('.')[0]) - 1;
-
-        return `${categoryKey}_${subKey}_${questionIndex}`;
     };
 
 
@@ -430,40 +418,6 @@ const Questionnaire: React.FC = () => {
             });
         }
     }, [trust, submittedAnswers]);
-    const mapApiKeyToFormKey = (apiKey: string): string => {
-        const parts = apiKey.split('-');
-        if (parts.length < 3) return apiKey.toLowerCase().replace(/-/g, '_');
-
-        const sectionMap: Record<string, string> = {
-            'section_a': 'details',
-            'section_b': 'product_service',
-            'section_c': 'operations',
-            'section_d': 'employees',
-            'section_e': 'holding',
-            'section_f': 'csr_details',
-            'section_g': 'transparency'
-        };
-
-        const subsectionMap: Record<string, string> = {
-            'one': 'details',
-            'two': 'product_service',
-            'three': 'operations',
-            'four': 'employees',
-            'five': 'holding',
-            'six': 'csr_details',
-            'seven': 'transparency'
-        };
-
-        const section = parts[0];
-        const subsection = parts[1];
-        const questionNum = parseInt(parts[2]) - 1;
-
-        if (section in sectionMap && subsection in subsectionMap) {
-            return `${sectionMap[section]}_${subsectionMap[subsection]}_${questionNum}`;
-        }
-
-        return apiKey.toLowerCase().replace(/-/g, '_');
-    };
 
     const renderQuestionInput = (
         section: string,
