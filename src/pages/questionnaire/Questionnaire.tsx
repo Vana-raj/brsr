@@ -93,6 +93,7 @@ const Questionnaire: React.FC = () => {
         try {
             const formData = new FormData();
             formData.append('file', file.originFileObj || file);
+            formData.append('questionKey', questionKey);
 
             const response = await fetch('http://192.168.2.75:8000/extract/', {
                 method: 'POST',
@@ -656,7 +657,7 @@ const Questionnaire: React.FC = () => {
                                             const { onSuccess } = options;
                                             setTimeout(() => onSuccess?.("ok"), 0);
                                         }}
-                                        onChange={(info) => handleFileUpload(info, '')}
+                                        onChange={(info) => handleFileUpload(info, 'section_a')}
                                     >
                                         <FileAddTwoTone className="upload-icon" />
                                     </Upload>
