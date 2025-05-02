@@ -94,7 +94,7 @@ const Questionnaire: React.FC = () => {
             const formData = new FormData();
             formData.append('file', file.originFileObj || file);
 
-            const response = await fetch('http://192.168.2.75/extract/', {
+            const response = await fetch('http://192.168.2.75:8000/extract/', {
                 method: 'POST',
                 body: formData,
             });
@@ -505,9 +505,7 @@ const Questionnaire: React.FC = () => {
                 </div>
             );
         }
-        if (loading) {
-            return <Loader />;
-        }
+
 
         return (
             <div>
@@ -603,11 +601,26 @@ const Questionnaire: React.FC = () => {
     const progressPercent = singleSectionTextArea > 0
         ? Math.round((countNonEmptyAnswers() / singleSectionTextArea) * 100)
         : 0;
-    if (loading) {
-        return <Loader />;
-    }
+
     return (
         <div className="questionnaire-main">
+            {loading && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 1000
+                }}>
+                    <Loader />
+                </div>
+            )}
+
             {/* <div className="questionnaire-title">BRSR</div> */}
             <div className="questionnaire-container">
                 <div className="category-card">

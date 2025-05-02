@@ -8,16 +8,32 @@ import { primaryColor } from '../../style/ColorCode';
 import SelectDropDown from "../../component/select/SelectDropDown";
 import TableInput from "../../component/InputTable/InputTable";
 import "../questionnaire/Questionnaire.scss"
+import Loader from "../../component/loader/Loader";
 
 
 const { TextArea } = Input;
 
-interface QuestionSection {
-    key: string;
-    quesSection: string;
-    questionsAnswer: string;
-    percentComplete: string;
-    question: any[];
+interface ApiQuestion {
+    questionNo: string;
+    question: string;
+    questionOptions: Array<{ option: string; value: any }>;
+    questionAnswer: string | null;
+}
+
+interface ApiPart {
+    partNo: string;
+    subtitle: string;
+    questions: ApiQuestion[];
+}
+
+interface ApiSection {
+    title: string;
+    section: string;
+    parts: ApiPart[];
+}
+
+interface ApiResponse {
+    data: ApiSection[];
 }
 
 const SectionC: React.FC = () => {
@@ -29,6 +45,7 @@ const SectionC: React.FC = () => {
     const [isViewMode, setIsViewMode] = useState(false);
     const [singleSectionTextArea, setsingleSectionTextArea] = useState<any>();
     const [trust, setTrust] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
     const [isUnsavedModalVisible, setIsUnsavedModalVisible] = useState(false);
@@ -83,18 +100,115 @@ const SectionC: React.FC = () => {
         setHasUnsavedChanges(answers[questionKey] === "" ? false : true);
     };
 
+    type SectionBMap = {
+        one: { category: 'policy_management'; startIndex: number };
+        two: { category: 'governance_leadership'; startIndex: number };
+    };
 
-    const handleFileUpload = (info: any, questionKey: string) => {
-        if (info.file.status !== "uploading") {
-            const { name, size } = info.file;
-            const fileSize = `${(size / 1024).toFixed(2)} KB`;
+    const sectionPartMap: Record<string, Record<string, { category: string; startIndex: number }>> = {
+        'section_c': {
+            'one': { category: 'policy_management', startIndex: 0 },
+            'two': { category: 'governance_leadership', startIndex: 0 }
+        }
+    };
 
-            setUploadedFiles((prevFiles) => ({
-                ...prevFiles,
-                [questionKey]: { name, size: fileSize },
+    type SectionKey = keyof typeof sectionPartMap;
+    type SectionBPartKey = keyof SectionBMap;
+    const transformApiResponseToAnswers = (apiResponse: any) => {
+        const answers: { [key: string]: any } = {};
+        if (!apiResponse.data || !Array.isArray(apiResponse.data)) return answers;
+
+        apiResponse.data.forEach((section: any) => {
+            const sectionKey = section.section as SectionKey;
+
+            if (sectionKey === 'section_c') {
+                const partsMap = sectionPartMap.section_b;
+
+                section.parts?.forEach((part: any) => {
+                    const partKey = part.partNo.toLowerCase() as SectionBPartKey;
+                    const partConfig = partsMap[partKey];
+                    if (!partConfig || !part.questions) return;
+
+                    const { category, startIndex } = partConfig;
+                    const categoryConfig = allCategories3.find(c => c.key === category);
+
+                    part.questions.forEach((question: any, qIndex: number) => {
+                        const answer = question.questionAnswer;
+                        if (!answer || answer === "Not provided in the text") return;
+
+                        const questionIndex = startIndex + qIndex;
+                        const sectionKey = categoryConfig?.questions[0]?.key || category;
+                        const formKey = `${category}_${sectionKey}_${questionIndex}`;
+                        answers[formKey] = answer;
+                    });
+                });
+            }
+        });
+
+        return answers;
+    };
+
+    const handleFileUpload = async (info: any, questionKey: string) => {
+        const { file } = info;
+
+        if (!file || file.status === "uploading") return;
+        setLoading(true);
+
+        try {
+            const formData = new FormData();
+            formData.append('file', file.originFileObj || file);
+
+            const response = await fetch('http://192.168.2.75:8000/extract/', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error(`Upload failed with status ${response.status}`);
+            }
+
+            let responseData: ApiResponse;
+            try {
+                responseData = await response.json();
+            } catch (jsonError) {
+                throw new Error("Failed to parse JSON response.");
+            }
+
+            // Check if the expected structure exists
+            if (!responseData?.data || !Array.isArray(responseData.data)) {
+                throw new Error("Invalid response structure received from the server.");
+            }
+
+            const fileSize = `${(file.size / 1024).toFixed(2)} KB`;
+
+            setUploadedFiles(prev => ({
+                ...prev,
+                [questionKey]: { name: file.name, size: fileSize },
             }));
 
-            message.success(`${name} uploaded successfully.`);
+            const newAnswers = transformApiResponseToAnswers(responseData);
+
+            setAnswers(prev => {
+                const updated = { ...prev };
+                Object.entries(newAnswers).forEach(([key, value]) => {
+                    if (value !== undefined && value !== null && value !== "") {
+                        updated[key] = value;
+                    }
+                });
+                return updated;
+            });
+
+            localStorage.setItem('answeredQuestions', JSON.stringify({
+                ...answers,
+                ...newAnswers
+            }));
+
+            message.success(`${file.name} processed successfully!`);
+        } catch (error) {
+            console.error('Upload error:', error);
+            message.error(`Upload failed: ${error instanceof Error ? error.message : String(error)}`);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -386,35 +500,7 @@ const SectionC: React.FC = () => {
                                 onChange={(e) => handleInputChange(section, key, e.target.value, questionIndex)}
                                 value={answers[questionKey] || ""}
                             />
-                            <div className="upload-section">
-                                {!isFileUploaded && (
-                                    <Tooltip title="Upload">
-                                        <Upload
-                                            showUploadList={false}
-                                            customRequest={(options) => {
-                                                const { onSuccess } = options;
-                                                setTimeout(() => onSuccess?.("ok"), 0);
-                                            }}
-                                            onChange={(info) => handleFileUpload(info, questionKey)}
-                                        >
-                                            <FileAddTwoTone className="upload-icon" />
-                                        </Upload>
-                                    </Tooltip>
-                                )}
-                            </div>
-                            {isFileUploaded && (
-                                <div className="uploaded-file-info">
-                                    <div className="uploaded-file-details">
-                                        File: {uploadedFiles[questionKey]?.name} ({uploadedFiles[questionKey]?.size})
-                                        <button
-                                            onClick={() => handleRemoveFile(questionKey)}
-                                            className="remove-file-icon"
-                                        >
-                                            <DeleteOutlined />
-                                        </button>
-                                    </div>
-                                </div>
-                            )}
+
                         </div>
                     ) : question.choices.length > 4 ? (
                         <SelectDropDown
@@ -481,6 +567,22 @@ const SectionC: React.FC = () => {
 
     return (
         <div className="questionnaire-main">
+            {loading && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 1000
+                }}>
+                    <Loader />
+                </div>
+            )}
             <div className="questionnaire-container">
                 <div className="category-card">
                     <Card title={"Categories"} bordered>
@@ -507,7 +609,19 @@ const SectionC: React.FC = () => {
                             </div>
                         }
                         extra={
-                            <div style={{ textAlign: "center" }}>
+                            <div style={{ textAlign: "center", display: "flex", gap: "10px", alignItems: 'center' }}>
+                                <Tooltip title="Upload">
+                                    <Upload
+                                        showUploadList={false}
+                                        customRequest={(options) => {
+                                            const { onSuccess } = options;
+                                            setTimeout(() => onSuccess?.("ok"), 0);
+                                        }}
+                                        onChange={(info) => handleFileUpload(info, '')}
+                                    >
+                                        <FileAddTwoTone className="upload-icon" />
+                                    </Upload>
+                                </Tooltip>
                                 <Progress
                                     type="circle"
                                     percent={progressPercent}
