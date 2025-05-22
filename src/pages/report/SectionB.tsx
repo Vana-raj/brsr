@@ -9,7 +9,6 @@ import TableInput from "../../component/InputTable/InputTable";
 import Loader from "../../component/loader/Loader";
 import "../questionnaire/Questionnaire.scss"
 
-
 const { TextArea } = Input;
 
 interface ApiQuestion {
