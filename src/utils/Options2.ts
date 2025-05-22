@@ -53,13 +53,13 @@ export const data2 = {
 
 export const allCategories2 = [
   {
-    key: "details",
+    key: "policy",
     section: "B-I. Policy and management processes",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
       {
-        key: "details",
+        key: "policy",
         quesSection: "Policy and management processes",
         questionsAnswer: "0/9",
         percentComplete: "0",
@@ -99,13 +99,13 @@ export const allCategories2 = [
     ],
   },
   {
-    key: "product_service",
+    key: "governance",
     section: "B-II.Governance, leadership and oversight",
     questionsAnswer: "3/3",
     percentComplete: "90%",
     questions: [
       {
-        key: "Governance",
+        key: "governance",
         quesSection: "Governance, leadership and oversight",
         questionsAnswer: "0/4",
         percentComplete: "0",

@@ -13,16 +13,42 @@ import "./Questionnaire.scss";
 
 const { TextArea } = Input;
 
-interface Question {
+
+interface BaseQuestion {
     text: string;
-    choices: string[] | null;
     isMandatory: boolean;
-    type?: string;
-    columns?: any[];
-    rows?: any[];
     parent?: boolean;
     isNone?: boolean;
 }
+
+interface TextQuestion extends BaseQuestion {
+    choices: null;
+    type?: 'text';
+}
+
+interface ChoiceQuestion extends BaseQuestion {
+    choices: string[];
+    type?: 'radio' | 'checkbox';
+}
+
+interface TableQuestion extends BaseQuestion {
+    choices: string[] | null;
+    type: 'table';
+    columns: string[];
+    rows?: string[];
+}
+
+type Question = TextQuestion | ChoiceQuestion | TableQuestion;
+// interface Question {
+//     text: string;
+//     choices: string[] | null;
+//     isMandatory: boolean;
+//     type?: 'text' | 'radio' | 'checkbox' | 'table';
+//     columns?: string[];
+//     rows?: string[];
+//     parent?: boolean;
+//     isNone?: boolean;
+// }
 
 interface ApiQuestion {
     questionNo: string;
@@ -95,36 +121,82 @@ const Questionnaire: React.FC = () => {
             formData.append('file', file.originFileObj || file);
             formData.append('questionKey', questionKey);
 
-            const response = await fetch('http://192.168.2.75:8000/extract/', {
+            console.log("Sending request to server...");
+            const response = await fetch('http://192.168.2.75:10000/extract/', {
                 method: 'POST',
                 body: formData,
             });
 
+            console.log("Received response status:", response.status);
+
             if (!response.ok) {
-                throw new Error(`Upload failed with status ${response.status}`);
+                const errorText = await response.text();
+                console.error("Server responded with error:", errorText);
+                throw new Error(`Server error: ${response.status} - ${errorText}`);
             }
 
-            let responseData: ApiResponse;
+            // First, get the response as text
+            const responseText = await response.text();
+            console.log("Raw response text:", responseText);
+
+            // Try to parse it as JSON
+            let responseData;
             try {
-                responseData = await response.json();
+                responseData = JSON.parse(responseText);
+                console.log("Parsed response data:", responseData);
             } catch (jsonError) {
-                throw new Error("Failed to parse JSON response.");
+                console.error("Failed to parse JSON:", jsonError);
+                // If parsing fails, check if it's a simple string response
+                if (responseText.trim().length > 0) {
+                    console.log("Treating response as plain text");
+                    responseData = {
+                        data: [{
+                            section: "section_a",
+                            parts: [{
+                                partNo: "one",
+                                subtitle: "Extracted Data",
+                                questions: [{
+                                    questionNo: "1",
+                                    question: "Extracted content",
+                                    questionOptions: [],
+                                    questionAnswer: responseText
+                                }]
+                            }]
+                        }]
+                    };
+                } else {
+                    throw new Error("Empty response from server");
+                }
             }
 
-            // Check if the expected structure exists
-            if (!responseData?.data || !Array.isArray(responseData.data)) {
-                throw new Error("Invalid response structure received from the server.");
+            // Ensure we have some data structure to work with
+            if (!responseData) {
+                throw new Error("No data received from server");
             }
 
+            // Flexible response validation - handle both direct array and {data: array} formats
+            const responseDataToProcess = responseData.data || responseData;
+            if (!responseDataToProcess) {
+                throw new Error("Response does not contain processable data");
+            }
+
+            // Process the file upload info
             const fileSize = `${(file.size / 1024).toFixed(2)} KB`;
-
             setUploadedFiles(prev => ({
                 ...prev,
                 [questionKey]: { name: file.name, size: fileSize },
             }));
 
-            const newAnswers = transformApiResponseToAnswers(responseData);
+            // Transform the API response to answers
+            const newAnswers = transformApiResponseToAnswers(
+                Array.isArray(responseDataToProcess) ?
+                    responseDataToProcess :
+                    [responseDataToProcess]
+            );
 
+            console.log("Transformed answers:", newAnswers);
+
+            // Update the answers state
             setAnswers(prev => {
                 const updated = { ...prev };
                 Object.entries(newAnswers).forEach(([key, value]) => {
@@ -135,6 +207,7 @@ const Questionnaire: React.FC = () => {
                 return updated;
             });
 
+            // Save to localStorage
             localStorage.setItem('answeredQuestions', JSON.stringify({
                 ...answers,
                 ...newAnswers
@@ -142,14 +215,18 @@ const Questionnaire: React.FC = () => {
 
             message.success(`${file.name} processed successfully!`);
         } catch (error) {
-            console.error('Upload error:', error);
-            message.error(`Upload failed: ${error instanceof Error ? error.message : String(error)}`);
+            console.error('Full upload error:', error);
+            let errorMessage = 'Upload failed';
+            if (error instanceof Error) {
+                errorMessage += `: ${error.message}`;
+            } else if (typeof error === 'string') {
+                errorMessage += `: ${error}`;
+            }
+            message.error(errorMessage);
         } finally {
             setLoading(false);
         }
     };
-
-
 
     const handleCopyText = (text: string) => {
         if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
@@ -178,98 +255,186 @@ const Questionnaire: React.FC = () => {
     };
 
 
+    interface SectionPartConfig {
+        category: string;
+        startIndex: number;
+        questionMap?: Record<string, string>;
+    }
 
-    type SectionAMap = {
-        one: { category: 'details'; startIndex: number };
-        two: { category: 'product_service'; startIndex: number };
-        three: { category: 'operations'; startIndex: number };
-        four: { category: 'employees'; startIndex: number };
-        five: { category: 'holding'; startIndex: number };
-        six: { category: 'csr_details'; startIndex: number };
-        seven: { category: 'transparency'; startIndex: number };
-    };
-
-    type SectionBMap = {
-        one: { category: 'policy_management'; startIndex: number };
-        two: { category: 'governance_leadership'; startIndex: number };
-    };
-
-    const sectionPartMap: Record<string, Record<string, { category: string; startIndex: number }>> = {
+    const sectionPartMap: Record<string, Record<string, SectionPartConfig>> = {
         'section_a': {
-            'one': { category: 'details', startIndex: 0 },
-            'two': { category: 'product_service', startIndex: 0 },
-            'three': { category: 'operations', startIndex: 0 },
-            'four': { category: 'employees', startIndex: 0 },
-            'five': { category: 'holding', startIndex: 0 },
-            'six': { category: 'csr_details', startIndex: 1 },
-            'seven': { category: 'transparency', startIndex: 0 }
+            'one': {
+                category: 'details',
+                startIndex: 0,
+                questionMap: {
+                    '1': 'Corporate Identity Number (CIN) of the Listed Entity',
+                    '2': 'Name of the Listed Entity',
+                    '3': 'Year of incorporation',
+                    '4': 'Registered office address',
+                    '5': 'Corporate address',
+                    '6': 'E-mail',
+                    '7': 'Telephone',
+                    '8': 'Website',
+                    '9': 'Financial year for which reporting is being done',
+                    '10': 'Name of the Stock Exchange(s) where shares are listed',
+                    '11': 'Paid-up Capital',
+                    '12': 'Name and contact details (telephone, email address) of the person who may be contacted in case of any queries on the BRSR report',
+                    '13': 'Reporting boundary - Are the disclosures under this report made on a standalone basis (i.e. only for the entity) or on a consolidated basis (i.e. for the entity and all the entities which form a part of its consolidated financial statements, taken together).',
+                    '14': 'Name of assurance provider',
+                    '15': 'Type of assurance obtained'
+                }
+            },
+            'two': {
+                category: 'product_service',
+                startIndex: 0,
+                questionMap: {
+                    '1': 'Details of business activities (accounting for 90% of the turnover)',
+                    '2': `Products/Services sold by the entity (accounting for 90% of the entity's Turnover)`
+                }
+            },
+            'three': {
+                category: 'operations',
+                startIndex: 0,
+                questionMap: {
+                    '1': 'No. of locations where plants and/or operations/ offices of the entity are situated:',
+                    '2': 'Markets served by the entity'
+                }
+            },
+            'four': {
+                category: 'employees',
+                startIndex: 0,
+                questionMap: {
+                    '1': 'Details as at the end of Financial Year',
+                    '2': 'Participation/Inclusion/Representation of women',
+                    '3': 'Turnover rate for permanent employees and workers (Disclose trends for the past 3 years)'
+                }
+            },
+            'five': {
+                category: 'holding',
+                startIndex: 0,
+                questionMap: {
+                    '1': 'How many products have undergone a carbon footprint assessment?'
+                }
+            },
+            'six': {
+                category: 'csr_details',
+                startIndex: 1,
+                questionMap: {
+                    '1': 'CSR_details'
+                }
+            },
+            'seven': {
+                category: 'transparency',
+                startIndex: 0,
+                questionMap: {
+                    '1': 'Complaints/Grievances on any of the principles (Principles 1 to 9) under the National Guidelines on Responsible Business Conduct:',
+                    '2': `Overview of the entity's material responsible business conduct issues`
+                }
+            }
         },
         'section_b': {
-            'one': { category: 'policy_management', startIndex: 0 },
-            'two': { category: 'governance_leadership', startIndex: 0 }
+            'one': {
+                category: 'policy_management',
+                startIndex: 0,
+                questionMap: {}
+            },
+            'two': {
+                category: 'governance_leadership',
+                startIndex: 0,
+                questionMap: {}
+            }
         }
     };
 
-    type SectionKey = keyof typeof sectionPartMap;
-    type SectionAPartKey = keyof SectionAMap;
-    type SectionBPartKey = keyof SectionBMap;
-
-    const transformApiResponseToAnswers = (apiResponse: any) => {
+    const transformApiResponseToAnswers = (apiData: any[]) => {
         const answers: { [key: string]: any } = {};
-        if (!apiResponse.data || !Array.isArray(apiResponse.data)) return answers;
 
-        apiResponse.data.forEach((section: any) => {
-            const sectionKey = section.section as SectionKey;
+        if (!Array.isArray(apiData)) {
+            if (apiData && typeof apiData === 'object') {
+                apiData = [apiData];
+            } else {
+                console.error("Expected array or object, got:", apiData);
+                return answers;
+            }
+        }
 
-            if (sectionKey === 'section_a') {
-                const partsMap = sectionPartMap.section_a;
+        try {
+            apiData.forEach((section: any) => {
+                const sectionName = section.section || 'section_a';
+                const partsMap = sectionPartMap[sectionName as keyof typeof sectionPartMap] || {};
 
-                section.parts?.forEach((part: any) => {
-                    const partKey = part.partNo.toLowerCase() as SectionAPartKey;
-                    const partConfig = partsMap[partKey];
-                    if (!partConfig || !part.questions) return;
+                const parts = section.parts || [];
+                parts.forEach((part: any) => {
+                    const partNo = part.partNo?.toLowerCase();
+                    if (!partNo) return;
 
-                    const { category, startIndex } = partConfig;
+                    const partConfig = partsMap[partNo];
+                    if (!partConfig || !part.questions || !partConfig.questionMap) return;
+
+                    const { category, questionMap } = partConfig;
                     const categoryConfig = allCategories.find(c => c.key === category);
+                    if (!categoryConfig) return;
 
-                    part.questions.forEach((question: any, qIndex: number) => {
-                        const answer = question.questionAnswer;
-                        if (!answer || answer === "Not provided in the text") return;
+                    part.questions.forEach((apiQuestion: any) => {
+                        const answer = apiQuestion.questionAnswer;
+                        if (answer === null || answer === "Not provided in the text") return;
 
-                        const questionIndex = startIndex + qIndex;
-                        const sectionKey = categoryConfig?.questions[0]?.key || category;
-                        const formKey = `${category}_${sectionKey}_${questionIndex}`;
-                        answers[formKey] = answer;
+                        const expectedQuestionText = questionMap[apiQuestion.questionNo];
+                        if (!expectedQuestionText) {
+                            console.warn(`No mapping for question ${apiQuestion.questionNo}`);
+                            return;
+                        }
+
+                        let matchingQuestionIndex = -1;
+                        let targetQuestion: Question | undefined;
+                        let sectionKey = '';
+
+                        for (const section of categoryConfig.questions) {
+                            const index = section.question.findIndex((q: any) => {
+                                if (!q || !q.text) return false;
+                                return q.text.trim() === expectedQuestionText.trim();
+                            });
+
+                            if (index !== -1) {
+                                matchingQuestionIndex = index;
+                                targetQuestion = section.question[index] as Question;
+                                sectionKey = section.key;
+                                break;
+                            }
+                        }
+
+                        if (matchingQuestionIndex === -1 || !targetQuestion) {
+                            console.warn(`Question not found: ${expectedQuestionText}`);
+                            return;
+                        }
+
+                        const formKey = `${category}_${sectionKey}_${matchingQuestionIndex}`;
+
+                        if (isTableQuestion(targetQuestion)) {
+                            try {
+                                answers[formKey] = typeof answer === 'string' ?
+                                    JSON.parse(answer) :
+                                    answer;
+                            } catch (e) {
+                                console.warn(`Failed to parse table answer for ${formKey}`, e);
+                                answers[formKey] = [{ value: answer }];
+                            }
+                        } else {
+                            answers[formKey] = answer;
+                        }
                     });
                 });
-            }
-
-            if (sectionKey === 'section_b') {
-                const partsMap = sectionPartMap.section_b;
-
-                section.parts?.forEach((part: any) => {
-                    const partKey = part.partNo.toLowerCase() as SectionBPartKey;
-                    const partConfig = partsMap[partKey];
-                    if (!partConfig || !part.questions) return;
-
-                    const { category, startIndex } = partConfig;
-                    const categoryConfig = allCategories.find(c => c.key === category);
-
-                    part.questions.forEach((question: any, qIndex: number) => {
-                        const answer = question.questionAnswer;
-                        if (!answer || answer === "Not provided in the text") return;
-
-                        const questionIndex = startIndex + qIndex;
-                        const sectionKey = categoryConfig?.questions[0]?.key || category;
-                        const formKey = `${category}_${sectionKey}_${questionIndex}`;
-                        answers[formKey] = answer;
-                    });
-                });
-            }
-        });
+            });
+        } catch (error) {
+            console.error("Error in transformApiResponseToAnswers:", error);
+        }
 
         return answers;
     };
+
+    function isTableQuestion(question: Question): question is TableQuestion {
+        return question.type === 'table';
+    }
 
 
     const handleSubmitAll = (item: any) => {
@@ -408,9 +573,7 @@ const Questionnaire: React.FC = () => {
                 const updatedAnswers = { ...prevAnswers };
                 Object.keys(updatedAnswers).forEach((key) => {
                     const value = updatedAnswers[key];
-                    // Check if value is a string before trimming
                     const isEmptyString = typeof value === 'string' ? value.trim() === "" : !value;
-
                     if (!submittedAnswers[key] && (!value || isEmptyString)) {
                         updatedAnswers[key] = "";
                     }
@@ -622,7 +785,6 @@ const Questionnaire: React.FC = () => {
                 </div>
             )}
 
-            {/* <div className="questionnaire-title">BRSR</div> */}
             <div className="questionnaire-container">
                 <div className="category-card">
                     <Card title={"Categories"} bordered>

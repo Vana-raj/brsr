@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Card, Input, List, Modal, Progress, Space, Table, Tooltip, Upload, message } from "antd";
-import { Radio } from "antd";
-import { ArrowLeftOutlined, BoldOutlined, CheckOutlined, CopyTwoTone, DeleteOutlined, FileAddTwoTone } from "@ant-design/icons";
+import { CheckOutlined, CopyTwoTone, FileAddTwoTone } from "@ant-design/icons";
+import { Card, Radio, Input, List, Modal, Progress, Space, Tooltip, Upload, message } from "antd";
 import CustomButton from "../../component/buttons/CustomButton";
 import { allCategories2 } from "../../utils/Options2";
 import { primaryColor } from '../../style/ColorCode';
 import SelectDropDown from "../../component/select/SelectDropDown";
 import TableInput from "../../component/InputTable/InputTable";
-import "../questionnaire/Questionnaire.scss"
 import Loader from "../../component/loader/Loader";
+import "../questionnaire/Questionnaire.scss"
 
 
 const { TextArea } = Input;
@@ -36,8 +35,37 @@ interface ApiResponse {
     data: ApiSection[];
 }
 
+
+interface BaseQuestion {
+    text: string;
+    choices: string[] | null;
+    isMandatory: boolean;
+    parent?: boolean;
+    isNone?: boolean;
+    label?: string;
+}
+
+interface TableQuestion extends BaseQuestion {
+    type: "table";
+    columns: string[];
+    rows: string[];
+}
+
+interface TextQuestion extends BaseQuestion {
+    type?: undefined;
+    choices: null;
+}
+
+interface ChoiceQuestion extends BaseQuestion {
+    type?: undefined;
+    choices: string[];
+}
+
+type Question = TableQuestion | TextQuestion | ChoiceQuestion;
+
+
 const SectionB: React.FC = () => {
-    const [activeCategory, setActiveCategory] = useState<string>("details");
+    const [activeCategory, setActiveCategory] = useState<string>("policy");
     const [showQuestions, setShowQuestions] = useState<boolean>(false);
     const [answers, setAnswers] = useState<{ [key: string]: any }>({});
     const [uploadedFiles, setUploadedFiles] = useState<{ [key: string]: { name: string; size: string } | null }>({});
@@ -52,11 +80,6 @@ const SectionB: React.FC = () => {
     const [submittedAnswers, setSubmittedAnswers] = useState<Record<string, boolean>>({});
 
 
-    const handleRowClick = (record: any, sectionIndex: number) => {
-        setShowQuestions(true);
-        setCurrentSectionIndex(sectionIndex);
-    };
-
     const confirmNavigation = (action: () => void) => {
         if (hasUnsavedChanges && showQuestions) {
             setPendingAction(() => action);
@@ -67,27 +90,7 @@ const SectionB: React.FC = () => {
     };
 
 
-    const handleBackToCategories = () => {
-        confirmNavigation(() => {
-            const savedAnswers = localStorage.getItem('answeredQuestions');
-            if (savedAnswers) {
-                setAnswers(JSON.parse(savedAnswers));
-            }
-            setActiveCategory(activeCategory || "");
-            setShowQuestions(false);
-            setCurrentSectionIndex(0);
-            handleClearUnsubmittedAnswers()
-        });
 
-    };
-
-    const handleNextSection = () => {
-        setCurrentSectionIndex((prev) => Math.min(prev + 1, allCategories2[0].questions.length - 1));
-    };
-
-    const handlePreviousSection = () => {
-        setCurrentSectionIndex((prev) => Math.max(prev - 1, 0));
-    };
 
     const handleInputChange = (section: string, key: string, value: any, questionIndex: number) => {
         const questionKey = `${section}-${key}-${questionIndex}`;
@@ -99,11 +102,8 @@ const SectionB: React.FC = () => {
         setHasUnsavedChanges(answers[questionKey] === "" ? false : true);
     };
 
-
-
     const handleFileUpload = async (info: any, questionKey: string) => {
         const { file } = info;
-
         if (!file || file.status === "uploading") return;
         setLoading(true);
 
@@ -112,116 +112,225 @@ const SectionB: React.FC = () => {
             formData.append('file', file.originFileObj || file);
             formData.append('questionKey', questionKey);
 
-            const response = await fetch('http://192.168.2.75:8000/extract/', {
+            const response = await fetch('http://192.168.2.75:1000/extract/', {
                 method: 'POST',
                 body: formData,
             });
 
-            if (!response.ok) {
-                throw new Error(`Upload failed with status ${response.status}`);
-            }
+            if (!response.ok) throw new Error('Upload failed');
 
-            let responseData: ApiResponse;
-            try {
-                responseData = await response.json();
-            } catch (jsonError) {
-                throw new Error("Failed to parse JSON response.");
-            }
+            const responseData = await response.json();
+            const newAnswers = transformApiResponseToAnswers(
+                Array.isArray(responseData.data) ?
+                    responseData.data :
+                    [responseData.data || responseData]
+            );
 
-            // Check if the expected structure exists
-            if (!responseData?.data || !Array.isArray(responseData.data)) {
-                throw new Error("Invalid response structure received from the server.");
-            }
-
-            const fileSize = `${(file.size / 1024).toFixed(2)} KB`;
-
-            setUploadedFiles(prev => ({
-                ...prev,
-                [questionKey]: { name: file.name, size: fileSize },
-            }));
-
-            const newAnswers = transformApiResponseToAnswers(responseData);
-
+            // Update state with new answers
             setAnswers(prev => {
-                const updated = { ...prev };
-                Object.entries(newAnswers).forEach(([key, value]) => {
-                    if (value !== undefined && value !== null && value !== "") {
-                        updated[key] = value;
-                    }
-                });
-                return updated;
+                const updatedAnswers = { ...prev, ...newAnswers };
+                // Save to localStorage immediately
+                localStorage.setItem('answeredQuestions', JSON.stringify(updatedAnswers));
+                return updatedAnswers;
             });
 
-            localStorage.setItem('answeredQuestions', JSON.stringify({
-                ...answers,
-                ...newAnswers
+            // Update uploaded files state
+            setUploadedFiles(prev => ({
+                ...prev,
+                [questionKey]: {
+                    name: file.name,
+                    size: `${(file.size / 1024).toFixed(2)} KB`
+                },
             }));
 
             message.success(`${file.name} processed successfully!`);
         } catch (error) {
             console.error('Upload error:', error);
-            message.error(`Upload failed: ${error instanceof Error ? error.message : String(error)}`);
+            message.error('Failed to process file');
         } finally {
             setLoading(false);
         }
     };
 
-    type SectionBMap = {
-        one: { category: 'policy_management'; startIndex: number };
-        two: { category: 'governance_leadership'; startIndex: number };
-    };
+    useEffect(() => {
+        const savedAnswers = localStorage.getItem('answeredQuestions');
+        if (savedAnswers) {
+            try {
+                const parsedAnswers = JSON.parse(savedAnswers);
+                setAnswers(parsedAnswers);
 
-    const sectionPartMap: Record<string, Record<string, { category: string; startIndex: number }>> = {
+                const answeredKeys = Object.keys(parsedAnswers);
+                const newSubmittedAnswers = { ...submittedAnswers };
+                answeredKeys.forEach(key => {
+                    newSubmittedAnswers[key] = true;
+                });
+                setSubmittedAnswers(newSubmittedAnswers);
+            } catch (e) {
+                console.error("Failed to parse saved answers", e);
+            }
+        }
+    }, []);
+
+    interface SectionPartConfig {
+        category: string;
+        startIndex: number;
+        questionMap?: Record<string, string>;
+    }
+
+    const sectionPartMap: Record<string, Record<string, SectionPartConfig>> = {
         'section_b': {
-            'one': { category: 'policy_management', startIndex: 0 },
-            'two': { category: 'governance_leadership', startIndex: 0 }
+            'one': {
+                category: 'policy',
+                startIndex: 0,
+                questionMap: {
+                    '1': `Whether your entity's policy/policies cover each principle and its core elements of the NGRBCs. (Yes/No)`
+                }
+            },
+            'two': {
+                category: 'governance',
+                startIndex: 0,
+                questionMap: {
+                    '1': 'Statement by director responsible for the business responsibility report',
+                    '2': 'Details of the highest authority responsible for implementation and oversight of the Business Responsibility policy (ies).',
+                    '3': 'Does the entity have a specified Committee of the Board/ Director responsible for decision making on sustainability related issues? (Yes / No). If yes, provide details.',
+                    '4a': 'Details of Review of NGRBCs by the Company: (a)',
+                    '4b': 'Details of Review of NGRBCs by the Company: (b)',
+                    '5': 'Has the entity carried out independent assessment/ evaluation of the working of its policies',
+                    '6': 'If answer to question (1) above is "No" i.e. not all Principles are covered by a policy',
+                    '7a': 'Supply Chain Management (a)',
+                    '7b': 'Supply Chain Management (b)'
+                }
+            }
         }
     };
 
-    type SectionKey = keyof typeof sectionPartMap;
-    type SectionBPartKey = keyof SectionBMap;
-    const transformApiResponseToAnswers = (apiResponse: any) => {
-        const answers: { [key: string]: any } = {};
-        if (!apiResponse.data || !Array.isArray(apiResponse.data)) return answers;
+    const findMatchingQuestion = (
+        categoryConfig: any,
+        apiQuestion: any,
+        questionMap: Record<string, string> = {}
+    ) => {
+        for (const section of categoryConfig.questions) {
+            for (let questionIndex = 0; questionIndex < section.question.length; questionIndex++) {
+                const targetQuestion = section.question[questionIndex];
 
-        apiResponse.data.forEach((section: any) => {
-            const sectionKey = section.section as SectionKey;
+                // Check direct question text match
+                if (targetQuestion.text.includes(apiQuestion.question)) {
+                    return {
+                        sectionKey: section.key,
+                        questionIndex,
+                        targetQuestion
+                    };
+                }
 
-            if (sectionKey === 'section_b') {
-                const partsMap = sectionPartMap.section_b;
-
-                section.parts?.forEach((part: any) => {
-                    const partKey = part.partNo.toLowerCase() as SectionBPartKey;
-                    const partConfig = partsMap[partKey];
-                    if (!partConfig || !part.questions) return;
-
-                    const { category, startIndex } = partConfig;
-                    const categoryConfig = allCategories2.find(c => c.key === category);
-
-                    part.questions.forEach((question: any, qIndex: number) => {
-                        const answer = question.questionAnswer;
-                        if (!answer || answer === "Not provided in the text") return;
-
-                        const questionIndex = startIndex + qIndex;
-                        const sectionKey = categoryConfig?.questions[0]?.key || category;
-                        const formKey = `${category}_${sectionKey}_${questionIndex}`;
-                        answers[formKey] = answer;
-                    });
-                });
+                if (apiQuestion.questionNo && questionMap[apiQuestion.questionNo]) {
+                    if (targetQuestion.text.includes(questionMap[apiQuestion.questionNo])) {
+                        return {
+                            sectionKey: section.key,
+                            questionIndex,
+                            targetQuestion
+                        };
+                    }
+                }
             }
+        }
+        return null;
+    };
+
+    const transformApiResponseToAnswers = (apiData: any[]) => {
+        const answers: { [key: string]: any } = {};
+
+        apiData.forEach((section: any) => {
+            const sectionName = section.section || 'section_b';
+            const partsMap = sectionPartMap[sectionName] || {};
+
+            section.parts?.forEach((part: any) => {
+                const partNo = part.partNo?.toLowerCase();
+                const partConfig = partsMap[partNo];
+                if (!partConfig || !part.questions) return;
+
+                const { category } = partConfig;
+                const categoryConfig = allCategories2.find(c => c.key === category);
+                if (!categoryConfig) return;
+
+                part.questions.forEach((apiQuestion: any) => {
+                    if (category === 'policy' && apiQuestion.questionNo === '1') {
+                        const questionKey = `${category}_policy_0`;
+                        const policyQuestion = categoryConfig.questions[0].question[0] as TableQuestion;
+
+                        if (policyQuestion.type === 'table' && policyQuestion.rows) {
+                            answers[questionKey] = policyQuestion.rows.map((row: string) => ({
+                                [row]: apiQuestion.questionAnswer || ''
+                            }));
+                        }
+                        return;
+                    }
+
+                    const frontendQuestion = findMatchingQuestion(
+                        categoryConfig,
+                        apiQuestion,
+                        partConfig.questionMap
+                    );
+
+                    if (!frontendQuestion) return;
+
+                    const { sectionKey, questionIndex, targetQuestion } = frontendQuestion;
+                    const questionKey = `${category}_${sectionKey}_${questionIndex}`;
+
+                    if (targetQuestion.type === 'table') {
+                        answers[questionKey] = transformToTableData(
+                            apiQuestion.questionAnswer,
+                            targetQuestion.columns,
+                            targetQuestion.rows
+                        );
+                    } else if (targetQuestion.choices) {
+                        answers[questionKey] = apiQuestion.questionAnswer;
+                    } else {
+                        answers[questionKey] = apiQuestion.questionAnswer || '';
+                    }
+                });
+            });
         });
 
         return answers;
     };
-    const handleRemoveFile = (questionKey: string) => {
-        setUploadedFiles((prevFiles) => {
-            const updatedFiles = { ...prevFiles };
-            delete updatedFiles[questionKey];
-            return updatedFiles;
-        });
+    const transformToTableData = (
+        answerData: any,
+        columns: string[],
+        rows?: string[]
+    ): Record<string, any>[] => {
+        if (!answerData) return [];
 
-        message.success("File removed successfully.");
+        // Handle string input (try to parse as JSON)
+        if (typeof answerData === 'string') {
+            try {
+                answerData = JSON.parse(answerData);
+            } catch {
+                return [{ [columns[0]]: answerData }];
+            }
+        }
+
+        // Handle array input
+        if (Array.isArray(answerData)) {
+            return answerData;
+        }
+
+        // Handle object input
+        if (typeof answerData === 'object') {
+            if (rows && rows.length > 0) {
+                return rows.map((row: string) => ({
+                    [row]: answerData[row] || ''
+                }));
+            }
+            return Object.entries(answerData).map(([key, value]) => ({
+                [columns[0]]: key,
+                [columns[1]]: value
+            }));
+        }
+
+        return [];
     };
+
+
 
     const handleCopyText = (text: string) => {
         if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
@@ -249,9 +358,6 @@ const SectionB: React.FC = () => {
         }
     };
 
-
-
-    const hasNonEmptyValues = Object.values(answers).some(value => value !== "");
 
     const handleSubmitAll = (item: any) => {
         setTrust(item?.isTrusted);
@@ -359,7 +465,6 @@ const SectionB: React.FC = () => {
     };
 
 
-
     useEffect(() => {
         const savedAnswers: any = localStorage.getItem('answeredQuestions');
         if (savedAnswers) {
@@ -367,13 +472,45 @@ const SectionB: React.FC = () => {
         }
     }, []);
 
+    useEffect(() => {
+        const loadInitialState = () => {
+            const savedAnswers = localStorage.getItem('answeredQuestions');
+            if (savedAnswers) {
+                try {
+                    const parsedAnswers = JSON.parse(savedAnswers);
+                    // Transform keys to match current format if needed
+                    const transformedAnswers = Object.entries(parsedAnswers).reduce((acc, [key, value]) => {
+                        // Fix key format if it's in old format
+                        const newKey = key.replace(/-/g, '_');
+                        acc[newKey] = value;
+                        return acc;
+                    }, {} as Record<string, any>);
+                    setAnswers(transformedAnswers);
+                } catch (e) {
+                    console.error("Failed to parse saved answers", e);
+                }
+            }
+        };
+        loadInitialState();
+    }, []);
+
+
+    const saveAnswersToStorage = (currentAnswers: Record<string, any>) => {
+        const answersToSave = Object.entries(currentAnswers).reduce((acc, [key, value]) => {
+            const normalizedKey = key.replace(/-/g, '_');
+            acc[normalizedKey] = value;
+            return acc;
+        }, {} as Record<string, any>);
+
+        localStorage.setItem('answeredQuestions', JSON.stringify(answersToSave));
+    };
 
     useEffect(() => {
         if (!trust) {
             setAnswers((prevAnswers) => {
                 const updatedAnswers = { ...prevAnswers };
                 Object.keys(updatedAnswers).forEach((key) => {
-                    if (!submittedAnswers[key] && (!updatedAnswers[key] || updatedAnswers[key].trim() === "")) {
+                    if (!submittedAnswers[key] && (!updatedAnswers[key])) {
                         updatedAnswers[key] = "";
                     }
                 });
@@ -381,9 +518,6 @@ const SectionB: React.FC = () => {
             });
         }
     }, [trust, submittedAnswers]);
-
-
-
 
     const renderQuestionInput = (
         section: string,
@@ -419,12 +553,13 @@ const SectionB: React.FC = () => {
                 if (lastParentIndex === -1) return `${questionIndex + 1}.`;
 
                 const subQuestionIndex = questionIndex - lastParentIndex - 1;
-                const alphabet = String.fromCharCode(97 + subQuestionIndex); // 97 = 'a'
+                const alphabet = String.fromCharCode(97 + subQuestionIndex);
                 return `${alphabet}.`;
             }
         };
 
         const questionKey = `${section}-${key}-${questionIndex}`;
+        const answerValue = answers[questionKey] ?? '';
         const isFileUploaded = !!uploadedFiles[questionKey];
         const isAnswered = !!answers[questionKey];
         if (isViewMode && !isAnswered) {
@@ -456,10 +591,9 @@ const SectionB: React.FC = () => {
                     </div>
                     <div >
                         <TableInput
-                            columns={question?.columns}
-                            rows={question?.rows}
-                            header={"S.No"}
-                            value={answers[questionKey] || []}
+                            columns={question.columns}
+                            rows={question.rows}
+                            value={answers[`${section}_${key}_${questionIndex}`] || []}
                             onChange={(value: any) =>
                                 handleInputChange(section, key, value, questionIndex)
                             }
@@ -496,9 +630,10 @@ const SectionB: React.FC = () => {
                             <TextArea
                                 rows={3}
                                 placeholder="Type your answer here"
-                                size="small"
-                                onChange={(e) => handleInputChange(section, key, e.target.value, questionIndex)}
-                                value={answers[questionKey] || ""}
+                                value={answers[`${section}_${key}_${questionIndex}`] || ""}
+                                onChange={(e) =>
+                                    handleInputChange(section, key, e.target.value, questionIndex)
+                                }
                             />
                         </div>
                     ) : question.choices.length > 4 ? (
@@ -518,10 +653,12 @@ const SectionB: React.FC = () => {
                                 <label key={`${option}-${idx}`}>
                                     <Space direction="vertical">
                                         <Radio
+                                            key={option}
                                             value={option}
-                                            checked={answers[`${section}-${key}-${questionIndex}`] === option}
-                                            onChange={() => handleInputChange(section, key, option, questionIndex)}
-                                            className="radio-qbutton"
+                                            checked={answers[`${section}_${key}_${questionIndex}`] === option}
+                                            onChange={() =>
+                                                handleInputChange(section, key, option, questionIndex)
+                                            }
                                         >
                                             {option}
                                         </Radio>
@@ -538,7 +675,6 @@ const SectionB: React.FC = () => {
 
     const currentCategory = allCategories2.find((cat) => cat.key === activeCategory);
     const questions: any = currentCategory?.questions[currentSectionIndex];
-
     const countNonEmptyAnswers = () => {
         let nonEmptyCount = 0;
         if (currentCategory) {
@@ -566,18 +702,7 @@ const SectionB: React.FC = () => {
     return (
         <div className="questionnaire-main">
             {loading && (
-                <div style={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    zIndex: 1000
-                }}>
+                <div className="loader-main">
                     <Loader />
                 </div>
             )}
@@ -655,8 +780,6 @@ const SectionB: React.FC = () => {
 
                     </Card >
                 </div >
-                {/* )
-                } */}
             </div >
             <Modal
                 title="Unsaved Changes!!!"
@@ -673,12 +796,8 @@ const SectionB: React.FC = () => {
             >
                 <div className="model-ques-content">Do You Want to Exit Without Saving?</div>
             </Modal>
-
-
         </div >
-
     );
-
 };
 
 export default SectionB;

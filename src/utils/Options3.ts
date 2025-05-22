@@ -52,13 +52,13 @@ export const data = {
 
 export const allCategories3 = [
   {
-    key: "details",
+    key: "business",
     section: "C-I.Principle 1",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
       {
-        key: "Business",
+        key: "business",
         quesSection: "Principle 1 : Businesses should conduct and govern themselves with integrity, and in a manner that is Ethical, Transparent and Accountable",
         questionsAnswer: "0/9",
         percentComplete: "0",
@@ -196,13 +196,13 @@ export const allCategories3 = [
     ],
   },
   {
-    key: "product_service",
+    key: "sustainable_and_safe",
     section: "C-II.Principle 2",
     questionsAnswer: "3/3",
     percentComplete: "90%",
     questions: [
       {
-        key: "sustainable and safe",
+        key: "sustainable_and_safe",
         quesSection: "Principle 2 : Businesses should provide goods and services in a manner that is sustainable and safe",
         questionsAnswer: "0/4",
         percentComplete: "0",
@@ -665,7 +665,7 @@ export const allCategories3 = [
         percentComplete: "0",
         section: "C IV",
         question: [
-          { text: "Describe the processes for identifying key stakeholder groups of the entity.", choices: null, isMandatory: false },
+          { text: "Describe the processes for identifying key stakeholder groups of the entity.", choices: null, isMandatory: false, parent: true },
           {
             text: "List stakeholder groups identified as key for your entity and the frequency of engagement with each stakeholder group.", choices: null, isMandatory: true
             , parent: true,
