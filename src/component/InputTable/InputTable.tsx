@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DeleteOutlined } from "@ant-design/icons";
 import CustomButton from "../buttons/CustomButton";
 import InputField from "../inputfield/CustomInputField";
@@ -7,10 +7,16 @@ import './InputTable.scss'
 const TableInput = ({ columns, rows, value, header, onChange, className = "custom-table" }: any) => {
     const [data, setData] = useState(() => {
         if (rows) {
-            return rows.map((row: string) => ({ particulars: row }));
+            return rows.map((row: any) => ({ particulars: row }));
         }
         return value && value.length > 0 ? value : [{}];
     });
+
+    useEffect(() => {
+        if (value && value.length > 0) {
+            setData(value);
+        }
+    }, [value]);
     const addRow = () => {
         if (rows) return;
         const newData = [...data, {}];

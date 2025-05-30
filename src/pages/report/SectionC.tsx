@@ -458,7 +458,7 @@ const SectionC: React.FC = () => {
             formData.append('file', file.originFileObj || file);
             formData.append('questionKey', questionKey);
 
-            const response = await fetch('http://192.168.2.75:10000/extract/', {
+            const response = await fetch('http://192.168.2.75:1000/extract/', {
                 method: 'POST',
                 body: formData,
             });
@@ -770,10 +770,10 @@ const SectionC: React.FC = () => {
                     </div>
                     <div >
                         <TableInput
-                            columns={question?.columns}
-                            rows={question?.rows}
+                            columns={question.columns}
+                            rows={question.rows}
                             header={"S.No"}
-                            value={answers[questionKey] || []}  // Ensure we pass an array
+                            value={answers[`${section}_${key}_${questionIndex}`] || []}
                             onChange={(value: any) =>
                                 handleInputChange(section, key, value, questionIndex)
                             }

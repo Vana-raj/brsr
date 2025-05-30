@@ -122,7 +122,7 @@ const Questionnaire: React.FC = () => {
             formData.append('questionKey', questionKey);
 
             console.log("Sending request to server...");
-            const response = await fetch('http://192.168.2.75:10000/extract/', {
+            const response = await fetch('http://192.168.2.75:1000/extract/', {
                 method: 'POST',
                 body: formData,
             });

@@ -120,7 +120,7 @@ const SectionB: React.FC = () => {
 
             const responseData = await response.json();
             const newAnswers = transformApiResponseToAnswers(
-                Array.isArray(responseData.data) ?
+                Array?.isArray(responseData?.data) ?
                     responseData.data :
                     [responseData.data || responseData]
             );
@@ -256,13 +256,25 @@ const SectionB: React.FC = () => {
                         const questionKey = `${category}_policy_0`;
                         const policyQuestion = categoryConfig.questions[0].question[0] as TableQuestion;
 
+                        let parsedAnswer = apiQuestion.questionAnswer;
+
+                        if (typeof parsedAnswer === 'string') {
+                            try {
+                                parsedAnswer = JSON.parse(parsedAnswer);
+                            } catch {
+                                parsedAnswer = {};
+                            }
+                        }
+
                         if (policyQuestion.type === 'table' && policyQuestion.rows) {
                             answers[questionKey] = policyQuestion.rows.map((row: string) => ({
-                                [row]: apiQuestion.questionAnswer || ''
+                                [row]: parsedAnswer?.[row] || ''
                             }));
                         }
+
                         return;
                     }
+
 
                     const frontendQuestion = findMatchingQuestion(
                         categoryConfig,
@@ -309,18 +321,18 @@ const SectionB: React.FC = () => {
         }
 
         // Handle array input
-        if (Array.isArray(answerData)) {
+        if (Array?.isArray(answerData)) {
             return answerData;
         }
 
         // Handle object input
         if (typeof answerData === 'object') {
             if (rows && rows.length > 0) {
-                return rows.map((row: string) => ({
+                return rows?.map((row: string) => ({
                     [row]: answerData[row] || ''
                 }));
             }
-            return Object.entries(answerData).map(([key, value]) => ({
+            return Object.entries(answerData)?.map(([key, value]) => ({
                 [columns[0]]: key,
                 [columns[1]]: value
             }));
@@ -431,7 +443,7 @@ const SectionB: React.FC = () => {
                         if (value.trim() === "") {
                             delete updatedAnswers[key];
                         }
-                    } else if (Array.isArray(value)) {
+                    } else if (Array?.isArray(value)) {
                         if (value.length === 0) {
                             delete updatedAnswers[key];
                         }
@@ -638,7 +650,7 @@ const SectionB: React.FC = () => {
                     ) : question.choices.length > 4 ? (
                         <SelectDropDown
                             mode="multiple"
-                            options={question.choices.map((choice) => ({
+                            options={question.choices?.map((choice) => ({
                                 label: choice,
                                 value: choice,
                             }))}
@@ -648,7 +660,7 @@ const SectionB: React.FC = () => {
                         />
                     ) : (
                         <div className="question-options">
-                            {question.choices.map((option, idx) => (
+                            {question.choices?.map((option, idx) => (
                                 <label key={`${option}-${idx}`}>
                                     <Space direction="vertical">
                                         <Radio
@@ -664,6 +676,7 @@ const SectionB: React.FC = () => {
                                     </Space>
                                 </label>
                             ))}
+
                         </div>
                     )
                 )}
@@ -758,7 +771,7 @@ const SectionB: React.FC = () => {
                         bordered
                     >
                         {
-                            questions?.question.map((q: any, idx: any) => {
+                            questions?.question?.map((q: any, idx: any) => {
                                 return (
                                     <div key={`${questions.key}-${idx}`}>
                                         {renderQuestionInput(activeCategory, questions.key, q, idx, questions.question, questions.section)}
