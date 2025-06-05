@@ -99,6 +99,10 @@ const Report: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [isReport, setIsReport] = useState<boolean>(false);
   const [addData, setAddData] = useState<any>(null);
+  const [sectionProgressPercentage, setSectionProgressPercentage] = useState<number>(0);
+  const [sectionBProgressPercentage, setSectionBProgressPercentage] = useState<number>(0);
+  const [sectionCProgressPercentage, setSectionCProgressPercentage] = useState<number>(0);
+
   const [compliantPercentage, setCompliantPercentage] = useState<number>(0);
   const [nonCompliantPercentage, setNonCompliantPercentage] = useState<number>(
     0
@@ -161,6 +165,8 @@ const Report: React.FC = () => {
   if (loading) {
     return <Loader />;
   }
+  console.log(sectionProgressPercentage, 'progressPercent')
+
   return (
     <div className='main-report'>
 
@@ -197,11 +203,11 @@ const Report: React.FC = () => {
               >
                 <div className="section-header">
                   <div className='xbrl-header'>SECTION A</div>
-                  <span>40%</span>
+                  <span>{sectionProgressPercentage}%</span>
                 </div>
                 <p>General Disclosures</p>
                 <Progress
-                  percent={40}
+                  percent={sectionProgressPercentage}
                   status="active"
                   showInfo={false}
                   strokeColor="#1890ff"
@@ -222,11 +228,11 @@ const Report: React.FC = () => {
               >
                 <div className="section-header">
                   <div className='xbrl-header'>SECTION B</div>
-                  <span>50%</span>
+                  <span>{sectionBProgressPercentage}%</span>
                 </div>
                 <p>Management & Process Disclosures</p>
                 <Progress
-                  percent={50}
+                  percent={sectionBProgressPercentage}
                   status="active"
                   showInfo={false}
                   strokeColor="#1890ff"
@@ -247,11 +253,11 @@ const Report: React.FC = () => {
               >
                 <div className="section-header">
                   <div className='xbrl-header'>SECTION C </div>
-                  <span>60%</span>
+                  <span>{sectionCProgressPercentage}%</span>
                 </div>
                 <p>Principle wise performance disclosure</p>
                 <Progress
-                  percent={60}
+                  percent={sectionCProgressPercentage}
                   status="active"
                   showInfo={false}
                   strokeColor="#1890ff"
@@ -280,15 +286,15 @@ const Report: React.FC = () => {
                 <div>
                   <div className="Legend-first">
                     <div className="first-box"></div>
-                    <span className="legend-box-compliant"></span>Section A <span className='first-percentage'>40% </span>
+                    <span className="legend-box-compliant"></span>Section A <span className='first-percentage'>{sectionProgressPercentage}% </span>
                   </div>
                   <div className="Legend-second">
                     <div className="second-box"></div>
-                    <span className="legend-box-non-compliant"></span>Section B <span className='thirt-percentage'>60% </span>
+                    <span className="legend-box-non-compliant"></span>Section B <span className='thirt-percentage'>{sectionBProgressPercentage}% </span>
                   </div>
                   <div className="Legend-first">
                     <div className="third-box"></div>
-                    <span className="legend-box-compliant"></span>Section C <span className='second-percentage '>50% </span>
+                    <span className="legend-box-compliant"></span>Section C <span className='second-percentage '>{sectionCProgressPercentage}% </span>
                   </div>
                 </div>
 
@@ -296,13 +302,13 @@ const Report: React.FC = () => {
             </div>
           </div>
           {addData === "section_a" &&
-            <Questionnaire />
+            <Questionnaire setSectionProgressPercentage={setSectionProgressPercentage} />
           }
           {addData === "section_b" &&
-            <SectionB />
+            <SectionB setSectionBProgressPercentage={setSectionBProgressPercentage} />
           }
           {addData === "section_c" &&
-            <SectionC />
+            <SectionC setSectionCProgressPercentage={setSectionCProgressPercentage} />
           }
 
         </div>

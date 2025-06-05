@@ -62,8 +62,10 @@ interface ChoiceQuestion extends BaseQuestion {
 
 type Question = TableQuestion | TextQuestion | ChoiceQuestion;
 
-
-const SectionB: React.FC = () => {
+interface SectionBProps {
+    setSectionBProgressPercentage: (percentage: number) => void;
+}
+const SectionB: React.FC<SectionBProps> = ({ setSectionBProgressPercentage }) => {
     const [activeCategory, setActiveCategory] = useState<string>("policy");
     const [showQuestions, setShowQuestions] = useState<boolean>(false);
     const [answers, setAnswers] = useState<{ [key: string]: any }>({});
@@ -120,7 +122,7 @@ const SectionB: React.FC = () => {
 
             const responseData = await response.json();
             const newAnswers = transformApiResponseToAnswers(
-                Array.isArray(responseData.data) ?
+                Array?.isArray(responseData?.data) ?
                     responseData.data :
                     [responseData.data || responseData]
             );
@@ -182,7 +184,13 @@ const SectionB: React.FC = () => {
                 category: 'policy',
                 startIndex: 0,
                 questionMap: {
-                    '1': `Whether your entity's policy/policies cover each principle and its core elements of the NGRBCs. (Yes/No)`
+                    '1': `Whether your entity policy/policies cover each principle and its core elements of the NGRBCs. (Yes/No)`,
+                    '2': `Has the policy been approved by the Board? (Yes/No)`,
+                    '3': `Web Link of the Policies, if available.`,
+                    '4': `Whether the entity has translated the policy into procedures. (Yes / No)`,
+                    '5': `Do the enlisted policies extend to your value chain partners? (Yes/No)`,
+                    '6': `Name of the national and international codes/ certifications/labels/ standards (e.g. Forest Stewardship Council, Fairtrade, Rainforest Alliance,Trustea) standards (e.g. SA 8000, OHSAS, ISO, BIS) adopted by your entity and mapped to each principle.`,
+                    '7': ``
                 }
             },
             'two': {
@@ -212,7 +220,6 @@ const SectionB: React.FC = () => {
             for (let questionIndex = 0; questionIndex < section.question.length; questionIndex++) {
                 const targetQuestion = section.question[questionIndex];
 
-                // Check direct question text match
                 if (targetQuestion.text.includes(apiQuestion.question)) {
                     return {
                         sectionKey: section.key,
@@ -256,13 +263,25 @@ const SectionB: React.FC = () => {
                         const questionKey = `${category}_policy_0`;
                         const policyQuestion = categoryConfig.questions[0].question[0] as TableQuestion;
 
+                        let parsedAnswer = apiQuestion.questionAnswer;
+
+                        if (typeof parsedAnswer === 'string') {
+                            try {
+                                parsedAnswer = JSON.parse(parsedAnswer);
+                            } catch {
+                                parsedAnswer = {};
+                            }
+                        }
+
                         if (policyQuestion.type === 'table' && policyQuestion.rows) {
                             answers[questionKey] = policyQuestion.rows.map((row: string) => ({
-                                [row]: apiQuestion.questionAnswer || ''
+                                [row]: parsedAnswer?.[row] || ''
                             }));
                         }
+
                         return;
                     }
+
 
                     const frontendQuestion = findMatchingQuestion(
                         categoryConfig,
@@ -309,18 +328,18 @@ const SectionB: React.FC = () => {
         }
 
         // Handle array input
-        if (Array.isArray(answerData)) {
+        if (Array?.isArray(answerData)) {
             return answerData;
         }
 
         // Handle object input
         if (typeof answerData === 'object') {
             if (rows && rows.length > 0) {
-                return rows.map((row: string) => ({
+                return rows?.map((row: string) => ({
                     [row]: answerData[row] || ''
                 }));
             }
-            return Object.entries(answerData).map(([key, value]) => ({
+            return Object.entries(answerData)?.map(([key, value]) => ({
                 [columns[0]]: key,
                 [columns[1]]: value
             }));
@@ -431,7 +450,7 @@ const SectionB: React.FC = () => {
                         if (value.trim() === "") {
                             delete updatedAnswers[key];
                         }
-                    } else if (Array.isArray(value)) {
+                    } else if (Array?.isArray(value)) {
                         if (value.length === 0) {
                             delete updatedAnswers[key];
                         }
@@ -629,16 +648,15 @@ const SectionB: React.FC = () => {
                             <TextArea
                                 rows={3}
                                 placeholder="Type your answer here"
-                                value={answers[`${section}_${key}_${questionIndex}`] || ""}
-                                onChange={(e) =>
-                                    handleInputChange(section, key, e.target.value, questionIndex)
-                                }
+                                size="small"
+                                onChange={(e) => handleInputChange(section, key, e.target.value, questionIndex)}
+                                value={answers[questionKey] || ""}
                             />
                         </div>
                     ) : question.choices.length > 4 ? (
                         <SelectDropDown
                             mode="multiple"
-                            options={question.choices.map((choice) => ({
+                            options={question.choices?.map((choice) => ({
                                 label: choice,
                                 value: choice,
                             }))}
@@ -648,7 +666,7 @@ const SectionB: React.FC = () => {
                         />
                     ) : (
                         <div className="question-options">
-                            {question.choices.map((option, idx) => (
+                            {question.choices?.map((option, idx) => (
                                 <label key={`${option}-${idx}`}>
                                     <Space direction="vertical">
                                         <Radio
@@ -664,6 +682,7 @@ const SectionB: React.FC = () => {
                                     </Space>
                                 </label>
                             ))}
+
                         </div>
                     )
                 )}
@@ -675,18 +694,46 @@ const SectionB: React.FC = () => {
     const currentCategory = allCategories2.find((cat) => cat.key === activeCategory);
     const questions: any = currentCategory?.questions[currentSectionIndex];
     const countNonEmptyAnswers = () => {
-        let nonEmptyCount = 0;
-        if (currentCategory) {
-            currentCategory.questions[currentSectionIndex]?.question.forEach((_, questionIndex) => {
-                const questionKey = `${activeCategory}-${questions.key}-${questionIndex} `;
-                if (answers[questionKey]) {
-                    nonEmptyCount += 1;
+        let answered = 0;
+        const currentCategory = allCategories2.find(cat => cat.key === activeCategory);
+
+        if (currentCategory && currentSectionIndex < currentCategory.questions.length) {
+            const section = currentCategory.questions[currentSectionIndex];
+            section.question.forEach((_, questionIndex) => {
+                const questionKey = `${activeCategory}-${section.key}-${questionIndex}`;
+                const answer = answers[questionKey];
+
+                // Check for non-empty answers
+                if (answer !== undefined && answer !== null && answer !== "") {
+                    if (Array.isArray(answer)) {
+                        if (answer.length > 0 && !answer.every(item => item === "")) answered++;
+                    } else if (typeof answer === 'object') {
+                        if (Object.keys(answer).length > 0) answered++;
+                    } else {
+                        answered++;
+                    }
                 }
             });
         }
-
-        return nonEmptyCount;
+        return answered;
     };
+
+    // 2. Updated progress calculation with debugging
+    const totalInSection = currentCategory?.questions[currentSectionIndex]?.question.length || 0;
+    const answeredCount = countNonEmptyAnswers();
+
+    // Debug logs
+    console.log('Current answers:', answers);
+    console.log(`Counting: ${answeredCount} answered out of ${totalInSection} total questions`);
+
+    const sectionProgressPercent = totalInSection > 0
+        ? Math.round((answeredCount / totalInSection) * 100)
+        : 0;
+
+    // 3. Update parent component with useEffect
+    useEffect(() => {
+        setSectionBProgressPercentage(sectionProgressPercent);
+    }, [sectionProgressPercent, setSectionBProgressPercentage]);
 
     const totalTextAreasInSection = questions?.question.length || 0;
 
@@ -758,7 +805,7 @@ const SectionB: React.FC = () => {
                         bordered
                     >
                         {
-                            questions?.question.map((q: any, idx: any) => {
+                            questions?.question?.map((q: any, idx: any) => {
                                 return (
                                     <div key={`${questions.key}-${idx}`}>
                                         {renderQuestionInput(activeCategory, questions.key, q, idx, questions.question, questions.section)}

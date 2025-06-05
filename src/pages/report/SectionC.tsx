@@ -63,7 +63,10 @@ interface ApiResponse {
     data: ApiSection[];
 }
 
-const SectionC: React.FC = () => {
+interface SectionCProps {
+    setSectionCProgressPercentage: (percentage: number) => void;
+}
+const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) => {
     const [activeCategory, setActiveCategory] = useState<string>("business");
     const [showQuestions, setShowQuestions] = useState<boolean>(false);
     const [answers, setAnswers] = useState<{ [key: string]: any }>({});
@@ -458,7 +461,7 @@ const SectionC: React.FC = () => {
             formData.append('file', file.originFileObj || file);
             formData.append('questionKey', questionKey);
 
-            const response = await fetch('http://192.168.2.75:10000/extract/', {
+            const response = await fetch('http://192.168.2.75:1000/extract/', {
                 method: 'POST',
                 body: formData,
             });
@@ -770,10 +773,10 @@ const SectionC: React.FC = () => {
                     </div>
                     <div >
                         <TableInput
-                            columns={question?.columns}
-                            rows={question?.rows}
+                            columns={question.columns}
+                            rows={question.rows}
                             header={"S.No"}
-                            value={answers[questionKey] || []}  // Ensure we pass an array
+                            value={answers[`${section}_${key}_${questionIndex}`] || []}
                             onChange={(value: any) =>
                                 handleInputChange(section, key, value, questionIndex)
                             }
@@ -855,21 +858,47 @@ const SectionC: React.FC = () => {
     const questions: any = currentCategory?.questions[currentSectionIndex];
 
     const countNonEmptyAnswers = () => {
-        let nonEmptyCount = 0;
-        if (currentCategory) {
-            currentCategory.questions[currentSectionIndex]?.question.forEach((_, questionIndex) => {
-                const questionKey = `${activeCategory}-${questions.key}-${questionIndex} `;
-                if (answers[questionKey]) {
-                    nonEmptyCount += 1;
+        let answered = 0;
+        const currentCategory = allCategories3.find(cat => cat.key === activeCategory);
+
+        if (currentCategory && currentSectionIndex < currentCategory.questions.length) {
+            const section = currentCategory.questions[currentSectionIndex];
+            section.question.forEach((_, questionIndex) => {
+                const questionKey = `${activeCategory}-${section.key}-${questionIndex}`;
+                const answer = answers[questionKey];
+
+                // Check for non-empty answers
+                if (answer !== undefined && answer !== null && answer !== "") {
+                    if (Array.isArray(answer)) {
+                        if (answer.length > 0 && !answer.every(item => item === "")) answered++;
+                    } else if (typeof answer === 'object') {
+                        if (Object.keys(answer).length > 0) answered++;
+                    } else {
+                        answered++;
+                    }
                 }
             });
         }
-
-        return nonEmptyCount;
+        return answered;
     };
 
-    const totalTextAreasInSection = questions?.question.length || 0;
+    const totalInSection = currentCategory?.questions[currentSectionIndex]?.question.length || 0;
+    const answeredCount = countNonEmptyAnswers();
 
+    // Debug logs
+    console.log('Current answers:', answers);
+    console.log(`Counting: ${answeredCount} answered out of ${totalInSection} total questions`);
+
+    const sectionProgressPercent = totalInSection > 0
+        ? Math.round((answeredCount / totalInSection) * 100)
+        : 0;
+
+    // Update parent component
+    useEffect(() => {
+        setSectionCProgressPercentage(sectionProgressPercent);
+    }, [sectionProgressPercent, setSectionCProgressPercentage]);
+    const totalTextAreasInSection = questions?.question.length || 0;
+    console.log(sectionProgressPercent, 'sectionProgressPercent')
     useEffect(() => {
         setsingleSectionTextArea(totalTextAreasInSection);
     }, [totalTextAreasInSection, questions]);

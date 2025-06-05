@@ -1,0 +1,120 @@
+.blog-area {
+  padding: 20px 0 100px;
+  margin: 0 50px;
+  
+  .section-title {
+    text-align: center;
+    margin-bottom: 50px;
+
+    h2 {
+      font-size: 32px;
+      font-weight: 700;
+    }
+
+    p {
+      max-width: 600px;
+      margin: 0 auto;
+      font-size: 16px;
+      max-height: 400px;
+    }
+  }
+
+  .swiper-slide {
+    display: flex;
+    height: 580px;
+  }
+
+  .single-blog-item {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      .blog-image img {
+        transform: scale(1.05);
+      }
+    }
+
+    .blog-image {
+      position: relative;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: transform 0.4s ease;
+      }
+
+      .post-tag {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: #09b96d;
+        color: #fff;
+        font-size: 14px;
+        padding: 5px 12px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        a {
+          color: #fff;
+          text-decoration: none;
+        }
+      }
+    }
+
+    .blog-post-content {
+      padding: 25px;
+
+      .date {
+        font-size: 14px;
+        color: #09b96d;
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      h3 {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 15px;
+
+        a {
+          color: #222;
+          text-decoration: none;
+
+          &:hover {
+            color: #09b96d;
+          }
+        }
+      }
+
+      p {
+        font-size: 15px;
+        color: #555;
+        margin-bottom: 20px;
+      }
+
+      .read-more-btn {
+        font-weight: 600;
+        font-size: 14px;
+        color: #09b96d;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+
+        i {
+          margin-left: 5px;
+          transition: margin-left 0.3s ease;
+        }
+
+        &:hover {
+          i {
+            margin-left: 10px;
+          }
+        }
+      }
+    }
+  }
+}

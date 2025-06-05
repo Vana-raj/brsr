@@ -1,0 +1,132 @@
+.faq-section {
+  padding: 100px 0;
+  border-radius: 50px;
+
+  .section-title {
+    text-align: center;
+    margin-bottom: 40px;
+
+    .sub-title {
+      display: block;
+      font-size: 1rem;
+      color: #09b96d;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: #333;
+    }
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    .col {
+      flex: 1;
+      padding: 15px;
+    }
+
+    .col-left {
+      max-width: 50%;
+    }
+
+    .col-right {
+      max-width: 50%;
+
+      .faq-img {
+        padding-left: 30px;
+
+        img {
+          width: 80%;
+          height: auto;
+          border-radius: 10px;
+        }
+      }
+    }
+  }
+
+  .faq-accordion {
+    border-radius: 50px;
+
+    .accordion {
+      border: none;
+      display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: transparent;
+
+     border-radius: 10px;
+     .accordion__item {
+     border-radius: 10px;
+     background: #fff;
+border-top: none;
+     }
+
+    }
+ .accordion__button {
+      position: relative;
+      background: #f5f9ff;
+      border-radius: 10px;
+      padding: 20px 60px 20px 25px;
+      font-size: 18px;
+     font-weight: 700;
+         font-family: var(--font-saira);
+    text-decoration: none;
+      cursor: pointer;
+      color: #18181b;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      text-align: left;
+      border: none;
+      width: 100%;
+      transition: all 0.3s ease;
+
+      &:before {
+        display: none;
+      }
+      
+      &:after {
+        content: '\f078';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        position: absolute;
+        right: 25px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 14px;
+        color: #09b96d;
+        transition: all 0.3s ease;
+      }
+
+      &[aria-expanded='true'] {
+        background-color: #09b96d;
+        color: #fff;
+        
+        &:after {
+          content: '\f077';
+          color: #fff;
+          transform: translateY(-50%) rotate(0deg);
+        }
+      }
+
+      &:hover {
+        background-color: #09b96d;
+        color: #fff;
+        
+        &:after {
+          color: #fff;
+        }
+      }
+    }
+
+    .accordion__panel {
+      padding: 15px;
+      border: 1px solid #eee;
+      border: none;
+    }
+  }
+}

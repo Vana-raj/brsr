@@ -21,6 +21,7 @@ import SupplierManage from "./pages/supplier/SupplierManage";
 import Login from "./pages/login/Login";
 import UserManagement from "./pages/usermanagement/UserManagement";
 import UserCreation from "./pages/usercreation/UserCreation";
+import LandingPage from "./pages/landingpage/LandingPage";
 // import ProtectedRoute from "./ProdectedRoute";
 
 const RouterConfig = createBrowserRouter([
@@ -31,7 +32,7 @@ const RouterConfig = createBrowserRouter([
     },
     {
         path: 'login',
-        element: <Login />
+        element: <LandingPage />
     },
     {
         element: <Home />,
@@ -87,10 +88,14 @@ const RouterConfig = createBrowserRouter([
             },
             {
                 path: 'questionnaire',
-                element:
-                    // <ProtectedRoute>
-                    <Questionnaire />
+                // element:
+                //     <ProtectedRoute>
+                //     <Questionnaire  />
                 // </ProtectedRoute>
+                element: <Questionnaire setSectionProgressPercentage={(percentage) => {
+                    // Here you would typically update some state with the percentage
+                    console.log('Progress percentage:', percentage);
+                }} />
             },
             {
                 path: 'user-management',

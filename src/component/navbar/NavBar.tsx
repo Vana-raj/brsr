@@ -10,6 +10,7 @@ import CustomModal from '../popup/CustomModel';
 import { userInfo } from '../../utils/Options';
 import { bgColor } from '../../style/ColorCode';
 import './NavBar.scss';
+// import { useWeb3Modal } from '@web3modal/react';
 
 interface SearchRoute {
     keys: string[];
@@ -149,8 +150,20 @@ const NavBar: React.FC = () => {
     const handleLinkClick = (linkName: string) => {
         setActiveLink(linkName);
     };
+    const disconnectWallet = () => {
+        if (window.ethereum && window.ethereum.disconnect) {
+            window.ethereum.disconnect();
+        }
+        if (window.ethereum && window.ethereum.provider && window.ethereum.provider.disconnect) {
+            window.ethereum.provider.disconnect();
+        }
+        localStorage.removeItem('walletConnected');
+        localStorage.removeItem('walletAddress');
+        localStorage.removeItem('walletProvider');
+    };
 
     const handleLogout = () => {
+        disconnectWallet();
         setIsDropdownOpen(!isDropdownOpen);
         navigate('/');
         localStorage.removeItem('record');
@@ -160,6 +173,7 @@ const NavBar: React.FC = () => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
     };
+
 
     const goToProfile = () => {
         navigate('/profile');
@@ -256,7 +270,7 @@ const NavBar: React.FC = () => {
                                 BRSR
                             </Link>
                         </li>
-                       
+
                         {/* <li>
                             <Link
                                 to="/quality"

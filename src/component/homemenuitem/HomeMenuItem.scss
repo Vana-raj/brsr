@@ -1,0 +1,74 @@
+.menu-item {
+  position: relative;
+
+.menu-link {
+  position: relative;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  transition: color 0.3s ease;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 0;
+    background-color: #09b96d;
+    transition: width 0.3s ease;
+  }
+
+  &:hover::after,
+  &.active::after {
+    width: 100%;
+  }
+
+  &:hover,
+  &.active {
+    color: none;
+  }
+}
+
+
+  &.has-submenu {
+    .submenu {
+      display: none;
+      position: absolute;
+      top: 120%;
+      left: 0;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      list-style: none;
+      padding: 0.5rem 1rem;
+      z-index: 999;
+      border-radius: 6px;
+    }
+
+    &:hover {
+      .submenu {
+        display: block;
+      }
+    }
+  }
+}
+
+.submenu-link {
+  display: block;
+  padding: 0.5rem 0;
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s ease;
+
+  &:hover,
+  &.active {
+    color: #09b96d;
+  }
+}
+
+.submenu-indicator {
+  font-size: 0.75rem;
+  margin-left: 0.25rem;
+}

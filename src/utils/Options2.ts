@@ -66,7 +66,118 @@ export const allCategories2 = [
         section: "B I",
         question: [
           {
-            text: "Whether your entity’s policy/policies cover each principle and its core elements of the NGRBCs. (Yes/No)", choices: ["Yes", "No", "In Progress"],
+            text: "Whether your entity's policy/policies cover each principle and its core elements of the NGRBCs. (Yes/No)", choices: null,
+            type: "table",
+            label: "Policy",
+            columns: [
+              "S. No",
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8",
+              "P9"
+            ],
+            row: [
+            ],
+            isMandatory: true,
+            parent: true
+
+          },
+          {
+            text: "Has the policy been approved by the Board? (Yes/No)", choices: null,
+            type: "table",
+            label: "Policy",
+            columns: [
+              "S. No",
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8",
+              "P9"
+            ],
+            row: [
+            ],
+            isMandatory: true,
+            parent: true
+
+          },
+          {
+            text: "Web Link of the Policies, if available.", choices: null,
+            // type: "table",
+            label: "Policy",
+            // columns: [
+            //   "P1",
+            //   "P2",
+            //   "P3",
+            //   "P4",
+            //   "P5",
+            //   "P6",
+            //   "P7",
+            //   "P8",
+            //   "P9"
+            // ],
+            isMandatory: true,
+            parent: true
+
+          },
+          {
+            text: "Whether the entity has translated the policy into procedures. (Yes / No)", choices: null,
+            type: "table",
+            label: "Policy",
+            columns: [
+              "S. No",
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8",
+              "P9"
+            ],
+            isMandatory: true,
+            parent: true,
+          },
+          {
+            text: "Do the enlisted policies extend to your value chain partners? (Yes/No)", choices: ["Yes", "No", "In Progress"],
+            type: "table",
+            label: "Policy",
+            columns: [
+              "S. No",
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8",
+              "P9"],
+            row: [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8",
+              "P9"
+            ],
+            isMandatory: true,
+            parent: true
+          },
+          {
+            text: "Name of the national and international codes/ certifications/labels/ standards (e.g. Forest Stewardship Council, Fairtrade, Rainforest Alliance,Trustea) standards (e.g. SA 8000, OHSAS, ISO, BIS) adopted by your entity and mapped to each principle.", choices: ["Yes", "No", "In Progress"],
             type: "table",
             label: "Policy",
             columns: [
@@ -80,17 +191,22 @@ export const allCategories2 = [
               "P8",
               "P9"
             ],
-            "isMandatory": true,
-            rows: [
-              "Whether your entity’s policy/policies cover each principle and its core elements of the NGRBCs. (Yes/No)",
-              "Has the policy been approved by the Board? (Yes/No)",
-              "Web Link of the Policies, if available",
-              "Whether the entity has translated the policy into procedures. (Yes / No)",
-              "Do the enlisted policies extend to your value chain partners? (Yes/No)",
-              "Name of the national and international codes/certifications/labels/ standards (e.g. Forest Stewardship Council, Fairtrade, Rainforest Alliance, Trustea) standards (e.g. SA 8000, OHSAS, ISO, BIS) adopted by your entity and mapped to each principle.",
-              "Specific commitments, goals and targets set by the entity with defined timelines, if any.",
-              "Performance of the entity against the specific commitments, goals and targets along-with reasons in case the same are not met.",
-            ],
+            isMandatory: true,
+            parent: true
+
+          },
+          {
+            text: "Specific commitments, goals and targets set by the entity with defined timelines, if any.", choices: null,
+            // type: "table",
+            label: "Policy",
+            isMandatory: true,
+            parent: true
+
+          },
+          {
+            text: "Performance of the entity against the specific commitments, goals and targets along-with reasons in case the same are not met.", choices: null,
+            label: "Policy",
+            isMandatory: true,
             parent: true
 
           },
@@ -112,11 +228,10 @@ export const allCategories2 = [
         section: "B II",
         question: [
           {
-            text: "Statement by director responsible for the business responsibility report, highlighting ESG related challenges, targets and achievements (listed entity has flexibility regarding the placement of this disclosure)", choices: ["Yes", "No", "In Progress"], isMandatory: false,
+            text: "Statement by director responsible for the business responsibility report, highlighting ESG related challenges, targets and achievements (listed entity has flexibility regarding the placement of this disclosure).", choices: null, isMandatory: false,
             label: "Disclosure",
             type: "table",
             columns: [
-              "Disclosure",
               "P1",
               "P2",
               "P3",
@@ -127,13 +242,26 @@ export const allCategories2 = [
               "P8",
               "P9"
             ],
-            // "isMandatory":true,
+            // isMandatory:true,
             // rows: [
             //   "Statement by director responsible for the business responsibility report, highlighting ESG related challenges, targets and achievements (listed entity has flexibility regarding the placement of this disclosure)"
             // ],
             parent: true
           },
-          { text: "Details of the highest authority responsible for implementation and oversight of the Business Responsibility policy (ies).", choices: null, isMandatory: false, parent: true },
+          {
+            text: "Details of the highest authority responsible for implementation and oversight of the Business Responsibility policy (ies).", choices: null, isMandatory: false, type: "table",
+            columns: [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8",
+              "P9"
+            ], parent: true
+          },
           { text: "Does the entity have a specified Committee of the Board/ Director responsible for decision making on sustainability related issues? (Yes / No). If yes, provide details.", choices: null, isMandatory: false, parent: true },
           {
             text: "Details of Review of NGRBCs by the Company:", choices: null, isMandatory: false, parent: true, isNone: true,
@@ -233,7 +361,6 @@ export const allCategories2 = [
               "What percentage of total purchases (by value) is covered in this disclosure?",
               "Disclose the percentage of total purchases covered by value chain partners for which ESG disclosures are provided.", ,
               "What ESG performance metrics are tracked for these upstream partners?"
-
             ]
           },
 
@@ -252,5 +379,4 @@ export const allCategories2 = [
 
     ],
   },
-
 ];

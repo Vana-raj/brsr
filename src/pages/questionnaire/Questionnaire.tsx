@@ -73,7 +73,12 @@ interface ApiResponse {
     data: ApiSection[];
 }
 
-const Questionnaire: React.FC = () => {
+interface QuestionnaireProps {
+    setSectionProgressPercentage: (percentage: number) => void;
+}
+
+
+const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercentage }) => {
     const [activeCategory, setActiveCategory] = useState<string>("details");
     const [showQuestions, setShowQuestions] = useState<boolean>(false);
     const [answers, setAnswers] = useState<{ [key: string]: any }>({});
@@ -122,7 +127,7 @@ const Questionnaire: React.FC = () => {
             formData.append('questionKey', questionKey);
 
             console.log("Sending request to server...");
-            const response = await fetch('http://192.168.2.75:10000/extract/', {
+            const response = await fetch('http://192.168.2.75:1000/extract/', {
                 method: 'POST',
                 body: formData,
             });
@@ -658,12 +663,20 @@ const Questionnaire: React.FC = () => {
                         </Tooltip>
                     </div>
                     <div >
-                        <TableInput
+                        {/* <TableInput
                             columns={question.columns || []}
                             rows={question.rows || []}
                             header={"S.No"}
                             value={Array.isArray(answerValue) ? answerValue : []}
                             onChange={(value: any) => handleInputChange(section, key, value, questionIndex)}
+                        /> */}
+                        <TableInput
+                            columns={question.columns}
+                            rows={question.rows}
+                            value={answers[`${section}_${key}_${questionIndex}`] || []}
+                            onChange={(value: any) =>
+                                handleInputChange(section, key, value, questionIndex)
+                            }
                         />
                     </div>
                 </div>
@@ -742,19 +755,27 @@ const Questionnaire: React.FC = () => {
     const questions: any = currentCategory?.questions[currentSectionIndex];
 
     const countNonEmptyAnswers = () => {
-        let nonEmptyCount = 0;
-        if (currentCategory) {
-            currentCategory.questions[currentSectionIndex]?.question.forEach((_, questionIndex) => {
-                const questionKey = `${activeCategory}_${questions.key}_${questionIndex} `;
+        let answered = 0;
+        const currentCategory = allCategories.find(cat => cat.key === activeCategory);
+
+        if (currentCategory && currentSectionIndex < currentCategory.questions.length) {
+            const section = currentCategory.questions[currentSectionIndex];
+            section.question.forEach((_, questionIndex) => {
+                const questionKey = `${activeCategory}_${section.key}_${questionIndex}`;
                 if (answers[questionKey]) {
-                    nonEmptyCount += 1;
+                    answered++;
                 }
             });
         }
 
-        return nonEmptyCount;
+        return answered;
     };
 
+    const totalInSection = currentCategory?.questions[currentSectionIndex]?.question.length || 0;
+    const sectionProgressPercent = totalInSection > 0
+        ? Math.round((countNonEmptyAnswers() / totalInSection) * 100)
+        : 0;
+    setSectionProgressPercentage(sectionProgressPercent)
     const totalTextAreasInSection = questions?.question.length || 0;
 
     useEffect(() => {
@@ -765,7 +786,6 @@ const Questionnaire: React.FC = () => {
     const progressPercent = singleSectionTextArea > 0
         ? Math.round((countNonEmptyAnswers() / singleSectionTextArea) * 100)
         : 0;
-
     return (
         <div className="questionnaire-main">
             {loading && (

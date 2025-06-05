@@ -103,20 +103,20 @@ export const allCategories = [
         section: "A II",
         question: [
           {
-            text: "Details of business activities (accounting for 90% of the turnover):", choices: ["Yes", "No", "In Progress"], isMandatory: false,
+            text: "Details of business activities (accounting for 90% of the turnover)", choices: null, isMandatory: false,
             type: "table",
             columns: [
-              "S. No.",
+              "S.No",
               "Description of Main Activity",
               "Description of Business Activity",
               "% of Turnover of the entity",
             ],
           },
           {
-            text: "Products/Services sold by the entity (accounting for 90% of the entity’s Turnover):", choices: ["Yes", "No", "In Progress"],
+            text: "Products/Services sold by the entity (accounting for 90% of the entity’s Turnover):", choices: null,
             type: "table",
             columns: [
-              "S. No.",
+              "S.No",
               "Product/Service",
               "NIC Code",
               "% of total Turnover contributed",
