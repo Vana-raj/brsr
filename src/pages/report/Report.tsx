@@ -290,11 +290,13 @@ const Report: React.FC = () => {
                     <div className="third-box"></div>
                     <span className="legend-box-compliant"></span>Section C <span className='second-percentage '>50% </span>
                   </div>
+
                 </div>
 
               </div>
             </div>
           </div>
+          
           {addData === "section_a" &&
             <Questionnaire />
           }
@@ -307,7 +309,9 @@ const Report: React.FC = () => {
 
         </div>
       }
+      
     </div>
+    
   )
 }
 

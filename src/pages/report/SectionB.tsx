@@ -5,7 +5,8 @@ import CustomButton from "../../component/buttons/CustomButton";
 import { allCategories2 } from "../../utils/Options2";
 import { primaryColor } from '../../style/ColorCode';
 import SelectDropDown from "../../component/select/SelectDropDown";
-import TableInput from "../../component/InputTable/InputTable";
+// import TableInput from "../../component/InputTable/InputTable";
+import TableInput from "../../component/InputTable/InputTable2";
 import Loader from "../../component/loader/Loader";
 import "../questionnaire/Questionnaire.scss"
 
@@ -99,9 +100,10 @@ const SectionB: React.FC = () => {
         }));
 
         setHasUnsavedChanges(answers[questionKey] === "" ? false : true);
-    };
+    };        console.log("*****",answers)
 
-    const handleFileUpload = async (info: any, questionKey: string) => {
+
+    const handleFileUpload = async (info: any, questionKey: string,principleKey:string) => {
         const { file } = info;
         if (!file || file.status === "uploading") return;
         setLoading(true);
@@ -110,12 +112,13 @@ const SectionB: React.FC = () => {
             const formData = new FormData();
             formData.append('file', file.originFileObj || file);
             formData.append('questionKey', questionKey);
+            formData.append('principleKey',principleKey );
 
-            const response = await fetch('http://192.168.2.75:1000/extract/', {
+            const response = await fetch('http://127.0.0.1:1000/extract/', {
                 method: 'POST',
                 body: formData,
             });
-
+            console.log("Received response status:", response.status);
             if (!response.ok) throw new Error('Upload failed');
 
             const responseData = await response.json();
@@ -182,22 +185,30 @@ const SectionB: React.FC = () => {
                 category: 'policy',
                 startIndex: 0,
                 questionMap: {
-                    '1': `Whether your entity's policy/policies cover each principle and its core elements of the NGRBCs. (Yes/No)`
+                    '1': `Whether your entity’s policy/policies cover each principle and its core elements of the NGRBCs. (Yes/No)`,
+                    '2': `Has the policy been approved by the Board? (Yes/No)`,
+                    '3': `Web Link of the Policies, if available.`,
+                    '4': `Whether the entity has translated the policy into procedures. (Yes / No)`,
+                    '5': `Do the enlisted policies extend to your value chain partners? (Yes/No)`,
+                    '6': `Name of the national and international codes/ certifications/labels/ standards (e.g. Forest Stewardship Council, Fairtrade, Rainforest Alliance,Trustea) standards (e.g. SA 8000, OHSAS, ISO, BIS) adopted by your entity and mapped to each principle.`,
+                    '7': `Specific commitments, goals and targets set by the entity with defined timelines, if any.`,
+                    '8': `Performance of the entity against the specific commitments, goals and targets along-with reasons in case the same are not met.`,
+
                 }
             },
             'two': {
                 category: 'governance',
                 startIndex: 0,
                 questionMap: {
-                    '1': 'Statement by director responsible for the business responsibility report',
+                    '1': 'Statement by director responsible for the business responsibility report, highlighting ESG related challenges, targets and achievements (listed entity has flexibility regarding the placement of this disclosure)',
                     '2': 'Details of the highest authority responsible for implementation and oversight of the Business Responsibility policy (ies).',
                     '3': 'Does the entity have a specified Committee of the Board/ Director responsible for decision making on sustainability related issues? (Yes / No). If yes, provide details.',
-                    '4a': 'Details of Review of NGRBCs by the Company: (a)',
-                    '4b': 'Details of Review of NGRBCs by the Company: (b)',
-                    '5': 'Has the entity carried out independent assessment/ evaluation of the working of its policies',
-                    '6': 'If answer to question (1) above is "No" i.e. not all Principles are covered by a policy',
-                    '7a': 'Supply Chain Management (a)',
-                    '7b': 'Supply Chain Management (b)'
+                    '4':'Indicate whether review was undertaken by Director / Committee of the Board/ Any other Committee',
+                    '5':'Frequency(Annually/ Half yearly/ Quarterly/ Any other – please specify)',
+                    '6': 'Has the entity carried out independent assessment/ evaluation of the working of its policies by an external agency? (Yes/No). If yes, provide name of the agency.',
+                    '7': 'If answer to question (1) above is “No” i.e. not all Principles are covered by a policy, reasons to be stated, as below:',
+                    '8': 'Upstream (Suppliers & Logistics Partners)',
+                    '9': 'Downstream (Distributors & Customers)y'
                 }
             }
         }
@@ -248,6 +259,7 @@ const SectionB: React.FC = () => {
                 if (!partConfig || !part.questions) return;
 
                 const { category } = partConfig;
+                console.log("This is category",category)
                 const categoryConfig = allCategories2.find(c => c.key === category);
                 if (!categoryConfig) return;
 
@@ -389,6 +401,10 @@ const SectionB: React.FC = () => {
                 section.question.forEach((_: any, questionIndex: any) => {
                     const questionKey = `${activeCategory}-${section.key}-${questionIndex}`;
                     if (answers[questionKey]) {
+                        console.log("section.question",section.question)
+                        console.log("questionKey",questionKey)
+                        console.log("answers",answers)
+
                         answered += 1;
                         anyAnswered = true;
                     }
@@ -459,6 +475,7 @@ const SectionB: React.FC = () => {
     };
 
     const handleCategoryClick = (categoryKey: string) => {
+        console.log("categorykey",categoryKey)
         confirmNavigation(() => {
 
             const selectedCategory = allCategories2.find((cat) => cat.key === categoryKey);
@@ -575,7 +592,14 @@ const SectionB: React.FC = () => {
         const isAnswered = !!answers[questionKey];
         if (isViewMode && !isAnswered) {
             return null;
-        }
+}                   
+                    console.log("questionKey",questionKey)
+                    console.log("answer",answers)
+                    console.log("columns",question.columns)
+                    console.log("rows",question.rows)
+                    console.log("A,S,K,Q",answers[`${section}_${key}_${questionIndex}`] || [])
+                    console.log("S,K,Q",section, key,questionIndex)
+
         if (question?.type === 'table') {
             return (
                 <div>
@@ -642,9 +666,7 @@ const SectionB: React.FC = () => {
                                 rows={3}
                                 placeholder="Type your answer here"
                                 value={answers[`${section}_${key}_${questionIndex}`] || ""}
-                                onChange={(e) =>
-                                    handleInputChange(section, key, e.target.value, questionIndex)
-                                }
+                                onChange={(e) =>handleInputChange(section, key, e.target.value, questionIndex)}
                             />
                         </div>
                     ) : question.choices.length > 4 ? (
@@ -711,6 +733,7 @@ const SectionB: React.FC = () => {
     const progressPercent = singleSectionTextArea > 0
         ? Math.round((countNonEmptyAnswers() / singleSectionTextArea) * 100)
         : 0;
+        console.log('@@@@@',answers)
     return (
         <div className="questionnaire-main">
             {loading && (
@@ -752,7 +775,7 @@ const SectionB: React.FC = () => {
                                             const { onSuccess } = options;
                                             setTimeout(() => onSuccess?.("ok"), 0);
                                         }}
-                                        onChange={(info) => handleFileUpload(info, 'section_b')}
+                                        onChange={(info) => handleFileUpload(info, 'section_b',"null")}
                                     >
                                         <FileAddTwoTone className="upload-icon" />
                                     </Upload>

@@ -91,7 +91,7 @@ export const allCategories = [
   },
   {
     key: "product_service",
-    section: "A-II. Products / Services",
+    section: "A-II.Products / Services",
     questionsAnswer: "3/3",
     percentComplete: "90%",
     questions: [
@@ -106,7 +106,7 @@ export const allCategories = [
             text: "Details of business activities (accounting for 90% of the turnover):", choices: ["Yes", "No", "In Progress"], isMandatory: false,
             type: "table",
             columns: [
-              "S. No.",
+              "S.no",
               "Description of Main Activity",
               "Description of Business Activity",
               "% of Turnover of the entity",
@@ -116,7 +116,7 @@ export const allCategories = [
             text: "Products/Services sold by the entity (accounting for 90% of the entity’s Turnover):", choices: ["Yes", "No", "In Progress"],
             type: "table",
             columns: [
-              "S. No.",
+              "S.no",
               "Product/Service",
               "NIC Code",
               "% of total Turnover contributed",
@@ -140,24 +140,28 @@ export const allCategories = [
         section: "A III",
         question: [
           {
-            text: "No. of locations where plants and/or operations/ offices of the entity are situated:", columns: [
+            text: "Number of locations where plants and offices of the entity are situated:", columns: [
               "Location",
               "No. of plants",
               "No. of offices",
               "Total",
             ], type: "table", choices: null, isMandatory: true, parent: true,
           },
+          // {
+          //   text: "Markets served by the entity", 
+          //   choices: null,isMandatory: true, parent: true, isNone: true,
+          // },
           {
-            text: "Markets served by the entity", choices: null,
-            isMandatory: true, parent: true, isNone: true,
-          },
-          {
-            text: "No. of Locations", columns: [
+            text: "Number of locations", columns: [
               "Location",
-              "Number"
-            ], type: "table", choices: null, isMandatory: true, parent: false
+              "Number",
+            ], type: "table", choices: null, isMandatory: true, parent: true,
           },
-          { text: "What is the contribution of exports as a percentage of the total turnover of the entity?", choices: null, isMandatory: true, parent: false },
+
+
+          { text: "What is the contribution of exports as a percentage of the total turnover of the entity?", choices: null, isMandatory: true, parent: true },
+          { text: "A brief on types of customers", choices: null, isMandatory: true, parent: true },
+
         ],
       },
     ]
@@ -175,25 +179,32 @@ export const allCategories = [
         percentComplete: "0",
         section: "A IV",
         question: [
-          {
-            text: "Details as at the end of Financial Year:",
-            choices: null,
-            isMandatory: true,
-            type: "sectionHeader",
-            parent: true,
-            isNone: true
-          },
+          // {
+          //   text: "Details as at the end of Financial Year:",
+          //   choices: null,
+          //   isMandatory: true,
+          //   type: "sectionHeader",
+          //   parent: true,
+          //   isNone: true
+          // },
+          // {
+          //   text: "Details as at the end of Fina",
+          //   choices: null,
+          //   isMandatory: true,
+          //   type: "sectionHeader",
+          //   parent: false,
+          //   isNone: true
+          // },
           {
             text: "Employees and workers (including differently abled):",
             type: "table",
             columns: [
-              "Particulars",
-              "Total (A)",
-              "Male (No. (B))",
-              "Female (No. (B))",
-              "Male % (B/A)",
-              "Female % (C/A)",
-              "N"
+          "Particulars",
+          "Total (A)",
+          "Male No. (B)",
+          "Male % (B / A)",
+          "Female No. (C)",
+          "Female % (C / A)"
             ],
             "isMandatory": true,
             rows: [
@@ -201,19 +212,18 @@ export const allCategories = [
               "Employees - Other than Permanent (E)",
               "Total employees (D + E)",
             ],
-            parent: false
+            parent: false,
           },
           {
             text: "Differently abled Employees and workers:",
             type: "table",
             columns: [
-              "Particulars",
-              "Total (A)",
-              "Male (No. (B))",
-              "Female (No. (B))",
-              "Male % (B/A)",
-              "Female % (C/A)",
-              "N"
+            "Particulars",
+            "Total (A)",
+            "Male No. (B)",
+            "Male % (B / A)",
+            "Female No. (C)",
+            "Female % (C / A)"
             ],
             isMandator: true,
             rows: [
@@ -221,14 +231,14 @@ export const allCategories = [
               "Differently-abled Employees - Other than Permanent (E)",
               "Total employees (D + E)",
             ],
-            parent: false
+            parent: false,
           },
           {
             text: "Participation/Inclusion/Representation of women", choices: null, type: "table", isMandatory: true, parent: true, columns: [
-              "Total",
-              "No. and percentage of Females (No. (B)",
+              "Category",
+              "Total (A)",
+              "No. and percentage of Females No. (B)",
               "No. and percentage of Females % (B / A)",
-              "Total",
             ],
           },
           {
@@ -266,11 +276,10 @@ export const allCategories = [
           {
             text: "How many products have undergone a carbon footprint assessment?", type: "table", choices: null, isMandatory: true,
             parent: true, columns: [
-              "S. No.",
-              " Name of the holding / subsidiary / associate companies / joint ventures (A)",
-              " Indicate whether holding/ Subsidiary/ Associate/ Joint Venture",
+              "Name of the holding / subsidiary / associate companies / joint ventures (A)",
+              "Indicate whether holding/ Subsidiary/ Associate/ Joint Venture",
               "% of shares held by listed entity",
-              "Does the entity indicated at column A, participate in the Business Responsibility initiatives of the listed entity? (Yes/No)",
+              "Does the entity indicated at column A, participate in the Business Responsibility initiatives of the listed entity? (Yes/ No)"        
             ],
           },
 
@@ -292,11 +301,11 @@ export const allCategories = [
         percentComplete: "0",
         section: "A VI",
         question: [
-          {
-            text: "CSR Details", choices: ["Yes", "No"], isMandatory: true,
-            parent: true,
-            isNone: true
-          },
+          // {
+          //   text: "CSR Details", choices: ["Yes", "No"], isMandatory: true,
+          //   parent: true,
+          //   isNone: true
+          // },
           {
             text: "Whether CSR is applicable as per section 135 of Companies Act, 2013: (Yes/No)", choices: ["Yes", "No"], isMandatory: true,
             parent: false,
@@ -340,12 +349,12 @@ export const allCategories = [
             ],
             parent: true,
           },
-          {
-            text: "Overview of the entity’s material responsible business conduct issues", choices: null, isMandatory: false, parent: true, isNone: true
-          },
+          // {
+          //   text: "Overview of the entity's material responsible business conduct issues", choices: null, isMandatory: false, parent: true, isNone: true
+          // },
           {
             text: "Please indicate material responsible business conduct and sustainability issues pertaining to environmental and social matters that present a risk or an opportunity to your business, rationale for identifying the same, approach to adapt or mitigate the risk along-with its financial implications, as per the following format.", choices: null, isMandatory: false, parent: false, type: "table", columns: [
-              "S. No.",
+              "S.no",
               "Material issue identified",
               "Indicate whether risk or opportunity (R/O)",
               "Rationale for identifying the risk / opportunity",
