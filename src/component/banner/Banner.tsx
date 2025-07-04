@@ -31,7 +31,7 @@ const Banner: React.FC = () => {
                             data-aos-duration="1000"
                             data-aos-delay="300"
                         >
-                            Leverage blockchain technology for tamper-proof, GRI-compliant
+                            Leverage blockchain technology for tamper-proof, BRSR-compliant
                             sustainability disclosures.
                         </p>
                         <a

@@ -76,9 +76,11 @@ export const allCategories3 = [
             ],
           },
 
-          { text: "Details of fines / penalties /punishment/ award/ compounding fees/ settlement amount paid in proceedings (by the entity or by directors / KMPs) with regulators/ law enforcement agencies/ judicial institutions, in the financial year, in the following format (Note: the entity shall make disclosures on the basis of materiality as specified in Regulation 30 of SEBI (Listing Obligations and Disclosure Obligations) Regulations, 2015 and as disclosed on the entity’s website", choices: null, isMandatory: true, parent: true },
           {
-            text: "Monetary", choices: null, isMandatory: true, parent: false,
+            text: "Details of fines / penalties /punishment/ award/ compounding fees/ settlement amount paid in proceedings (by the entity or by directors / KMPs) with regulators/ law enforcement agencies/ judicial institutions, in the financial year, in the following format (Note: the entity shall make disclosures on the basis of materiality as specified in Regulation 30 of SEBI (Listing Obligations and Disclosure Obligations) Regulations, 2015 and as disclosed on the entity’s website", choices: null, isMandatory: true, parent: true, label: "Percentage",
+          },
+          {
+            text: "Monetary", choices: null, isMandatory: true, parent: true,
             type: "table",
             label: "Percentage",
             columns: [
@@ -86,10 +88,12 @@ export const allCategories3 = [
               "NGRBC Principle",
               "Name of the regulatory/ enforcement agencies/ judicial institutions",
               "Amount (In INR)",
+              "Brief of the Case",
+              "Has an appeal been preferred? (Yes/No)"
             ],
           },
           {
-            text: "Non-Monetary", choices: null, isMandatory: true, parent: false,
+            text: "Non-Monetary", choices: null, isMandatory: true, parent: true,
             type: "table",
             label: "Percentage",
             columns: [
@@ -97,6 +101,7 @@ export const allCategories3 = [
               "NGRBC Principle",
               "Name of the regulatory/ enforcement agencies/ judicial institutions",
               "Brief of the Case",
+              "Has an appeal been preferred? (Yes/No)"
             ],
           },
           {
@@ -115,15 +120,9 @@ export const allCategories3 = [
             text: "Number of Directors/KMPs/employees/workers against whom disciplinary action was taken by any law enforcement agency for the charges of bribery/ corruption", choices: null, isMandatory: true, parent: true,
             type: "table",
             columns: [
-              "Directors FY 2024-25(Current Financial Year)",
-              "KMPs FY 2024-25(Current Financial Year)",
-              "Employees FY 2024-25(Current Financial Year)",
-              "Workers FY 2024-25(Current Financial Year)",
-
-              "Directors FY 2023-24(Previous Financial Year)",
-              "KMPs FY 2023-24(Previous Financial Year)",
-              "Employees FY 2023-24(Previous Financial Year)",
-              "Workers FY 2023-24(Previous Financial Year)"
+              "catagory",
+              "FY 2023-2024",
+              "FY 2022-2023"
             ],
 
 
@@ -132,9 +131,11 @@ export const allCategories3 = [
             text: "Details of complaints with regard to conflict of interest", choices: null, isMandatory: true, parent: true,
             type: "table",
             columns: [
-              "Category",
-              "FY 2023-24 (Current Financial Year)",
-              "FY 2022-23 (Previous Financial Year)"
+              "category",
+              "FY 2023-2024 Number",
+              "FY 2023-2024 Remarks",
+              "FY 2022-2023 numbers",
+              "FY 2022-2023 Remarks"
             ],
             row: [
               "Number of complaints received in relation to issues of Conflict of Interest of the Directors",
@@ -147,9 +148,9 @@ export const allCategories3 = [
             text: "Number of days of accounts payables ((Accounts payable *365) / Cost of goods/services procured) in the following format:", choices: null, isMandatory: true, parent: true,
             type: "table",
             columns: [
-              "Category",
-              "FY 2024-25(Current Financial Year)",
-              "FY 2023-24(Previous Financial Year)"
+              "Particulars",
+              "FY 2023 -24 (Current Financial year)",
+              "FY 2022 -23 (Previous Financial year)"
 
             ],
             rows: [
@@ -157,15 +158,14 @@ export const allCategories3 = [
             ]
           },
 
-          { text: "Open-ness of business", choices: null, isMandatory: true, parent: true, isNone: true },
           {
-            text: "Provide details of concentration of purchases and sales with trading houses, dealers, and related parties along-with loans and advances & investments, with related parties, in the following format:", choices: null, isMandatory: true, parent: false,
+            text: "Provide details of concentration of purchases and sales with trading houses, dealers, and related parties along-with loans and advances & investments, with related parties, in the following format:", choices: null, isMandatory: true, parent: true,
             type: "table",
             columns: [
               "Parameter",
               "Metrics",
-              "FY 2024-25(Current Financial Year)",
-              "FY 2023-24(Previous Financial Year)"
+              "FY 2023-2024",
+              "FY 2022-2023"
 
             ],
             rows: [
@@ -181,9 +181,9 @@ export const allCategories3 = [
             text: "Awareness programmes conducted for value chain partners on any of the Principles during the financial year:", choices: null, isMandatory: false, parent: true,
             type: "table",
             columns: [
-              "Total number of awareness programmes held",
+              "Total no of awareness programs held",
               "Topics / principles covered under the training",
-              "% of value chain partners covered (by value of business done with such partners) under the awareness programmes"
+              "% of value chain partners covered (by value of business done withsuch partners) under the awarenessprogrammes"
 
             ],
           },
@@ -223,7 +223,7 @@ export const allCategories3 = [
           },
 
           { text: "Does the entity have procedures in place for sustainable sourcing? (Yes/No)", choices: null, isMandatory: true, parent: true },
-          { text: "If yes, what percentage of inputs were sourced sustainably?", choices: null, isMandatory: true, parent: false },
+          { text: "If yes, what percentage of inputs were sourced sustainably?", choices: null, isMandatory: true, parent: true },
           { text: "Describe the processes in place to safely reclaim your products for reusing, recycling and disposing at the end of life, for :", choices: null, isMandatory: true, parent: true },
           { text: "Whether Extended Producer Responsibility (EPR) is applicable to the entity’s activities (Yes / No). If yes, whether the waste collection plan is in line with the Extended Producer Responsibility (EPR) plan submitted to Pollution Control Boards? If not, provide steps taken to address the same.", choices: null, isMandatory: true, parent: true },
           {
@@ -310,10 +310,10 @@ export const allCategories3 = [
         percentComplete: "0",
         section: "C III",
         question: [
-          { text: "Details of measures ", choices: null, isMandatory: true, parent: true, isNone: true },
+          // { text: "Details of measures ", choices: null, isMandatory: true, parent: true, isNone: true },
 
           {
-            text: "Details of measures for the well-being of employees:", choices: null, isMandatory: true, parent: false,
+            text: "Details of measures for the well-being of employees:", choices: null, isMandatory: true, parent: true,
             type: "table",
             label: "",
             columns: [
@@ -342,7 +342,7 @@ export const allCategories3 = [
 
           },
           {
-            text: "Details of measures for the well-being of workers:", choices: null, isMandatory: true, parent: false
+            text: "Details of measures for the well-being of workers:", choices: null, isMandatory: true, parent: true
             , type: "table",
             label: "",
             columns: [
@@ -371,22 +371,22 @@ export const allCategories3 = [
 
 
           },
-          {
-            text: "Spending on measures towards well-being of employees and workers (including permanent and other than permanent) in the following format –", choices: null, isMandatory: true, parent: false
-            ,
-            type: "table",
-            label: "",
-            columns: [
-              "Category",
-              "FY 2043-25(Current Financial Year)",
-              "FY 2023-24(Previous Financial Year)"
+          // {
+          //   text: "Spending on measures towards well-being of employees and workers (including permanent and other than permanent) in the following format –", choices: null, isMandatory: true, parent: true
+          //   ,
+          //   type: "table",
+          //   label: "",
+          //   columns: [
+          //     "Category",
+          //     "FY 2043-25(Current Financial Year)",
+          //     "FY 2023-24(Previous Financial Year)"
 
-            ],
-            rows: [
-              "Cost incurred on wellbeing measures as a % of total revenue of the company",
-            ]
+          //   ],
+          //   rows: [
+          //     "Cost incurred on wellbeing measures as a % of total revenue of the company",
+          //   ]
 
-          }
+          // }
           ,
           {
             text: "Details of retirement benefits, for Current and Previous FY", choices: null, isMandatory: true
@@ -413,14 +413,15 @@ export const allCategories3 = [
           { text: "Accessibility of workplaces", choices: null, isMandatory: true, parent: true },
           { text: "Does the entity have an equal opportunity policy as per the Rights of Persons with Disabilities Act, 2016? If so, provide a web-link to the policy.", choices: null, isMandatory: true, parent: true },
           {
-            text: "Return to work and Retention rates of permanent employees and workers that took parental leave.", choices: null, isMandatory: true
-            , parent: true,
+            text: "Return to work and Retention rates of permanent employees and workers that took parental leave.", choices: null, isMandatory: true, parent: true,
             type: "table",
             label: "",
             columns: [
               "Gender",
-              "Permanent employees",
-              "Permanent workers"
+              "Return to work rate",
+              "Retention rate",
+              "Return to work rate",
+              "Retention rate"
 
             ],
             rows: [
@@ -436,7 +437,7 @@ export const allCategories3 = [
             type: "table",
             label: "",
             columns: [
-              "Category",
+              "Particulars",
               "Yes/No(If Yes, then give details of the mechanism in brief)"
 
             ],
@@ -453,13 +454,13 @@ export const allCategories3 = [
             , type: "table",
             label: "",
             columns: [
-              "Category",
+              "category",
               "FY 2024-25(Current Financial Year)-(Total employees / workers in respective category(A))",
               "FY 2024-25(Current Financial Year)-(No. of employees / workers in respective category, who are part of association(s) or Union(B))",
               "FY 2024-25(Current Financial Year)-(% (B / A))",
               "FY 2023-24(Previous Financial Year)-(Total employees / workers in respective category(C))",
               "FY 2023-24(Previous Financial Year)-(No. of employees / workers in respective category, who are part of association(s) or Union(D))",
-              "FY 2023-24(Previous Financial Year)-(% (D / C))",
+              "FY 2023-24(Previous Financial Year)-(% (D / C))"
 
             ],
             rows: [
@@ -476,7 +477,7 @@ export const allCategories3 = [
             type: "table",
             label: "",
             columns: [
-              "Category",
+              "category",
               "Total (A)",
               "On Health and safety measures (No. (B))",
               "On Health and safety measures (% (B / A))",
@@ -487,7 +488,6 @@ export const allCategories3 = [
               "On Health and safety measures (% (E / D))",
               "On Skill upgradation (No. (F))",
               "On Skill upgradation (% (F / D))"
-
             ],
             rows: [
               "FY 2023-24(Current Financial Year)",
@@ -512,14 +512,13 @@ export const allCategories3 = [
             type: "table",
             label: "",
             columns: [
-              "Category",
+              "category",
               "FY 2024-25(Current Financial Year)-(Total (A))",
               "FY 2024-25(Current Financial Year)-(No. (B))",
               "FY 2024-25(Current Financial Year)-(% (B / A))",
-
               "FY 2023-24(Previous Financial Year)-(Total (C))",
               "FY 2023-24(Previous Financial Year)-(No. (D))",
-              "FY 2023-24(Previous Financial Year)-(% (D / C))",
+              "FY 2023-24(Previous Financial Year)-(% (D / C))"
             ],
             rows: [
               "Total Permanent Employees (Male)",
@@ -534,27 +533,22 @@ export const allCategories3 = [
 
 
           },
-          {
-            text: "Health and safety management system:", choices: null, isMandatory: true, parent: true
 
-          },
-          { text: "Whether an occupational health and safety management system has been implemented by the entity? (Yes/ No). If yes, the coverage such system?", choices: null, isMandatory: true, parent: false },
-          { text: "What are the processes used to identify work-related hazards and assess risks on a routine and non-routine basis by the entity?", choices: null, isMandatory: true, parent: false },
-          { text: "Whether you have processes for workers to report the work related hazards and to remove themselves from such risks. (Y/N)", choices: null, isMandatory: true, parent: false },
-          { text: "Do the employees/ worker of the entity have access to non-occupational medical and healthcare services? (Yes/ No)", choices: null, isMandatory: true, parent: false },
+          // { text: "Health and safety management system:", choices: null, isMandatory: true, parent: true},
+          { text: "Whether an occupational health and safety management system has been implemented by the entity? (Yes/ No). If yes, the coverage such system?", choices: null, isMandatory: true, parent: true },
+          { text: "What are the processes used to identify work-related hazards and assess risks on a routine and non-routine basis by the entity?", choices: null, isMandatory: true, parent: true },
+          { text: "Whether you have processes for workers to report the work related hazards and to remove themselves from such risks. (Y/N)", choices: null, isMandatory: true, parent: true },
+          { text: "Do the employees/ worker of the entity have access to non-occupational medical and healthcare services? (Yes/ No)", choices: null, isMandatory: true, parent: true },
 
           {
-            text: "Details of safety related incidents, in the following format:", choices: null, isMandatory: true
-            , parent: true,
+            text: "Details of safety related incidents, in the following format:", choices: null, isMandatory: true, parent: true,
             type: "table",
             label: "",
             columns: [
               "Safety Incident/Number",
               "Category",
-              "FY 2024-25Current Financial Year (Employees)",
-              "FY 2024-25Current Financial Year (Workers)",
-              "FY 2023-24Previous Financial Year (Employees)",
-              "FY 2023-24Previous Financial Year (Workers)"
+              "FY 2022",
+              "FY 2021"
 
             ],
             rows: [
@@ -595,8 +589,7 @@ export const allCategories3 = [
             label: "",
             columns: [
               "Category",
-              "% of your plants and offices that were assessed (by entity or statutory authorities or third parties",
-
+              "% of your plants and offices that were assessed (by entity or statutory authorities or third parties"
             ],
             rows: [
               "Health & Safety Practices",
@@ -606,9 +599,8 @@ export const allCategories3 = [
           },
           { text: "Provide details of any corrective action taken or underway to address safety-related incidents (if any) and on significant risks / concerns arising from assessments of health & safety practices and working conditions.", choices: null, isMandatory: true, parent: true },
 
-          { text: "Does the entity extend any life insurance or any compensatory package in the event of death of (A) Employees (Y/N) ", choices: null, isMandatory: false, parent: true, isNone: true },
-          { text: "(A) Employees (Y/N) ", choices: null, isMandatory: false, parent: false, },
-          { text: "(B) Workers (Y/N)", choices: null, isMandatory: false, parent: false },
+          { text: "Does the entity extend any life insurance or any compensatory package in the event of death of (A) Employees (Y/N)", choices: null, isMandatory: false, parent: true },
+
           { text: "Provide the measures undertaken by the entity to ensure that statutory dues have been deducted and deposited by the value chain partners", choices: null, isMandatory: false, parent: true },
           {
             text: "Provide the number of employees / workers having suffered high consequence work-related injury / ill-health / fatalities (as reported in Q11 of Essential Indicators above), who have been are rehabilitated and placed in suitable employment or whose family members have been placed in suitable employment:", choices: null, isMandatory: false, parent: true
@@ -676,8 +668,7 @@ export const allCategories3 = [
               "Whether identified as Vulnerable & Marginalized Group (Yes/No)",
               "Channels of communication(Email, SMS, Newspaper, Pamphlets, Advertisement, Community Meetings, Notice Board, Website), Other",
               "Frequency of engagement(Annually/ Half yearly/ Quarterly / others – please specify)",
-              "Purpose and scope of engagement including key topics and concerns raised during such engagement"
-
+              "Purpose and scope of engagement including key topics and concerns raised during such engagement",
             ],
             rows: [
               "",
@@ -722,7 +713,7 @@ export const allCategories3 = [
               "FY 2024-25Current Financial Year (% (B / A))",
               "FY 2023-24Previous Financial Year (Total (C))",
               "FY 2023-24Previous Financial Year (No. of employees / workers covered (D))",
-              "FY 2023-24Previous Financial Year (% (D / C))"
+              "FY 2023-24Previous Financial Year (% (D / C))                  "
             ],
             rows: [
               "Employees (Permanent)",
@@ -749,7 +740,7 @@ export const allCategories3 = [
               "Equal to Minimum Wage (No. (E))",
               "Equal to Minimum Wage (% (E / D))",
               "More than Minimum Wage (No. (F))",
-              "More than Minimum Wage (% (F / D))",
+              "More than Minimum Wage (% (F / D))"
             ],
             rows: [
               "Employees (Permanent)",
@@ -771,41 +762,28 @@ export const allCategories3 = [
             ]
 
           },
-          { text: "Details of remuneration/salary/wages", choices: null, isMandatory: true, isNone: true, parent: true },
+          // { text: "Details of remuneration/salary/wages", choices: null, isMandatory: true, isNone: true, parent: true },
           {
-            text: "Median remuneration / wages:", choices: null, isMandatory: true, parent: false
+            text: "Details of remuneration/salary/wages", choices: null, isMandatory: true, parent: true
             ,
             type: "table",
             label: "",
             columns: [
-              "Category",
-              "Male (Number)",
-              "Male (Median remuneration/ salary/ wages of respective category)",
-
-              "Female (Number)",
-              "Female (Median remuneration/salary/ wages of respective category)",
+              "category",
+              "2023-24 Male Number",
+              "2023-24 Male Median remuneration/ salary/ wages of respective category",
+              "2023-24 Female Number",
+              "2023-24 Female Median remuneration/ salary/ wages of respective category",
+              "2022-23 Male Number",
+              "2022-23 Male Median remuneration/ salary/ wages of respective category",
+              "2022-23 Female Number",
+              "2022-23 Female Median remuneration/ salary/ wages of respective category",
             ],
             rows: [
               "Board of Directors (BoD)",
               "Key Managerial Personnel",
               "Employees other than BoD and KMP",
               "Workers",
-            ]
-
-          },
-          {
-            text: "Gross wages paid to females as % of total wages paid by the entity, in the following format:", choices: null, isMandatory: true, parent: false
-            ,
-            type: "table",
-            label: "",
-            columns: [
-              "Category",
-              "FY 2024-25(Current Financial Year)",
-              "FY 2023-24(Previous Financial Year)"
-
-            ],
-            rows: [
-              "Gross wages paid to females as % of total wages",
             ]
 
           },
@@ -866,7 +844,7 @@ export const allCategories3 = [
             label: "",
             columns: [
               "Category",
-              "% of your plants and offices that were assessed (by entity or statutory authorities or third parties)",
+              "% of your plants and offices that were assessed (by entity or statutory authorities or third parties)"
 
             ],
             rows: [
@@ -891,8 +869,8 @@ export const allCategories3 = [
             type: "table",
             label: "",
             columns: [
-              "  ",
-              "% of value chain partners (by value of business done with such partners) that were assessed",
+              "Category",
+              "% of value chain partners (by value of business done with such partners) that were assessed"
 
             ],
             rows: [
@@ -963,10 +941,9 @@ export const allCategories3 = [
             type: "table",
             label: "",
             columns: [
-              "S. No.",
               "Parameter",
-              "FY 2024-25(Current Financial Year)",
-              "FY 2023-24(Previous Financial Year)"
+              "FY 2023-2024",
+              "FY 2022-2023"
 
             ],
             rows: [
@@ -993,8 +970,8 @@ export const allCategories3 = [
             label: "",
             columns: [
               "Parameter",
-              "FY 2024-25(Current Financial Year)",
-              "FY 2023-24(Previous Financial Year)"
+              "FY 2023-2024",
+              "FY 2022-2023"
 
             ],
             rows: [
@@ -1076,9 +1053,9 @@ export const allCategories3 = [
             type: "table",
             label: "",
             columns: [
-              "Parameter",
-              "FY 2024-25(Current Financial Year)",
-              "FY 2023-24(Previous Financial Year)",
+              "Total Waste generated (in metric tonnes)",
+              "FY 2023 - 2024",
+              "FY 2022 – 2023"
 
             ],
             rows: [
@@ -1121,10 +1098,9 @@ export const allCategories3 = [
             type: "table",
             label: "",
             columns: [
-              "S. No.",
-              "Location of operations/ offices",
+              "Location of operations/offices",
               "Type of operations",
-              "Whether the conditions of environmental approval / clearance are being complied with? (Y/N)If no, the reasons thereof and corrective action taken, if any."
+              "Whether the conditions of environmental approval / clearance are being complied with? (Y/N) If no, the reasons thereof and corrective action taken, if any"
 
             ],
             rows: [
@@ -1142,9 +1118,8 @@ export const allCategories3 = [
             type: "table",
             label: "",
             columns: [
-              "S. No.",
               "Name and brief details of project",
-              "EIA Notification No.",
+              "EIA Notification No",
               "Date",
               "Whether conducted by independent external agency (Yes / No)",
               "Results communicated in public domain(Yes / No)",
@@ -1188,7 +1163,21 @@ export const allCategories3 = [
 
           },
           {
-            text: "Water withdrawal, consumption and discharge in areas of water stress (in kilolitres):", choices: null, isMandatory: false, parent: true
+            text: "Water withdrawal, consumption and discharge in areas of water stress (in kilolitres):", choices: null, isMandatory: false, parent: true,
+            type: "table",
+            label: "",
+            columns: [
+              "Parameter",
+              "FY 2023-2024",
+              "FY 2022-2023"
+            ],
+            rows: [
+              "Total Scope 3 emissions(Break-up of the GHG into CO2, CH4, N2O, HFCs, PFCs, SF6, NF3, if available)",
+              "Total Scope 3 emissions per rupee of turnover",
+              "Total Scope 3 emission intensity (optional) – the relevant metric may be selected by the entity",
+            ],
+
+
           },
           {
             text: "Please provide details of total Scope 3 emissions & its intensity, in the following format", choices: null, isMandatory: false, parent: true
@@ -1197,10 +1186,9 @@ export const allCategories3 = [
             label: "",
             columns: [
               "Parameter",
-              "Unit (Metric tonnes of CO2 equivalent)",
-              "FY 2024-25(Current Financial Year)",
-              "FY 2023-24(Previous Financial Year)"
-
+              "Unit",
+              "FY 2023-24",
+              "FY 2022-23"
             ],
             rows: [
               "Total Scope 3 emissions(Break-up of the GHG into CO2, CH4, N2O, HFCs, PFCs, SF6, NF3, if available)",
@@ -1209,7 +1197,6 @@ export const allCategories3 = [
             ],
 
           },
-          { text: "Note: Indicate if any independent assessment/ evaluation/assurance has been carried out by an external agency? (Y/N) If yes, name of the external agency", choices: null, isMandatory: false, parent: false },
           { text: "With respect to the ecologically sensitive areas reported at Question 10 of Essential Indicators above, provide details of significant direct & indirect impact of the entity on biodiversity in such areas along-with prevention and remediation activities", choices: null, isMandatory: false, parent: true },
           {
             text: "If the entity has undertaken any specific initiatives or used innovative technology or solutions to improve resource efficiency, or reduce impact due to emissions / effluent discharge / waste generated, please provide details of the same as well as outcome of such initiatives, as per the following format:", choices: null, isMandatory: false, parent: true
@@ -1230,9 +1217,9 @@ export const allCategories3 = [
           { text: "Does the entity have a business continuity and disaster management plan? Give details in 100 words/ web link.", choices: null, isMandatory: false, parent: true },
           { text: "Disclose any significant adverse impact to the environment, arising from the value chain of the entity. What mitigation or adaptation measures have been taken by the entity in this regard.", choices: null, isMandatory: false, parent: true },
           { text: "Percentage of value chain partners (by value of business done with such partners) that were assessed for environmental impacts.", choices: null, isMandatory: false, parent: true },
-          { text: "How many Green Credits have been generated or procured:", choices: null, isMandatory: false, parent: true },
-          { text: "By the listed entity", choices: null, isMandatory: false, parent: false },
-          { text: "By the top ten (in terms of value of purchases and sales,respectively) value chain partners”", choices: null, isMandatory: false, parent: false },
+          // { text: "How many Green Credits have been generated or procured:", choices: null, isMandatory: false, parent: true },
+          // { text: "By the listed entity", choices: null, isMandatory: false, parent: false },
+          // { text: "By the top ten (in terms of value of purchases and sales,respectively) value chain partners”", choices: null, isMandatory: false, parent: false },
 
         ],
       },
@@ -1251,36 +1238,17 @@ export const allCategories3 = [
         percentComplete: "0",
         section: "C VII",
         question: [
-          { text: "Trade and industry", choices: null, isMandatory: true, isNone: true, parent: true },
-          {
-            text: "Number of affiliations with trade and industry chambers/ associations.", choices: null, isMandatory: true, parent: false
-            ,
-            type: "table",
-            label: "",
-            columns: [
-              "",
-              "",
-              ""
+          // { text: "Trade and industry", choices: null, isMandatory: true, isNone: true, parent: true },
+          { text: "Number of affiliations with trade and industry chambers/ associations.", choices: null, isMandatory: false, parent: true },
 
-            ],
-            rows: [
-              "",
-              "",
-              "",
-              "",
-              ""
-            ]
-
-          },
           {
-            text: "List the top 10 trade and industry chambers/ associations (determined based on the total members of such body) the entity is a member of/ affiliated to, in the following format", choices: null, isMandatory: true, parent: false
+            text: "List the top 10 trade and industry chambers/ associations (determined based on the total members of such body) the entity is a member of/ affiliated to, in the following format", choices: null, isMandatory: true, parent: true
             ,
             type: "table",
             label: "",
             columns: [
               "Name of the trade and industry chambers/ associations",
-              "Reach of trade and industry chambers/ associations(State/ National)",
-              ""
+              "Reach of trade and industry chambers/ associations (State/ National)"
 
             ],
             rows: [
@@ -1300,7 +1268,6 @@ export const allCategories3 = [
             type: "table",
             label: "",
             columns: [
-              "S. No.",
               "Name of authority",
               "Brief of the case",
               "Corrective action taken"
@@ -1323,12 +1290,11 @@ export const allCategories3 = [
             type: "table",
             label: "",
             columns: [
-              "S. No.",
-              "Public policy advocated",
+              "Public Policy Educated",
               "Method resorted for such advocacy",
               "Whether information available in public domain? (Yes/No)",
-              "Frequency of Review by Board(Annually/ Half yearly/ Quarterly / Others – please specify)",
-              "Web Link, if available"
+              "Frequency of Review by Board (annually/ Half Yearly/Quarterly/ Others – please specify)",
+              "Web link, if available"
 
             ],
             rows: [
@@ -1366,12 +1332,11 @@ export const allCategories3 = [
             label: "",
             parent: true,
             columns: [
-              "S. No.",
               "Name and brief details of project",
               "SIA Notification No.",
               "Date of notification",
               "Whether conducted by independent external agency (Yes / No)",
-              "Results communicated in public domain(Yes / No)",
+              "Results communicated in public domain (Yes / No)",
               "Relevant Web link"
 
             ],
@@ -1394,7 +1359,6 @@ export const allCategories3 = [
             parent: true,
 
             columns: [
-              "S. No.",
               "Name of Project for which R&R is ongoing",
               "State",
               "District",
@@ -1421,9 +1385,9 @@ export const allCategories3 = [
             label: "",
             parent: true,
             columns: [
-              "Category",
-              "FY 2024-25Current Financial Year",
-              "FY 2023-24Previous Financial Year"
+              "Particulars",
+              "FY 2023-24 (Current Financial Year)",
+              "FY 2022-23 (Previous Financial year)"
 
             ],
             rows: [
@@ -1460,7 +1424,6 @@ export const allCategories3 = [
             type: "table",
             label: "",
             columns: [
-              "S. No.",
               "Details of negative social impact identified",
               "Corrective action taken"
 
@@ -1482,10 +1445,9 @@ export const allCategories3 = [
             type: "table",
             label: "",
             columns: [
-              "S. No.",
               "State",
               "Aspirational District",
-              "Amount spent (In INR)"
+              "Amount Spent in INR"
 
             ],
             rows: [
@@ -1500,8 +1462,8 @@ export const allCategories3 = [
 
           },
           { text: "Do you have a preferential procurement policy where you give preference to purchase from suppliers comprising marginalized /vulnerable groups? (Yes/No)", choices: null, isMandatory: false, parent: true },
-          { text: "From which marginalized /vulnerable groups do you procure?", choices: null, isMandatory: false, parent: false },
-          { text: "What percentage of total procurement (by value) does it constitute?", choices: null, isMandatory: false, parent: false },
+          { text: "From which marginalized /vulnerable groups do you procure?", choices: null, isMandatory: false, parent: true },
+          { text: "What percentage of total procurement (by value) does it constitute?", choices: null, isMandatory: false, parent: true },
 
           {
             text: "Details of the benefits derived and shared from the intellectual properties owned or acquired by your entity (in the current financial year), based on traditional knowledge:", choices: null, isMandatory: false, parent: true
@@ -1509,11 +1471,10 @@ export const allCategories3 = [
             type: "table",
             label: "",
             columns: [
-              "S. No.",
-              "Intellectual Property based on traditional knowledge",
-              "Owned/ Acquired (Yes/No)",
-              "Benefit shared(Yes / No)",
-              "Basis of calculating benefit share",
+              "Intellectual property based on traditional knowledge",
+              "Owned/Acquired (Yes/No)",
+              "Benefit Shared (Yes/No)",
+              "Basis of calculating benefit share"
 
             ],
             rows: [
@@ -1533,7 +1494,6 @@ export const allCategories3 = [
             type: "table",
             label: "",
             columns: [
-              "S. No.",
               "Name of authority",
               "Brief of the Case",
               "Corrective action taken"
@@ -1552,9 +1512,8 @@ export const allCategories3 = [
             type: "table",
             label: "",
             columns: [
-              "S. No.",
               "CSR Project",
-              "No. of persons benefitted from CSR Projects",
+              "No. of persons benefited from CSR Projects",
               "% of beneficiaries from vulnerable and marginalized groups"
             ],
             rows: [
@@ -1572,27 +1531,27 @@ export const allCategories3 = [
     ]
   },
   {
-    key: " responsible manner",
+    key: "responsible_manner",
     section: "C-IX.Principle 9",
     questionsAnswer: "1/3",
     percentComplete: "40%",
     questions: [
       {
-        key: " responsible manner",
+        key: "responsible_manner",
         quesSection: "Principle 9 : Businesses should engage with and provide value to their consumers in a responsible manner",
         questionsAnswer: "0/0",
         percentComplete: "0",
         section: "C IX",
         question: [
-          { text: "Describe the mechanisms in place to receive and respond to consumer complaints and feedback.", choices: null, isMandatory: true, parent: true, isNone: true },
+          { text: "Describe the mechanisms in place to receive and respond to consumer complaints and feedback.", choices: null, isMandatory: true, parent: true },
           {
-            text: "Turnover of products and/ services as a percentage of turnover from all products/service that carry information about:", choices: null, isMandatory: true
+            text: "Turnover of products and/ services as a percentage of turnover from all products/service that carry information about:", choices: null, isMandatory: true, parent: true
 
             , type: "table",
             label: "",
             columns: [
-              " ",
-              "As a percentage to total turnover",
+              "Particulars",
+              "As a percentage of total turnover"
 
             ],
             rows: [
@@ -1611,7 +1570,6 @@ export const allCategories3 = [
               "FY 2024-25(Current Financial Year)-(Received during the year)",
               "FY 2024-25(Current Financial Year)-(Pending resolution at end of year)",
               "FY 2024-25(Current Financial Year)-(Remarks)",
-
               "FY 2023-24(Previous Financial Year)-(Received during the year)",
               "FY 2023-24(Previous Financial Year)-(Pending resolution at end of year)",
               "FY 2023-24(Previous Financial Year)-(Remarks)"
@@ -1635,9 +1593,9 @@ export const allCategories3 = [
             type: "table",
             label: "",
             columns: [
-              " ",
+              "category",
               "Number",
-              "Reasons for recall",
+              "Reasons for recall"
 
             ],
             rows: [
@@ -1650,15 +1608,15 @@ export const allCategories3 = [
           },
           { text: "Does the entity have a framework/policy on cyber security and risks related to data privacy? (Yes/No). If available, provide weblink of the policy.", choices: null, isMandatory: true, parent: true },
           { text: "Provide details of any corrective actions taken or underway on issues relating to advertising, and delivery of essential services; cyber security and data privacy of customers; re-occurrence of instances of product recalls; penalty / action taken by regulatory authorities on safety of products / services.", choices: null, isMandatory: true, parent: true },
-          { text: "Provide the following information relating to data breaches:", choices: null, isMandatory: true, parent: true, isNone: true },
+          { text: "Provide the following information relating to data breaches:", choices: null, isMandatory: true, parent: true },
 
           { text: "Channels / platforms where information on products and services of the entity can be accessed (provide web link, if available).", choices: null, isMandatory: false, parent: true },
           { text: "Steps taken to inform and educate consumers about safe and responsible usage of products and/or services.", choices: null, isMandatory: false, parent: true },
           { text: "Mechanisms in place to inform consumers of any risk of disruption/discontinuation of essential services.", choices: null, isMandatory: false, parent: true },
           { text: "Does the entity display product information on the product over and above what is mandated as per local laws? (Yes/No/Not Applicable) If yes, provide details in brief. Did your entity carry out any survey with regard to consumer satisfaction relating to the major products / services of the entity, significant locations of operation of the entity or the entity as a whole? (Yes/No)", choices: null, isMandatory: false, parent: true },
           { text: "Provide the following information relating to data breaches:", choices: null, isMandatory: false, parent: true },
-          { text: "Number of instances of data breaches along-with impact", choices: null, isMandatory: false, parent: false },
-          { text: "Percentage of data breaches involving personally identifiable information of customers", choices: null, isMandatory: false, parent: false },
+          // { text: "Number of instances of data breaches along-with impact", choices: null, isMandatory: false, parent: false },
+          // { text: "Percentage of data breaches involving personally identifiable information of customers", choices: null, isMandatory: false, parent: false },
 
 
         ],

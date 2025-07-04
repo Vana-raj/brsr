@@ -28,6 +28,7 @@ const NavBar: React.FC = () => {
     const { id: supplierId } = useParams<{ id?: string }>();
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [processedRoutes, setProcessedRoutes] = useState<SearchRoute[]>([]);
+    const [walletAddress, setWalletAddress] = useState<string | null>(null);
 
     const searchConfig: SearchRoute[] = [
         { keys: ['dashboard', 'home'], path: '/dashboard' },
@@ -114,6 +115,13 @@ const NavBar: React.FC = () => {
             setSearchQuery('');
         }
     }, [searchQuery, processedRoutes, navigate]);
+
+    useEffect(() => {
+        const savedAddress = localStorage.getItem("walletAddress");
+        if (savedAddress) {
+            setWalletAddress(savedAddress);
+        }
+    }, []);
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -223,8 +231,8 @@ const NavBar: React.FC = () => {
             <div className="dropdown-item">
                 <Avatar size={45} icon={<Profile />} onClick={handleOpenModal} />
                 <div className="profile-details">
-                    <span className="profile-name">Mugesh</span>
-                    <span className="profile-role">Admin</span>
+                    <span className="profile-name">{walletAddress ? `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}` : ""}</span>
+                    <span className="profile-role">{userInfo?.user}</span>
                 </div>
             </div>
             <div className="profile-content">
@@ -271,16 +279,6 @@ const NavBar: React.FC = () => {
                             </Link>
                         </li>
 
-                        {/* <li>
-                            <Link
-                                to="/quality"
-                                className={activeLink === 'quality' ? 'active' : ''}
-                                onClick={() => handleLinkClick('quality')}
-                            >
-                                Quality
-                            </Link>
-                        </li>
-                        */}
                         <li>
                             <Link
                                 to="/analytics"
@@ -313,11 +311,11 @@ const NavBar: React.FC = () => {
                         </div>
                     </div>
                     <div className="profile-details">
-                        <span className="profile-name-out">{userInfo?.email}</span>
-                        <span className="profile-role-out">{userInfo?.user}</span>
+                        <span className="profile-name-out">{userInfo?.user}</span>
+                        <span className="profile-role-out">{walletAddress ? `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}` : ""}</span>
                     </div>
                     <div className="nav-profile-pic">
-                        <Tooltip color={bgColor} placement="rightTop" title={profile}>
+                        <Tooltip trigger={'click'} color={bgColor} placement="rightTop" title={profile}>
                             <Avatar size={40} icon={<Profile />} />
                         </Tooltip>
                     </div>

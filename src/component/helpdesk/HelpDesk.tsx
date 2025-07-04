@@ -23,7 +23,7 @@ const servicesData = [
         icon: icon2,
         title: "Automated Data Assurance",
         shortText:
-            "Smart contracts validate inputs against GRI Standards to prevent greenwashing or human error.",
+            "Smart contracts validate inputs against BRSR Standards to prevent greenwashing or human error.",
         viewDetails: "#",
         aosDelay: "200",
     },
@@ -54,7 +54,7 @@ const HelpDesk: React.FC = () => {
         <div className="helpdesk-section ptb-100">
             <div className="container">
                 <div className="section-title">
-                    <h2>Why Blockchain for GRI?</h2>
+                    <h2>Why Blockchain for BRSR?</h2>
                 </div>
 
                 <div className="row">

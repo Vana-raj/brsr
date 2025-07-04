@@ -317,4 +317,4 @@ const Report: React.FC = () => {
   )
 }
 
-export default Report
+export default Report;

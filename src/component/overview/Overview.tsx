@@ -34,7 +34,7 @@ const Overview: React.FC = () => {
             title: "Designed for Sustainability, Built for Compliance",
             aosDelay: "100",
             overviewList: [
-                { title: 'GRI Standards Integration (GRI 1, 2, 3)', aosDelay: '200' },
+                { title: 'BRSR Standards Integration (BRSR 1, 2, 3)', aosDelay: '200' },
                 { title: 'Automated data ingestion from ERP, IoT', aosDelay: '300' },
                 { title: 'Role-based access & digital signatures', aosDelay: '400' },
                 { title: 'Audit trail with blockchain hash references', aosDelay: '500' },

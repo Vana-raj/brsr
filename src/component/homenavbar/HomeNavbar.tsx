@@ -10,7 +10,7 @@ import "./HomeNavbar.scss";
 const HomeNavbar: React.FC = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [walletAddress, setWalletAddress] = useState<string | null>(null);
-    const navigate = useNavigate(); // <-- Init navigate
+    const navigate = useNavigate();
 
     const toggleNavbar = () => {
         setMenuOpen(!menuOpen);
@@ -21,7 +21,9 @@ const HomeNavbar: React.FC = () => {
             try {
                 const provider = new ethers.BrowserProvider(window.ethereum);
                 const accounts = await provider.send("eth_requestAccounts", []);
+                const address = accounts;
                 setWalletAddress(accounts[0]);
+                localStorage.setItem("walletAddress", address);
                 navigate("/dashboard");
             } catch (err) {
                 console.error("User rejected the connection", err);

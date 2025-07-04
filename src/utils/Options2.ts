@@ -66,11 +66,10 @@ export const allCategories2 = [
         section: "B I",
         question: [
           {
-            text: "Whether your entity's policy/policies cover each principle and its core elements of the NGRBCs. (Yes/No)", choices: null,
+            text: "Whether your entity’s policy/policies cover each principle and its core elements of the NGRBCs. (Yes/No)", choices: null,
             type: "table",
             label: "Policy",
             columns: [
-              "S. No",
               "P1",
               "P2",
               "P3",
@@ -80,8 +79,6 @@ export const allCategories2 = [
               "P7",
               "P8",
               "P9"
-            ],
-            row: [
             ],
             isMandatory: true,
             parent: true
@@ -92,7 +89,6 @@ export const allCategories2 = [
             type: "table",
             label: "Policy",
             columns: [
-              "S. No",
               "P1",
               "P2",
               "P3",
@@ -104,36 +100,33 @@ export const allCategories2 = [
               "P9"
             ],
             row: [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8",
+              "P9"
             ],
+
             isMandatory: true,
             parent: true
 
           },
           {
             text: "Web Link of the Policies, if available.", choices: null,
-            // type: "table",
             label: "Policy",
-            // columns: [
-            //   "P1",
-            //   "P2",
-            //   "P3",
-            //   "P4",
-            //   "P5",
-            //   "P6",
-            //   "P7",
-            //   "P8",
-            //   "P9"
-            // ],
             isMandatory: true,
             parent: true
 
           },
           {
-            text: "Whether the entity has translated the policy into procedures. (Yes / No)", choices: null,
+            text: "Whether the entity has translated the policy into procedures. (Yes / No)", choices: ["Yes", "No", "In Progress"],
             type: "table",
             label: "Policy",
             columns: [
-              "S. No",
               "P1",
               "P2",
               "P3",
@@ -145,14 +138,13 @@ export const allCategories2 = [
               "P9"
             ],
             isMandatory: true,
-            parent: true,
+            parent: true
           },
           {
             text: "Do the enlisted policies extend to your value chain partners? (Yes/No)", choices: ["Yes", "No", "In Progress"],
             type: "table",
             label: "Policy",
             columns: [
-              "S. No",
               "P1",
               "P2",
               "P3",
@@ -162,17 +154,6 @@ export const allCategories2 = [
               "P7",
               "P8",
               "P9"],
-            row: [
-              "P1",
-              "P2",
-              "P3",
-              "P4",
-              "P5",
-              "P6",
-              "P7",
-              "P8",
-              "P9"
-            ],
             isMandatory: true,
             parent: true
           },
@@ -196,9 +177,20 @@ export const allCategories2 = [
 
           },
           {
-            text: "Specific commitments, goals and targets set by the entity with defined timelines, if any.", choices: null,
-            // type: "table",
+            text: "Specific commitments, goals and targets set by the entity with defined timelines, if any.", choices: ["Yes", "No", "In Progress"],
+            type: "table",
             label: "Policy",
+            columns: [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8",
+              "P9"
+            ],
             isMandatory: true,
             parent: true
 
@@ -227,29 +219,12 @@ export const allCategories2 = [
         percentComplete: "0",
         section: "B II",
         question: [
+          { text: "Statement by director responsible for the business responsibility report, highlighting ESG related challenges, targets and achievements (listed entity has flexibility regarding the placement of this disclosure)", choices: null, isMandatory: false, parent: true },
+
+          { text: "Details of the highest authority responsible for implementation and oversight of the Business Responsibility policy (ies).", choices: null, isMandatory: false, parent: true },
+
           {
-            text: "Statement by director responsible for the business responsibility report, highlighting ESG related challenges, targets and achievements (listed entity has flexibility regarding the placement of this disclosure).", choices: null, isMandatory: false,
-            label: "Disclosure",
-            type: "table",
-            columns: [
-              "P1",
-              "P2",
-              "P3",
-              "P4",
-              "P5",
-              "P6",
-              "P7",
-              "P8",
-              "P9"
-            ],
-            // isMandatory:true,
-            // rows: [
-            //   "Statement by director responsible for the business responsibility report, highlighting ESG related challenges, targets and achievements (listed entity has flexibility regarding the placement of this disclosure)"
-            // ],
-            parent: true
-          },
-          {
-            text: "Details of the highest authority responsible for implementation and oversight of the Business Responsibility policy (ies).", choices: null, isMandatory: false, type: "table",
+            text: "Does the entity have a specified Committee of the Board/ Director responsible for decision making on sustainability related issues? (Yes / No). If yes, provide details.", choices: null, isMandatory: false, type: "table",
             columns: [
               "P1",
               "P2",
@@ -262,13 +237,12 @@ export const allCategories2 = [
               "P9"
             ], parent: true
           },
-          { text: "Does the entity have a specified Committee of the Board/ Director responsible for decision making on sustainability related issues? (Yes / No). If yes, provide details.", choices: null, isMandatory: false, parent: true },
+          // {
+          //   text: "Details of Review of NGRBCs by the Company:", choices: null, isMandatory: false, parent: true, isNone: true,
+          //   lablel: "Subject for Review",
+          // },
           {
-            text: "Details of Review of NGRBCs by the Company:", choices: null, isMandatory: false, parent: true, isNone: true,
-            lablel: "Subject for Review",
-          },
-          {
-            text: "Indicate whether review was undertaken by Director / Committee of the Board/ Any other Committee", choices: ["Yes", "No", "In Progress"], isMandatory: false, parent: false,
+            text: "Indicate whether review was undertaken by Director / Committee of the Board/ Any other Committee", choices: ["Yes", "No", "In Progress"], isMandatory: false, parent: true,
             label: "Performance against above policies and follow up action",
             type: "table",
             columns: [
@@ -314,7 +288,6 @@ export const allCategories2 = [
             type: "table",
             label: "Has the entity carried out independent assessment/ evaluation of the working of its policies by an external agency? (Yes/No). If yes, provide name of the agency.",
             columns: [
-              "S. No",
               "P1",
               "P2",
               "P3",
@@ -331,7 +304,6 @@ export const allCategories2 = [
             type: "table",
             label: "",
             columns: [
-              "S. No",
               "P1",
               "P2",
               "P3",
@@ -351,28 +323,15 @@ export const allCategories2 = [
             ]
           },
 
+          // {
+          //   text: "Supply Chain Mangement", choices: null, isMandatory: false, parent: true, isNone: true
+          // },
           {
-            text: "Supply Chain Mangement", choices: null, isMandatory: false, parent: true, isNone: true
-          },
-          {
-            text: "Upstream (Suppliers & Logistics Partners)", parent: false,
-            type: "table",
-            columns: ["List the top upstream partners that individually contribute 2% or more of your total purchases (by value).",
-              "What percentage of total purchases (by value) is covered in this disclosure?",
-              "Disclose the percentage of total purchases covered by value chain partners for which ESG disclosures are provided.", ,
-              "What ESG performance metrics are tracked for these upstream partners?"
-            ]
+            text: "Upstream (Suppliers & Logistics Partners)", parent: false, choices: null, isMandatory: false
           },
 
           {
-            text: "Downstream (Distributors & Customers)", parent: false,
-            type: "table",
-            columns: ["List the top downstream partners that individually contribute 2% or more of your total sales (by value).",
-              "What percentage of total sales (by value) is covered in this disclosure?",
-              "Disclose the percentage of total sales covered by value chain partners for which ESG disclosures are provided.", ,
-              "What ESG criteria are assessed for downstream partners?"
-
-            ]
+            text: "Downstream (Distributors & Customers)", parent: false, choices: null, isMandatory: false
           },
         ],
       },

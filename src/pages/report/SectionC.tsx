@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Card, Input, List, Modal, Progress, Space, Table, Tooltip, Upload, message } from "antd";
-import { Radio } from "antd";
 import { ArrowLeftOutlined, BoldOutlined, CheckOutlined, CopyTwoTone, DeleteOutlined, FileAddTwoTone } from "@ant-design/icons";
+import { Card, Input, List, Modal, Progress, Space, Table, Tooltip, Upload, message, Radio } from "antd";
 import CustomButton from "../../component/buttons/CustomButton";
 import { allCategories3 } from "../../utils/Options3";
 import { primaryColor } from '../../style/ColorCode';
 import SelectDropDown from "../../component/select/SelectDropDown";
 import TableInput from "../../component/InputTable/InputTable";
-import "../questionnaire/Questionnaire.scss"
 import Loader from "../../component/loader/Loader";
+import "../questionnaire/Questionnaire.scss"
+import { info } from "sass";
 
 
 const { TextArea } = Input;
@@ -62,11 +62,12 @@ interface ApiSection {
 interface ApiResponse {
     data: ApiSection[];
 }
-
 interface SectionCProps {
     setSectionCProgressPercentage: (percentage: number) => void;
 }
 const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) => {
+    const [sections, setSections] = useState<number>(0);
+
     const [activeCategory, setActiveCategory] = useState<string>("business");
     const [showQuestions, setShowQuestions] = useState<boolean>(false);
     const [answers, setAnswers] = useState<{ [key: string]: any }>({});
@@ -76,17 +77,31 @@ const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) =>
     const [singleSectionTextArea, setsingleSectionTextArea] = useState<any>();
     const [trust, setTrust] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
-
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
     const [isUnsavedModalVisible, setIsUnsavedModalVisible] = useState(false);
     const [pendingAction, setPendingAction] = useState<() => void | null>();
     const [submittedAnswers, setSubmittedAnswers] = useState<Record<string, boolean>>({});
+    const [questionAnswerMap, setQuestionAnswerMap] = useState<Record<string, string>>({});
+    const [texts, setTexts] = useState<{ [key: string]: any }>({});
+    const [rdata, setRdata] = useState<{ [key: string]: any }>({});
+    const [gm, setGm] = useState<any>(null);
+    const [pdf, setPdf] = useState<File | null>(null);
+    const [selectedId, setSelectedId] = useState<number | null>(null);
+
 
 
     const handleRowClick = (record: any, sectionIndex: number) => {
         setShowQuestions(true);
         setCurrentSectionIndex(sectionIndex);
     };
+
+    const getPrincipleLabel = (section: number): string => {
+        if (section >= 0 && section < 9) {
+            return `principle_${section + 1}`;
+        }
+        return "invalid_section";
+    };
+
 
     const confirmNavigation = (action: () => void) => {
         if (hasUnsavedChanges && showQuestions) {
@@ -112,6 +127,7 @@ const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) =>
 
     };
 
+
     const handleNextSection = () => {
         setCurrentSectionIndex((prev) => Math.min(prev + 1, allCategories3[0].questions.length - 1));
     };
@@ -120,12 +136,24 @@ const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) =>
         setCurrentSectionIndex((prev) => Math.max(prev - 1, 0));
     };
 
-    const handleInputChange = (section: string, key: string, value: any, questionIndex: number) => {
-        const questionKey = `${section}-${key}-${questionIndex}`;
+    const handleInputChange = (section: string, key: string, value: any, questionIndex: number, text: string) => {
+        // console.log("*",section,"*",key,"*",value,"*",questionIndex)
+        const questionKey = generateQuestionKey(section, key, questionIndex);
+
+        // const questionKey = `${section}-${key}-${questionIndex}`;
         setAnswers((prevAnswers) => ({
             ...prevAnswers,
             [questionKey]: value,
         }));
+
+
+
+        const question = generateQuestion(text);
+        setTexts((prevText) => ({
+            ...prevText,
+            [question]: value,
+        }));
+
 
         setHasUnsavedChanges(answers[questionKey] === "" ? false : true);
     };
@@ -144,15 +172,17 @@ const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) =>
                 questionMap: {
                     '1': 'Percentage coverage by training and awareness programmes on any of the Principles during the financial year:',
                     '2': 'Details of fines / penalties /punishment/ award/ compounding fees/ settlement amount paid in proceedings',
-                    '3': 'Of the instances disclosed in Question 2 above, details of the Appeal/ Revision preferred in cases where monetary or non-monetary action has been appealed.',
-                    '4': 'Does the entity have an anti-corruption or anti-bribery policy? If yes, provide details in brief and if available, provide a web-link to the policy.',
-                    '5': 'Number of Directors/KMPs/employees/workers against whom disciplinary action was taken by any law enforcement agency for the charges of bribery/ corruption',
-                    '6': 'Details of complaints with regard to conflict of interest',
-                    '7': 'Provide details of any corrective action taken or underway on issues related to fines / penalties / action taken by regulators/ law enforcement agencies/ judicial institutions, on cases of corruption and conflicts of interest.',
-                    '8': 'Number of days of accounts payables ((Accounts payable *365) / Cost of goods/services procured) in the following format:',
-                    '9': 'Open-ness of business',
-                    '10': 'Awareness programmes conducted for value chain partners on any of the Principles during the financial year:',
-                    '11': 'Does the entity have processes in place to avoid/ manage conflict of interests involving members of the Board? (Yes/No) If Yes, provide details of the same.'
+                    '3': 'Monetary',
+                    '4': 'Non-Monetary',
+                    '5': 'Of the instances disclosed in Question 2 above, details of the Appeal/ Revision preferred in cases where monetary or non-monetary action has been appealed.',
+                    '6': 'Does the entity have an anti-corruption or anti-bribery policy? If yes, provide details in brief and if available, provide a web-link to the policy.',
+                    '7': 'Number of Directors/KMPs/employees/workers against whom disciplinary action was taken by any law enforcement agency for the charges of bribery/ corruption',
+                    '8': 'Details of complaints with regard to conflict of interest',
+                    '9': 'Provide details of any corrective action taken or underway on issues related to fines / penalties / action taken by regulators/ law enforcement agencies/ judicial institutions, on cases of corruption and conflicts of interest.',
+                    '10': 'Number of days of accounts payables ((Accounts payable *365) / Cost of goods/services procured) in the following format:',
+                    '11': 'Provide details of concentration of purchases and sales with trading houses, dealers, and related parties along-with loans and advances & investments, with related parties, in the following format:',
+                    '12': 'Awareness programmes conducted for value chain partners on any of the Principles during the financial year:',
+                    '13': 'Does the entity have processes in place to avoid/ manage conflict of interests involving members of the Board? (Yes/No) If Yes, provide details of the same.'
                 }
             },
             'two': {
@@ -161,13 +191,14 @@ const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) =>
                 questionMap: {
                     '1': 'Percentage of R&D and capital expenditure (capex) investments in specific technologies to improve the environmental and social impacts of product and processes to total R&D and capex investments made by the entity, respectively.',
                     '2': 'Does the entity have procedures in place for sustainable sourcing? (Yes/No)',
-                    '3': 'Describe the processes in place to safely reclaim your products for reusing, recycling and disposing at the end of life, for :',
-                    '4': 'Whether Extended Producer Responsibility (EPR) is applicable to the entity\'s activities (Yes / No). If yes, whether the waste collection plan is in line with the Extended Producer Responsibility (EPR) plan submitted to Pollution Control Boards? If not, provide steps taken to address the same.',
-                    '5': 'Has the entity conducted Life Cycle Perspective / Assessments (LCA) for any of its products (for manufacturing industry) or for its services (for service industry)? If yes, provide details in the following format?',
-                    '6': 'If there are any significant social or environmental concerns and/or risks arising from production or disposal of your products / services, as identified in the Life Cycle Perspective / Assessments (LCA) or through any other means, briefly describe the same along-with action taken to mitigate the same.',
-                    '7': 'Percentage of recycled or reused input material to total material (by value) used in production (for manufacturing industry) or providing services (for service industry)',
-                    '8': 'Of the products and packaging reclaimed at end of life of products, amount (in metric tonnes) reused, recycled, and safely disposed, as per the following format:',
-                    '9': 'Reclaimed products and their packaging materials (as percentage of products sold) for each product category.'
+                    '3': 'If yes, what percentage of inputs were sourced sustainably?',
+                    '4': 'Describe the processes in place to safely reclaim your products for reusing, recycling and disposing at the end of life, for :',
+                    '5': 'Whether Extended Producer Responsibility (EPR) is applicable to the entity\'s activities (Yes / No). If yes, whether the waste collection plan is in line with the Extended Producer Responsibility (EPR) plan submitted to Pollution Control Boards? If not, provide steps taken to address the same.',
+                    '6': 'Has the entity conducted Life Cycle Perspective / Assessments (LCA) for any of its products (for manufacturing industry) or for its services (for service industry)? If yes, provide details in the following format?',
+                    '7': 'If there are any significant social or environmental concerns and/or risks arising from production or disposal of your products / services, as identified in the Life Cycle Perspective / Assessments (LCA) or through any other means, briefly describe the same along-with action taken to mitigate the same.',
+                    '8': 'Percentage of recycled or reused input material to total material (by value) used in production (for manufacturing industry) or providing services (for service industry)',
+                    '9': 'Of the products and packaging reclaimed at end of life of products, amount (in metric tonnes) reused, recycled, and safely disposed, as per the following format:',
+                    '10': 'Reclaimed products and their packaging materials (as percentage of products sold) for each product category.'
                 }
             },
             'three': {
@@ -175,26 +206,30 @@ const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) =>
                 startIndex: 0,
                 questionMap: {
                     '1': 'Details of measures for the well-being of employees:',
-                    '2': 'Details of retirement benefits, for Current and Previous FY',
-                    '3': 'Accessibility of workplaces',
-                    '4': 'Does the entity have an equal opportunity policy as per the Rights of Persons with Disabilities Act, 2016? If so, provide a web-link to the policy.',
-                    '5': 'Return to work and Retention rates of permanent employees and workers that took parental leave.',
-                    '6': 'Is there a mechanism available to receive and redress grievances for the following categories of employees and worker? If yes, give details of the mechanism in brief',
-                    '7': 'Membership of employees and worker in association(s) or Unions recognised by the listed entity:',
-                    '8': 'Details of training given to employees and workers:',
-                    '9': 'Details of performance and career development reviews of employees and workers:',
-                    '10': 'Health and safety management system:',
-                    '11': 'Details of safety related incidents, in the following format:',
-                    '12': 'Describe the measures taken by the entity to ensure a safe and healthy work place',
-                    '13': 'Number of Complaints on the following made by employees and workers:',
-                    '14': 'Assessments for the year:',
-                    '15': 'Provide details of any corrective action taken or underway to address safety-related incidents (if any) and on significant risks / concerns arising from assessments of health & safety practices and working conditions.',
-                    '16': 'Does the entity extend any life insurance or any compensatory package in the event of death of (A) Employees (Y/N)',
-                    '17': 'Provide the measures undertaken by the entity to ensure that statutory dues have been deducted and deposited by the value chain partners',
-                    '18': 'Provide the number of employees / workers having suffered high consequence work-related injury / ill-health / fatalities (as reported in Q11 of Essential Indicators above), who have been are rehabilitated and placed in suitable employment or whose family members have been placed in suitable employment:',
-                    '19': 'Does the entity provide transition assistance programs to facilitate continued employability and the management of career endings resulting from retirement or termination of employment? (Yes/ No)',
-                    '20': 'Details on assessment of value chain partners:',
-                    '21': 'Provide details of any corrective actions taken or underway to address significant risks / concerns arising from assessments of health and safety practices and working conditions of value chain partners.'
+                    '2': 'Details of measures for the well-being of workers:',
+                    '3': 'Details of retirement benefits, for Current and Previous FY',
+                    '4': 'Accessibility of workplaces',
+                    '5': 'Does the entity have an equal opportunity policy as per the Rights of Persons with Disabilities Act, 2016? If so, provide a web-link to the policy.',
+                    '6': 'Return to work and Retention rates of permanent employees and workers that took parental leave.',
+                    '7': 'Is there a mechanism available to receive and redress grievances for the following categories of employees and worker? If yes, give details of the mechanism in brief',
+                    '8': 'Membership of employees and worker in association(s) or Unions recognised by the listed entity:',
+                    '9': 'Details of training given to employees and workers:',
+                    '10': 'Details of performance and career development reviews of employees and workers:',
+                    '11': 'Whether an occupational health and safety management system has been implemented by the entity? (Yes/ No). If yes, the coverage such system?',
+                    '12': 'What are the processes used to identify work-related hazards and assess risks on a routine and non-routine basis by the entity?',
+                    '13': 'Whether you have processes for workers to report the work related hazards and to remove themselves from such risks. (Y/N)',
+                    '14': 'Do the employees/ worker of the entity have access to non-occupational medical and healthcare services? (Yes/ No)',
+                    '15': 'Details of safety related incidents, in the following format:',
+                    '16': 'Describe the measures taken by the entity to ensure a safe and healthy work place',
+                    '17': 'Number of Complaints on the following made by employees and workers:',
+                    '18': 'Assessments for the year:',
+                    '19': 'Provide details of any corrective action taken or underway to address safety-related incidents (if any) and on significant risks / concerns arising from assessments of health & safety practices and working conditions.',
+                    '20': 'Does the entity extend any life insurance or any compensatory package in the event of death of (A) Employees (Y/N)',
+                    '21': 'Provide the measures undertaken by the entity to ensure that statutory dues have been deducted and deposited by the value chain partners',
+                    '22': 'Provide the number of employees / workers having suffered high consequence work-related injury / ill-health / fatalities (as reported in Q11 of Essential Indicators above), who have been are rehabilitated and placed in suitable employment or whose family members have been placed in suitable employment:',
+                    '23': 'Does the entity provide transition assistance programs to facilitate continued employability and the management of career endings resulting from retirement or termination of employment? (Yes/ No)',
+                    '24': 'Details on assessment of value chain partners:',
+                    '25': 'Provide details of any corrective actions taken or underway to address significant risks / concerns arising from assessments of health and safety practices and working conditions of value chain partners.'
                 }
             },
             // ... (continue with the rest of the parts following the same pattern)
@@ -262,9 +297,10 @@ const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) =>
                 category: 'transparent',
                 startIndex: 0,
                 questionMap: {
-                    '1': 'Trade and industry',
-                    '2': 'Provide details of corrective action taken or underway on any issues related to anti-competitive conduct by the entity, based on adverse orders from regulatory authorities.',
-                    '3': 'Details of public policy positions advocated by the entity:'
+                    '1': 'Number of affiliations with trade and industry chambers/ associations.',
+                    '2': 'List the top 10 trade and industry chambers/ associations (determined based on the total members of such body) the entity is a member of/ affiliated to, in the following format',
+                    '3': 'Provide details of corrective action taken or underway on any issues related to anti-competitive conduct by the entity, based on adverse orders from regulatory authorities.',
+                    '4': 'Details of public policy positions advocated by the entity:'
                 }
             },
             'eight': {
@@ -279,13 +315,15 @@ const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) =>
                     '6': 'Provide details of actions taken to mitigate any negative social impacts identified in the Social Impact Assessments (Reference: Question 1 of Essential Indicators above):',
                     '7': 'Provide the following information on CSR projects undertaken by your entity in designated aspirational districts as identified by government bodies',
                     '8': 'Do you have a preferential procurement policy where you give preference to purchase from suppliers comprising marginalized /vulnerable groups? (Yes/No)',
-                    '9': 'Details of the benefits derived and shared from the intellectual properties owned or acquired by your entity (in the current financial year), based on traditional knowledge:',
-                    '10': 'Details of corrective actions taken or underway, based on any adverse order in intellectual property related disputes wherein usage of traditional knowledge is involved.',
-                    '11': 'Details of beneficiaries of CSR Projects:'
+                    '9': 'From which marginalized /vulnerable groups do you procure?',
+                    '10': 'What percentage of total procurement (by value) does it constitute?',
+                    '11': 'Details of the benefits derived and shared from the intellectual properties owned or acquired by your entity (in the current financial year), based on traditional knowledge:',
+                    '12': 'Details of corrective actions taken or underway, based on any adverse order in intellectual property related disputes wherein usage of traditional knowledge is involved.',
+                    '13': 'Details of beneficiaries of CSR Projects:'
                 }
             },
             'nine': {
-                category: 'responsible manner',
+                category: 'responsible_manner',
                 startIndex: 0,
                 questionMap: {
                     '1': 'Describe the mechanisms in place to receive and respond to consumer complaints and feedback.',
@@ -451,8 +489,38 @@ const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) =>
         return [];
     };
 
-    const handleFileUpload = async (info: any, questionKey: string) => {
+
+    console.log("*****", texts)
+
+    const handlePost = async () => {
+        try {
+            const response = await fetch('http://127.0.0.1:5000/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // body: JSON.stringify(texts),
+                body: JSON.stringify(Object.keys(rdata).length > 0 ? rdata : texts),
+
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('Response:', data);
+        } catch (error) {
+            console.error('Error posting data:', error);
+        }
+    };
+
+
+
+    const handleFileUpload = async (info: any, questionKey: string, principleKey: string) => {
         const { file } = info;
+        setGm(info)
+        setPdf(file)
         if (!file || file.status === "uploading") return;
         setLoading(true);
 
@@ -460,15 +528,26 @@ const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) =>
             const formData = new FormData();
             formData.append('file', file.originFileObj || file);
             formData.append('questionKey', questionKey);
+            formData.append('principleKey', principleKey);
 
-            const response = await fetch('http://192.168.2.75:1000/extract/', {
+
+            const response = await fetch('http://127.0.0.1:1000/extract/', {
                 method: 'POST',
                 body: formData,
             });
+            console.log("Received response status:", response.status);
 
             if (!response.ok) throw new Error('Upload failed');
 
             const responseData = await response.json();
+
+            console.log("Parsed response data:", responseData);
+            const responseText = await response.text();
+            console.log("Raw response text:", responseText);
+
+
+
+
 
             // Ensure we have an array of sections
             const apiData = Array.isArray(responseData.data)
@@ -477,7 +556,7 @@ const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) =>
 
             // Transform the API response to our answer format
             const newAnswers = transformApiResponseToAnswers(apiData);
-
+            // console.log("answer",newAnswers)
             // Update state with the new answers
             setAnswers(prev => {
                 const updatedAnswers = { ...prev, ...newAnswers };
@@ -506,11 +585,17 @@ const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) =>
             message.success(`${file.name} processed successfully!`);
         } catch (error) {
             console.error('Upload error:', error);
-            message.error('Failed to process file');
+            if (principleKey == "principle_1") {
+                message.success("OK!")
+            }
+            else {
+                message.error('Failed to process file');
+            }
         } finally {
             setLoading(false);
         }
     };
+
     useEffect(() => {
         const savedAnswers = localStorage.getItem('answeredQuestions');
         if (savedAnswers) {
@@ -658,22 +743,73 @@ const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) =>
         });
     };
 
-    const handleCategoryClick = (categoryKey: string) => {
-        confirmNavigation(() => {
+    const handleCategoryClick = (categoryKey: string, id: number) => {
+        //   if (!pdf) {
+        //     message.warning("Please upload a PDF before selecting a principle.");
+        //     return;
+        //   }
 
+        //   setSections(id);
+
+        //   const principles: { [key: number]: string } = {
+        //     1: "principle_1",
+        //     2: "principle_2",
+        //     3: "principle_3",
+        //     4: "principle_4",
+        //     5: "principle_5",
+        //     6: "principle_6",
+        //     7: "principle_7",
+        //     8: "principle_8",
+        //     9: "principle_9",
+        //   };
+
+        //   const principleKey = principles[id + 1];
+        //   const mockInfo = { file: pdf };
+
+        //   if (principleKey=="principle_1"){
+        // console.log("#")
+        //   }
+        //   else{
+        //   handleFileUpload(mockInfo, "section_c", principleKey);
+        //   }
+        confirmNavigation(() => {
             const selectedCategory = allCategories3.find((cat) => cat.key === categoryKey);
             if (selectedCategory) {
                 loadAnsweredData(categoryKey, selectedCategory.questions);
             }
-            setActiveCategory(categoryKey);
-            const savedAnswers = localStorage.getItem('answeredQuestions');
 
+            setActiveCategory(categoryKey);
+
+            const savedAnswers = localStorage.getItem("answeredQuestions");
             if (savedAnswers) {
                 setAnswers(JSON.parse(savedAnswers));
             }
-            handleClearUnsubmittedAnswers()
-        })
+
+            handleClearUnsubmittedAnswers();
+        });
     };
+
+    const generateQuestionKey = (section: string, key: string, index: number): string => {
+        return `${section}_${key}_${index}`.toLowerCase();
+    };
+
+    const generateQuestion = (text: string): string => {
+        return `${text}`.toLowerCase();
+    };
+
+    const cleanAnswerKeys = (answers: { [key: string]: any }) => {
+        const cleaned: { [key: string]: any } = {};
+
+        Object.entries(answers).forEach(([key, value]) => {
+            const cleanKey = key.toLowerCase().replace(/-/g, '_');
+            if (!cleaned[cleanKey]) {
+                cleaned[cleanKey] = value;
+            }
+        });
+
+        return cleaned;
+    };
+
 
 
 
@@ -714,12 +850,11 @@ const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) =>
         questionsArray: any[],
         qusSection: string,
     ) => {
-
         const getQuestionNumber = () => {
             if (question.parent) {
                 let parentCount = 0;
                 for (let i = 0; i <= questionIndex; i++) {
-                    if (questionsArray[i].parent) {
+                    if (questionsArray[i]?.parent) {
                         parentCount++;
                     }
                 }
@@ -727,7 +862,7 @@ const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) =>
             } else {
                 let lastParentIndex = -1;
                 for (let i = questionIndex - 1; i >= 0; i--) {
-                    if (questionsArray[i].parent) {
+                    if (questionsArray[i]?.parent) {
                         lastParentIndex = i;
                         break;
                     }
@@ -747,6 +882,9 @@ const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) =>
         if (isViewMode && !isAnswered) {
             return null;
         }
+        // console.log("questions",question)
+        // console.log("ww",answers,questionKey)
+        //  console.log("@@@",answers[`${section}_${key}_${questionIndex}`])
         if (question?.type === 'table') {
             return (
                 <div>
@@ -778,13 +916,14 @@ const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) =>
                             header={"S.No"}
                             value={answers[`${section}_${key}_${questionIndex}`] || []}
                             onChange={(value: any) =>
-                                handleInputChange(section, key, value, questionIndex)
+                                handleInputChange(section, key, value, questionIndex, question.text)
                             }
                         />
                     </div>
                 </div>
             );
         }
+
         return (
             <div>
                 <div className="question-text">
@@ -814,8 +953,8 @@ const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) =>
                                 rows={3}
                                 placeholder="Type your answer here"
                                 size="small"
-                                onChange={(e) => handleInputChange(section, key, e.target.value, questionIndex)}
-                                value={answers[questionKey] || ""}
+                                onChange={(e) => handleInputChange(section, key, e.target.value, questionIndex, question.text)}
+                                value={answers[`${section}_${key}_${questionIndex}`] || ""}
                             />
 
                         </div>
@@ -828,7 +967,7 @@ const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) =>
                             }))}
                             placeholder="Select options"
                             value={answers[questionKey] || []}  // Ensure we handle undefined/null
-                            onChange={(value) => handleInputChange(section, key, value, questionIndex)}
+                            onChange={(value) => handleInputChange(section, key, value, questionIndex, question.text)}
                         />
                     ) : (
                         <div className="question-options">
@@ -838,7 +977,7 @@ const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) =>
                                         <Radio
                                             value={option}
                                             checked={answers[questionKey] === option}
-                                            onChange={() => handleInputChange(section, key, option, questionIndex)}
+                                            onChange={() => handleInputChange(section, key, option, questionIndex, question.text)}
                                             className="radio-qbutton"
                                         >
                                             {option}
@@ -898,7 +1037,7 @@ const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) =>
         setSectionCProgressPercentage(sectionProgressPercent);
     }, [sectionProgressPercent, setSectionCProgressPercentage]);
     const totalTextAreasInSection = questions?.question.length || 0;
-    console.log(sectionProgressPercent, 'sectionProgressPercent')
+
     useEffect(() => {
         setsingleSectionTextArea(totalTextAreasInSection);
     }, [totalTextAreasInSection, questions]);
@@ -935,7 +1074,7 @@ const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) =>
                             renderItem={(category, id: number) => (
                                 <List.Item
                                     key={category.key}
-                                    onClick={() => handleCategoryClick(category.key)}
+                                    onClick={() => handleCategoryClick(category.key, id)}
                                     className={`category-item ${activeCategory === category.key ? "active" : ""} `}
                                 >
                                     {category.section}
@@ -960,7 +1099,11 @@ const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) =>
                                             const { onSuccess } = options;
                                             setTimeout(() => onSuccess?.("ok"), 0);
                                         }}
-                                        onChange={(info) => handleFileUpload(info, 'section_c')}
+
+                                        onChange={(info) => {
+                                            handleFileUpload(info, 'section_c', getPrincipleLabel(sections))
+                                            setGm(info)
+                                        }}
                                     >
                                         <FileAddTwoTone className="upload-icon" />
                                     </Upload>
@@ -978,15 +1121,14 @@ const SectionC: React.FC<SectionCProps> = ({ setSectionCProgressPercentage }) =>
                         }
                         bordered
                     >
-                        {
-                            questions?.question.map((q: any, idx: any) => {
-                                return (
-                                    <div key={`${questions.key}-${idx}`}>
-                                        {renderQuestionInput(activeCategory, questions.key, q, idx, questions.question, questions.section)}
-                                    </div>
-                                );
-                            })
+                        {questions?.question.map((q: any, idx: any) => {
+                            return (
+                                <div key={`${questions.key}-${idx}`}>
+                                    {renderQuestionInput(activeCategory, questions.key, q, idx, questions.question, questions.section)}
+                                </div>);
+                        })
                         }
+                        <button onClick={handlePost}>Get PDF</button>
 
                     </Card >
                 </div >

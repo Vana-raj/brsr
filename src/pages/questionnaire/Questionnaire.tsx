@@ -72,11 +72,9 @@ interface ApiSection {
 interface ApiResponse {
     data: ApiSection[];
 }
-
 interface QuestionnaireProps {
     setSectionProgressPercentage: (percentage: number) => void;
 }
-
 
 const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercentage }) => {
     const [activeCategory, setActiveCategory] = useState<string>("details");
@@ -88,12 +86,13 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercent
     const [singleSectionTextArea, setsingleSectionTextArea] = useState<any>();
     const [trust, setTrust] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
-
-
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
     const [isUnsavedModalVisible, setIsUnsavedModalVisible] = useState(false);
     const [pendingAction, setPendingAction] = useState<() => void | null>();
     const [submittedAnswers, setSubmittedAnswers] = useState<Record<string, boolean>>({});
+    const [questionAnswerMap, setQuestionAnswerMap] = useState<Record<string, string>>({});
+    const [texts, setTexts] = useState<{ [key: string]: any }>({});
+    const [rdata, setRdata] = useState<{ [key: string]: any }>({});
 
     const confirmNavigation = (action: () => void) => {
         if (hasUnsavedChanges && showQuestions) {
@@ -104,18 +103,50 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercent
         }
     };
 
-    const handleInputChange = (section: string, key: string, value: any, questionIndex: number) => {
+    const handleInputChange = (section: string, key: string, value: any, questionIndex: number, text: string) => {
         const questionKey = generateQuestionKey(section, key, questionIndex);
         setAnswers((prevAnswers) => ({
             ...prevAnswers,
             [questionKey]: value,
         }));
+        const question = generateQuestion(text);
+        setTexts((prevText) => ({
+            ...prevText,
+            [question]: value,
+        }));
+
 
         setHasUnsavedChanges(answers[questionKey] === "" ? false : true);
+        // console.log("*****vv",value,section,key,questionIndex,questionKey,text)
+
+    };
+
+    console.log("*****", texts)
+    const handlePost = async () => {
+        try {
+            console.log("rdata", rdata)
+            const response = await fetch('http://127.0.0.1:5000/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(Object.keys(rdata).length > 0 ? rdata : texts),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            console.log('Response:', data);
+        } catch (error) {
+            console.error('Error posting data:', error);
+        }
     };
 
 
-    const handleFileUpload = async (info: any, questionKey: string) => {
+
+
+    const handleFileUpload = async (info: any, questionKey: string, principleKey: string) => {
         const { file } = info;
 
         if (!file || file.status === "uploading") return;
@@ -125,12 +156,15 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercent
             const formData = new FormData();
             formData.append('file', file.originFileObj || file);
             formData.append('questionKey', questionKey);
+            formData.append('principleKey', principleKey);
+
 
             console.log("Sending request to server...");
-            const response = await fetch('http://192.168.2.75:1000/extract/', {
+            const response = await fetch('http://127.0.0.1:1000/extract/', {
                 method: 'POST',
                 body: formData,
             });
+            // console.log("129",response)
 
             console.log("Received response status:", response.status);
 
@@ -144,11 +178,17 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercent
             const responseText = await response.text();
             console.log("Raw response text:", responseText);
 
+
+
             // Try to parse it as JSON
             let responseData;
             try {
                 responseData = JSON.parse(responseText);
                 console.log("Parsed response data:", responseData);
+
+
+
+
             } catch (jsonError) {
                 console.error("Failed to parse JSON:", jsonError);
                 // If parsing fails, check if it's a simple string response
@@ -174,13 +214,28 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercent
                 }
             }
 
+
+            const extractQA = (data: any): { [key: string]: any } => {
+                const result: { [key: string]: any } = {};
+                data?.data?.parts?.forEach((part: any) => {
+                    part?.questions?.forEach((q: any) => {
+                        result[q.question] = q.questionAnswer;
+                    });
+                });
+                return result;
+            };
+            setRdata(extractQA(responseData))
+
+
+            console.log("resdata", rdata)
+
             // Ensure we have some data structure to work with
             if (!responseData) {
                 throw new Error("No data received from server");
             }
-
             // Flexible response validation - handle both direct array and {data: array} formats
             const responseDataToProcess = responseData.data || responseData;
+            // console.log("sclksmckl",responseDataToProcess)
             if (!responseDataToProcess) {
                 throw new Error("Response does not contain processable data");
             }
@@ -197,6 +252,7 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercent
                 Array.isArray(responseDataToProcess) ?
                     responseDataToProcess :
                     [responseDataToProcess]
+
             );
 
             console.log("Transformed answers:", newAnswers);
@@ -277,7 +333,7 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercent
                     '3': 'Year of incorporation',
                     '4': 'Registered office address',
                     '5': 'Corporate address',
-                    '6': 'E-mail',
+                    '6': 'Email',
                     '7': 'Telephone',
                     '8': 'Website',
                     '9': 'Financial year for which reporting is being done',
@@ -293,25 +349,28 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercent
                 category: 'product_service',
                 startIndex: 0,
                 questionMap: {
-                    '1': 'Details of business activities (accounting for 90% of the turnover)',
-                    '2': `Products/Services sold by the entity (accounting for 90% of the entity's Turnover)`
+                    '1': 'Details of business activities (accounting for 90% of the turnover):',
+                    '2': `Products/Services sold by the entity (accounting for 90% of the entity’s Turnover):`
                 }
             },
             'three': {
                 category: 'operations',
                 startIndex: 0,
                 questionMap: {
-                    '1': 'No. of locations where plants and/or operations/ offices of the entity are situated:',
-                    '2': 'Markets served by the entity'
+                    '1': 'Number of locations where plants and offices of the entity are situated:',
+                    '2': 'Number of locations',
+                    '3': 'What is the contribution of exports as a percentage of the total turnover of the entity?',
+                    '4': 'A brief on types of customers'
                 }
             },
             'four': {
                 category: 'employees',
                 startIndex: 0,
                 questionMap: {
-                    '1': 'Details as at the end of Financial Year',
-                    '2': 'Participation/Inclusion/Representation of women',
-                    '3': 'Turnover rate for permanent employees and workers (Disclose trends for the past 3 years)'
+                    '1': 'Employees and workers (including differently abled):',
+                    '2': 'Differently abled Employees and workers:',
+                    '3': 'Participation/Inclusion/Representation of women',
+                    '4': 'Turnover rate for permanent employees and workers (Disclose trends for the past 3 years)'
                 }
             },
             'five': {
@@ -325,7 +384,10 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercent
                 category: 'csr_details',
                 startIndex: 1,
                 questionMap: {
-                    '1': 'CSR_details'
+                    // '1': 'CSR_details',
+                    '1': "Whether CSR is applicable as per section 135 of Companies Act, 2013: (Yes/No)",
+                    '2': "Turnover (in Rs.)",
+                    '3': "Net worth (in Rs.)"
                 }
             },
             'seven': {
@@ -333,7 +395,7 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercent
                 startIndex: 0,
                 questionMap: {
                     '1': 'Complaints/Grievances on any of the principles (Principles 1 to 9) under the National Guidelines on Responsible Business Conduct:',
-                    '2': `Overview of the entity's material responsible business conduct issues`
+                    '2': `Please indicate material responsible business conduct and sustainability issues pertaining to environmental and social matters that present a risk or an opportunity to your business, rationale for identifying the same, approach to adapt or mitigate the risk along-with its financial implications, as per the following format.`
                 }
             }
         },
@@ -362,11 +424,14 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercent
                 return answers;
             }
         }
+        // console.log("363",apiData)
+
 
         try {
             apiData.forEach((section: any) => {
                 const sectionName = section.section || 'section_a';
                 const partsMap = sectionPartMap[sectionName as keyof typeof sectionPartMap] || {};
+                // console.log("368",partsMap)
 
                 const parts = section.parts || [];
                 parts.forEach((part: any) => {
@@ -375,15 +440,18 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercent
 
                     const partConfig = partsMap[partNo];
                     if (!partConfig || !part.questions || !partConfig.questionMap) return;
-
+                    // console.log("jsxkn",partConfig)
                     const { category, questionMap } = partConfig;
+                    // console.log("imsmkdjs",category)
+                    // console.log("shcbsjkc",questionMap)
                     const categoryConfig = allCategories.find(c => c.key === category);
+                    // console.log("jjnismcs",categoryConfig)
                     if (!categoryConfig) return;
 
                     part.questions.forEach((apiQuestion: any) => {
                         const answer = apiQuestion.questionAnswer;
                         if (answer === null || answer === "Not provided in the text") return;
-
+                        // console.log("uimsj",answer)
                         const expectedQuestionText = questionMap[apiQuestion.questionNo];
                         if (!expectedQuestionText) {
                             console.warn(`No mapping for question ${apiQuestion.questionNo}`);
@@ -460,7 +528,11 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercent
                 const total = section.question.length;
                 section.question.forEach((_: any, questionIndex: any) => {
                     const questionKey = `${activeCategory}_${section.key}_${questionIndex}`;
+                    const subobj: Record<string, string> = {};
                     if (answers[questionKey]) {
+                        console.log("question", section.question)
+                        console.log("sslkmsk", questionKey)
+                        console.log("sslkmsk", answers[questionKey])
                         answered += 1;
                         anyAnswered = true;
                     }
@@ -484,11 +556,14 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercent
             if (!anyAnswered) {
                 message.warning("Please answer at least one question before submitting.");
             } else {
+                console.log("tttt", anyAnswered)
                 message.success("Submitted successfully!");
                 setShowQuestions(false);
             }
         }
     };
+
+
 
     const loadAnsweredData = (categoryKey: string, questions: any[]) => {
         const storedData = localStorage.getItem(`${categoryKey}-answeredData`);
@@ -551,6 +626,14 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercent
         return `${section}_${key}_${index}`.toLowerCase();
     };
 
+    //  const generateQuestion = (text: string): string => {
+    //     return `${text}`.toLowerCase();
+    // };
+
+    const generateQuestion = (text: string): string => {
+        return text;
+    };
+
     const cleanAnswerKeys = (answers: { [key: string]: any }) => {
         const cleaned: { [key: string]: any } = {};
 
@@ -608,6 +691,7 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercent
 
         const getQuestionNumber = () => {
             if (question.parent) {
+                // console.log("kjjkjjj",question.parent)
                 let parentCount = 0;
                 for (let i = 0; i <= questionIndex; i++) {
                     if (questionsArray[i].parent) {
@@ -631,14 +715,23 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercent
                 return `${alphabet}.`;
             }
         };
+        // console.log("629",answers)
         const questionKey = generateQuestionKey(section, key, questionIndex);
+        // console.log("133",questionKey)
         const answerValue = answers[questionKey];
+        // console.log("ans",answerValue)
         const isFileUploaded = !!uploadedFiles[questionKey];
         const isAnswered = !!answers[questionKey];
         if (isViewMode && !isAnswered) {
             return null;
         }
         if (question?.type === 'table') {
+            // console.log("question",question)
+            // console.log("columns",question.columns)
+            // console.log("rows",question.rows)
+            // console.log("answers",answerValue)
+            // console.log("onchange",section, key, questionIndex)
+
             return (
                 <div>
                     <div className="question-text">
@@ -663,21 +756,14 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercent
                         </Tooltip>
                     </div>
                     <div >
-                        {/* <TableInput
-                            columns={question.columns || []}
-                            rows={question.rows || []}
-                            header={"S.No"}
-                            value={Array.isArray(answerValue) ? answerValue : []}
-                            onChange={(value: any) => handleInputChange(section, key, value, questionIndex)}
-                        /> */}
                         <TableInput
                             columns={question.columns}
                             rows={question.rows}
-                            value={answers[`${section}_${key}_${questionIndex}`] || []}
-                            onChange={(value: any) =>
-                                handleInputChange(section, key, value, questionIndex)
-                            }
+                            header={"S.No"}
+                            value={Array.isArray(answerValue) ? answerValue : []}
+                            onChange={(value: any) => handleInputChange(section, key, value, questionIndex, question.text)}
                         />
+
                     </div>
                 </div>
             );
@@ -686,6 +772,7 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercent
 
         return (
             <div>
+
                 <div className="question-text">
                     <div>{qusSection}. {getQuestionNumber()} {question.text}
                         {question.isMandatory && <span className="mandatory-asterisk">*</span>}
@@ -713,7 +800,7 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercent
                                 rows={3}
                                 placeholder="Type your answer here"
                                 size="small"
-                                onChange={(e) => handleInputChange(section, key, e.target.value, questionIndex)}
+                                onChange={(e) => handleInputChange(section, key, e.target.value, questionIndex, question.text)}
                                 value={answers[questionKey] || ""}
                             />
                         </div>
@@ -726,7 +813,7 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercent
                             }))}
                             placeholder="Select options"
                             value={Array.isArray(answerValue) ? answerValue : []}
-                            onChange={(value) => handleInputChange(section, key, value, questionIndex)}
+                            onChange={(value) => handleInputChange(section, key, value, questionIndex, question.text)}
                         />
                     ) : (
                         <div className="question-options">
@@ -736,7 +823,7 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercent
                                         <Radio
                                             value={option}
                                             checked={answerValue === option}
-                                            onChange={() => handleInputChange(section, key, option, questionIndex)}
+                                            onChange={() => handleInputChange(section, key, option, questionIndex, question.text)}
                                         >
                                             {option}
                                         </Radio>
@@ -839,7 +926,7 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercent
                                             const { onSuccess } = options;
                                             setTimeout(() => onSuccess?.("ok"), 0);
                                         }}
-                                        onChange={(info) => handleFileUpload(info, 'section_a')}
+                                        onChange={(info) => handleFileUpload(info, 'section_a', "null")}
                                     >
                                         <FileAddTwoTone className="upload-icon" />
                                     </Upload>
@@ -876,6 +963,7 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ setSectionProgressPercent
                                 />
                             </div>
                         </div >
+                        <button onClick={handlePost}>Get PDF</button>
 
                     </Card >
                 </div >
