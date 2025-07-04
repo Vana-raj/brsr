@@ -76,7 +76,8 @@ export const allCategories3 = [
             ],
           },
 
-          { text: "Details of fines / penalties /punishment/ award/ compounding fees/ settlement amount paid in proceedings (by the entity or by directors / KMPs) with regulators/ law enforcement agencies/ judicial institutions, in the financial year, in the following format (Note: the entity shall make disclosures on the basis of materiality as specified in Regulation 30 of SEBI (Listing Obligations and Disclosure Obligations) Regulations, 2015 and as disclosed on the entity’s website", choices: null, isMandatory: true, parent: true },
+          { text: "Details of fines / penalties /punishment/ award/ compounding fees/ settlement amount paid in proceedings (by the entity or by directors / KMPs) with regulators/ law enforcement agencies/ judicial institutions, in the financial year, in the following format (Note: the entity shall make disclosures on the basis of materiality as specified in Regulation 30 of SEBI (Listing Obligations and Disclosure Obligations) Regulations, 2015 and as disclosed on the entity’s website", choices: null, isMandatory: true, parent: true,label: "Percentage",
+ },
           {
             text: "Monetary", choices: null, isMandatory: true, parent: true,
             type: "table",
@@ -597,7 +598,8 @@ export const allCategories3 = [
           },
           { text: "Provide details of any corrective action taken or underway to address safety-related incidents (if any) and on significant risks / concerns arising from assessments of health & safety practices and working conditions.", choices: null, isMandatory: true, parent: true },
 
-          { text: "Does the entity extend any life insurance or any compensatory package in the event of death of (A) Employees (Y/N)", choices: null, isMandatory: false, parent: true, isNone: true },
+          { text: "Does the entity extend any life insurance or any compensatory package in the event of death of (A) Employees (Y/N)", choices: null, isMandatory: false, parent: true },
+
           { text: "Provide the measures undertaken by the entity to ensure that statutory dues have been deducted and deposited by the value chain partners", choices: null, isMandatory: false, parent: true },
           {
             text: "Provide the number of employees / workers having suffered high consequence work-related injury / ill-health / fatalities (as reported in Q11 of Essential Indicators above), who have been are rehabilitated and placed in suitable employment or whose family members have been placed in suitable employment:", choices: null, isMandatory: false, parent: true

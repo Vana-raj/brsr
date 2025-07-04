@@ -73,7 +73,7 @@ export const allCategories = [
             choices: null, isMandatory: true,
           },
           {
-            text: "E-mail", choices: null, isMandatory: true
+            text: "Email", choices: null, isMandatory: true
           },
           { text: "Telephone", choices: null, isMandatory: true },
           { text: "Website", choices: null, isMandatory: true },
@@ -83,7 +83,7 @@ export const allCategories = [
           { text: "Name and contact details (telephone, email address) of the person who may be contacted in case of any queries on the BRSR report", choices: null, isMandatory: true },
           { text: "Reporting boundary - Are the disclosures under this report made on a standalone basis (i.e. only for the entity) or on a consolidated basis (i.e. for the entity and all the entities which form a part of its consolidated financial statements, taken together).", choices: null, isMandatory: true },
           { text: "Name of assurance provider", choices: null, isMandatory: true },
-          { text: "Type of assurance obtained ", choices: null, isMandatory: true },
+          { text: "Type of assurance obtained", choices: null, isMandatory: true },
 
         ],
       },
@@ -106,7 +106,7 @@ export const allCategories = [
             text: "Details of business activities (accounting for 90% of the turnover):", choices: ["Yes", "No", "In Progress"], isMandatory: false,
             type: "table",
             columns: [
-              "S.no",
+              // "S.no",
               "Description of Main Activity",
               "Description of Business Activity",
               "% of Turnover of the entity",
@@ -116,7 +116,7 @@ export const allCategories = [
             text: "Products/Services sold by the entity (accounting for 90% of the entity’s Turnover):", choices: ["Yes", "No", "In Progress"],
             type: "table",
             columns: [
-              "S.no",
+              // "S.no",
               "Product/Service",
               "NIC Code",
               "% of total Turnover contributed",

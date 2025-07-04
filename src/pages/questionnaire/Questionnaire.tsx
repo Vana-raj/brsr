@@ -89,6 +89,8 @@ const Questionnaire: React.FC = () => {
     const [submittedAnswers, setSubmittedAnswers] = useState<Record<string, boolean>>({});
     const [questionAnswerMap, setQuestionAnswerMap] = useState<Record<string, string>>({});
     const [texts,setTexts]= useState<{ [key: string]: any }>({});
+    const [rdata,setRdata]= useState<{ [key: string]: any }>({}); 
+
     const confirmNavigation = (action: () => void) => {
         if (hasUnsavedChanges && showQuestions) {
             setPendingAction(() => action);
@@ -112,24 +114,25 @@ const question = generateQuestion(text);
 
 
         setHasUnsavedChanges(answers[questionKey] === "" ? false : true);
-        console.log("*****vv",value,section,key,questionIndex,questionKey,text)
+        // console.log("*****vv",value,section,key,questionIndex,questionKey,text)
 
     };
+
         console.log("*****",texts)
-    const handlePost = async () => {
+const handlePost = async () => {
     try {
-      const response = await fetch('https://your-api-endpoint.com/submit', {
+        console.log("rdata",rdata)
+      const response = await fetch('http://127.0.0.1:5000/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(texts),
+        body: JSON.stringify(Object.keys(rdata).length > 0 ? rdata : texts),
       });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
       const data = await response.json();
       console.log('Response:', data);
     } catch (error) {
@@ -137,6 +140,9 @@ const question = generateQuestion(text);
     }
   };
 
+
+
+  
     const handleFileUpload = async (info: any, questionKey: string,principleKey:string) => {
         const { file } = info;
 
@@ -169,11 +175,17 @@ const question = generateQuestion(text);
             const responseText = await response.text();
             console.log("Raw response text:", responseText);
 
+            
+
             // Try to parse it as JSON
             let responseData;
             try {
                 responseData = JSON.parse(responseText);
                 console.log("Parsed response data:", responseData);
+
+
+
+
             } catch (jsonError) {
                 console.error("Failed to parse JSON:", jsonError);
                 // If parsing fails, check if it's a simple string response
@@ -199,11 +211,25 @@ const question = generateQuestion(text);
                 }
             }
 
+
+const extractQA = (data: any): { [key: string]: any } => {
+  const result: { [key: string]: any } = {};
+  data?.data?.parts?.forEach((part: any) => {
+    part?.questions?.forEach((q: any) => {
+      result[q.question] = q.questionAnswer;
+    });
+  });
+  return result;
+};
+setRdata(extractQA(responseData))
+
+            
+                console.log("resdata",rdata)
+
             // Ensure we have some data structure to work with
             if (!responseData) {
                 throw new Error("No data received from server");
             }
-
             // Flexible response validation - handle both direct array and {data: array} formats
             const responseDataToProcess = responseData.data || responseData;
             // console.log("sclksmckl",responseDataToProcess)
@@ -304,7 +330,7 @@ const question = generateQuestion(text);
                     '3': 'Year of incorporation',
                     '4': 'Registered office address',
                     '5': 'Corporate address',
-                    '6': 'E-mail',
+                    '6': 'Email',
                     '7': 'Telephone',
                     '8': 'Website',
                     '9': 'Financial year for which reporting is being done',
@@ -329,7 +355,6 @@ const question = generateQuestion(text);
                 startIndex: 0,
                 questionMap: {
                     '1': 'Number of locations where plants and offices of the entity are situated:',
-                    // '2': 'Markets served by the entity',
                     '2':'Number of locations',
                     '3':'What is the contribution of exports as a percentage of the total turnover of the entity?'  ,
                     '4':'A brief on types of customers'          }   
@@ -338,7 +363,6 @@ const question = generateQuestion(text);
                 category: 'employees',
                 startIndex: 0,
                 questionMap: {
-                    // '1': 'Details as at the end of Financial Year:',
                     '1': 'Employees and workers (including differently abled):',
                     '2':'Differently abled Employees and workers:',
                     '3': 'Participation/Inclusion/Representation of women',
@@ -598,9 +622,13 @@ const question = generateQuestion(text);
         return `${section}_${key}_${index}`.toLowerCase();
     };
 
-     const generateQuestion = (text: string): string => {
-        return `${text}`.toLowerCase();
-    };
+    //  const generateQuestion = (text: string): string => {
+    //     return `${text}`.toLowerCase();
+    // };
+
+    const generateQuestion = (text: string): string => {
+    return text;
+};
 
     const cleanAnswerKeys = (answers: { [key: string]: any }) => {
         const cleaned: { [key: string]: any } = {};
@@ -924,7 +952,7 @@ console.log("sss",questionAnswerMap)
                                 />
                             </div>
                         </div >
-                        {/* <button onClick={handlePost}>Submit</button> */}
+                        <button onClick={handlePost}>Get PDF</button>
 
                     </Card >
                 </div >

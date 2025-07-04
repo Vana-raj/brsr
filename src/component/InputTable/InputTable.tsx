@@ -5,12 +5,12 @@ import InputField from "../inputfield/CustomInputField";
 import './InputTable.scss'
 
 const TableInput = ({ columns, rows, value, header, onChange, className = "custom-table" }: any) => {
-    // console.log("columns",columns)
-    // console.log("rows",rows)
-    // console.log("value",value)
-    // console.log("header",header)
-    // console.log("onchange",onchange)
-    // console.log("className",className)
+    console.log("columns",columns)
+    console.log("rows",rows)
+    console.log("value",value)
+    console.log("header",header)
+    console.log("onchange",onchange)
+    console.log("className",className)
     const [data, setData] = useState(() => {
         if (rows) {
             return rows.map((row: any) => ({ particulars: row }));

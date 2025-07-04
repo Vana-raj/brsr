@@ -99,6 +99,18 @@ export const allCategories2 = [
               "P8",
               "P9"
             ],
+            row: [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8",
+              "P9"
+            ],
+
             isMandatory: true,
             parent: true
 
@@ -276,7 +288,6 @@ export const allCategories2 = [
             type: "table",
             label: "Has the entity carried out independent assessment/ evaluation of the working of its policies by an external agency? (Yes/No). If yes, provide name of the agency.",
             columns: [
-              "S. No",
               "P1",
               "P2",
               "P3",
@@ -293,7 +304,6 @@ export const allCategories2 = [
             type: "table",
             label: "",
             columns: [
-              "S. No",
               "P1",
               "P2",
               "P3",

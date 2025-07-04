@@ -13,10 +13,10 @@ interface ButtonProps {
   size?: string | any;
 }
 
-const CustomButton: React.FC<ButtonProps> = ({ label, onClick, type = "primary", icon, className = "primary-button", disabled, htmlType, size }) => {
+const CustomPdfButton: React.FC<ButtonProps> = ({ label, onClick, type = "secondray", icon, className = "secondray-button", disabled, htmlType, size }) => {
   return (
     <>
-      {type === 'primary' ? (
+      {type === 'secondray' ? (
         <Button className={className} type="primary" htmlType={htmlType} disabled={disabled} onClick={onClick} icon={icon} size={size}>
           {label}
         </Button>
@@ -30,4 +30,4 @@ const CustomButton: React.FC<ButtonProps> = ({ label, onClick, type = "primary",
   );
 };
 
-export default CustomButton;
+export default CustomPdfButton;

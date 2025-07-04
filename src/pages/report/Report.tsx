@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import * as XLSX from 'xlsx';
 import { Progress, Tooltip } from 'antd'
 import Loader from '../../component/loader/Loader'
-import { ArrowLeftOutlined, DeleteOutlined, EditOutlined, PlusOutlined, UnorderedListOutlined } from '@ant-design/icons'
+import { ArrowLeftOutlined, DeleteOutlined, EditOutlined, PlusOutlined, UnorderedListOutlined,DownOutlined } from '@ant-design/icons'
 import { bgColor, primaryColor } from '../../style/ColorCode';
 import CustomTable from '../../component/table/CustomTable'
 import CustomButton from '../../component/buttons/CustomButton'
+import CustomPdfButton from '../../component/buttons/CustomPdfButton';
 import './Report.scss'
 import Questionnaire from '../questionnaire/Questionnaire';
 import MeterCard from '../../component/cards/MeterCard';
@@ -100,9 +101,36 @@ const Report: React.FC = () => {
   const [isReport, setIsReport] = useState<boolean>(false);
   const [addData, setAddData] = useState<any>(null);
   const [compliantPercentage, setCompliantPercentage] = useState<number>(0);
-  const [nonCompliantPercentage, setNonCompliantPercentage] = useState<number>(
-    0
-  );
+  const [nonCompliantPercentage, setNonCompliantPercentage] = useState<number>(0);
+  const [texts,setTexts]= useState<{ [key: string]: any }>({});
+
+  
+
+    const handlePost = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:5000/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(texts),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('Response:', data);
+    } catch (error) {
+      console.error('Error posting data:', error);
+    }
+  };
+
+
+
+
+  
   const handleAddData = (sectionType: string) => [
     setAddData(sectionType)
   ]
@@ -266,6 +294,8 @@ const Report: React.FC = () => {
                   />
                 </div>
               </div>
+
+
             </div>
             <div className="progress-cards">
               <div className='progress-card'>
