@@ -37,7 +37,7 @@ const Report: React.FC = () => {
       title: "Progress",
       dataIndex: "progress",
       key: "progress",
-      sorter: (a: any, b: any) => a.progress - b.progress, // Numerical sorting
+      sorter: (a: any, b: any) => a.progress - b.progress, 
       render: (progress: number) => (
         <Progress
           percent={progress}

@@ -1618,7 +1618,6 @@ export const allCategories3 = [
           // { text: "Number of instances of data breaches along-with impact", choices: null, isMandatory: false, parent: false },
           // { text: "Percentage of data breaches involving personally identifiable information of customers", choices: null, isMandatory: false, parent: false },
 
-
         ],
       },
     ]
