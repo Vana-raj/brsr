@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Radio } from "antd";
 import { CheckOutlined, CopyTwoTone, FileAddTwoTone } from "@ant-design/icons";
-import { Card, Input, List, Modal, Progress, Space, Tooltip, Upload, message } from "antd";
+import { Card, Input, List, Modal, Progress, Space, Tooltip, Upload, message,Form } from "antd";
 import CustomButton from "../../component/buttons/CustomButton";
 import { allCategories } from "../../utils/Options";
 import { primaryColor } from '../../style/ColorCode';
@@ -9,6 +9,22 @@ import SelectDropDown from "../../component/select/SelectDropDown";
 import TableInput from "../../component/InputTable/InputTable";
 import Loader from "../../component/loader/Loader";
 import "./Questionnaire.scss";
+import { text } from "node:stream/consumers";
+
+
+
+interface Category {
+  id: number;
+  categoryNo: string;
+  question_no: string;
+  answer: string;
+  section: string;
+  title: string;
+  subtitle: string;
+  question: string;
+  created_at: string;
+}
+
 
 
 const { TextArea } = Input;
@@ -73,10 +89,19 @@ interface ApiResponse {
     data: ApiSection[];
 }
 
-const Questionnaire: React.FC = () => {
+
+interface QuestionnaireProps {
+  putdata: Category[];
+  selectedindex:string;
+  editOnly:boolean
+}
+
+const Questionnaire: React.FC<QuestionnaireProps> = ({ putdata,selectedindex,editOnly}) => {
+
     const [activeCategory, setActiveCategory] = useState<string>("details");
     const [showQuestions, setShowQuestions] = useState<boolean>(false);
     const [answers, setAnswers] = useState<{ [key: string]: any }>({});
+    const [editAnswers, setEditAnswers] = useState<{ [key: string]: any }>({});
     const [uploadedFiles, setUploadedFiles] = useState<{ [key: string]: { name: string; size: string } | null }>({});
     const [currentSectionIndex, setCurrentSectionIndex] = useState<number>(0);
     const [isViewMode, setIsViewMode] = useState(false);
@@ -89,7 +114,11 @@ const Questionnaire: React.FC = () => {
     const [submittedAnswers, setSubmittedAnswers] = useState<Record<string, boolean>>({});
     const [questionAnswerMap, setQuestionAnswerMap] = useState<Record<string, string>>({});
     const [texts,setTexts]= useState<{ [key: string]: any }>({});
-    const [rdata,setRdata]= useState<{ [key: string]: any }>({}); 
+    const [rdata,setRdata]= useState<{ [key: string]: any }>({});
+    const [brsrFilename,setBrsrFilename] = useState<string>("");
+    const [value, setValue] = useState('');
+    const [questionIndex, setQuestionIndex] = useState(0);
+    
 
     const confirmNavigation = (action: () => void) => {
         if (hasUnsavedChanges && showQuestions) {
@@ -100,49 +129,204 @@ const Questionnaire: React.FC = () => {
         }
     };
 
-    const handleInputChange = (section: string, key: string, value: any, questionIndex: number ,text:string) => {
-        const questionKey = generateQuestionKey(section, key, questionIndex);
-        setAnswers((prevAnswers) => ({
-            ...prevAnswers,
-            [questionKey]: value,
-        }));
-const question = generateQuestion(text);
-      setTexts((prevText) => ({
-    ...prevText,
-    [question]: value,
-}));
 
-
-        setHasUnsavedChanges(answers[questionKey] === "" ? false : true);
-        // console.log("*****vv",value,section,key,questionIndex,questionKey,text)
-
-    };
-
-        console.log("*****",texts)
-const handlePost = async () => {
-    try {
-        console.log("rdata",rdata)
-      const response = await fetch('http://127.0.0.1:5000/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(Object.keys(rdata).length > 0 ? rdata : texts),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log('Response:', data);
-    } catch (error) {
-      console.error('Error posting data:', error);
-    }
+    useEffect(() => {
+  // Clear localStorage on page refresh
+  const handleBeforeUnload = () => {
+    localStorage.removeItem('answeredQuestions');
   };
 
+  window.addEventListener('beforeunload', handleBeforeUnload);
+
+  return () => {
+    window.removeEventListener('beforeunload', handleBeforeUnload);
+  };
+}, []);
+
+function editfindanswertextarea(data:any[],editquestion:string): any|null {
+
+console.log(data)
+console.log(editquestion)
+    
+const found = data.find(item => item.question.includes(editquestion));
+  return found ? found.answer :"";
+}
+
+function editfindanswertable(data: any[], editquestion: string): any[] | null {
+  const found = data.find(item => item.question.includes(editquestion));
+
+  if (!found || !found.answer) return null;
+
+  try {
+    const parsed = JSON.parse(found.answer);
+    return Array.isArray(parsed) ? parsed : [parsed];
+  } catch (error) {
+    console.error("Failed to parse answer as JSON:", error);
+    return null;
+  }
+}
 
 
-  
+
+// const HandleInputChange = (
+// section: string, key: string, value: any, questionIndex: number ,text:string,putdata:Category[]) => {
+//     // console.log(section,"*",key,"*" ,value,"*",questionIndex,"*",text,"*")
+//     const questionKey = generateQuestionKey(section, key, questionIndex);
+//     const question = generateQuestion(text);
+//     // ✅ Always allow user input
+//     setAnswers((prevAnswers) => ({
+//         ...prevAnswers,
+//         [questionKey]: value,
+//     }));
+
+//     setTexts((prevText) => ({
+//         ...prevText,
+//         [question]: value,
+//     }));
+//     console.log(answers)
+//     // console.log(texts)
+//     setHasUnsavedChanges(value !== "");
+// };
+
+
+
+
+
+
+const HandleInputChange = (
+section: string, key: string, value: any, questionIndex: number ,putdata:Category[],text:string) => {
+
+if (editOnly === true) {
+const questionKey = generateQuestionKey(section, key, questionIndex);
+const question = generateQuestion(text);
+console.log(value)
+console.log(questionKey)
+console.log(putdata)
+const initialAnswers = putdata.reduce((acc, item) => {
+acc[item.question] = item?.answer;
+return acc;
+}, {} as { [key: string]: any });
+console.log(initialAnswers[questionIndex]?.answer)
+
+    setAnswers((prevAnswers) => ({
+        ...prevAnswers,
+        [questionKey]: value,
+    }));
+
+console.log(answers)
+    setTexts((prevText) => ({
+        ...prevText,
+        [question]: value,
+    }));
+console.log(texts)
+
+// setEditAnswers(initialAnswers);
+
+//   setHasUnsavedChanges(value !== "");
+
+}       
+    else {
+        console.log("sese")
+        console.log(value)
+    const questionKey = generateQuestionKey(section, key, questionIndex);
+    const question = generateQuestion(text);
+    // ✅ Always allow user input
+    setAnswers((prevAnswers) => ({
+        ...prevAnswers,
+        [questionKey]: value,
+    }));
+
+    setTexts((prevText) => ({
+        ...prevText,
+        [question]: value,
+    }));
+    console.log(answers)
+    // console.log(texts)
+    setHasUnsavedChanges(value !== "");
+        
+    }
+};
+
+// useEffect(() => {
+//   if (questions.text) {
+//     const answer = editAnswers[questions.text] || "";
+//     setValue(answer);
+//   }
+// }, [texts, editAnswers]);
+
+
+const handlePost = async () => {
+    try {
+
+
+if (editOnly==true) {
+    const bodyData = {
+    
+    texts: texts,
+    sectionfind: "section_a",
+    currentsection: currentCategory?.section,
+    indexName:selectedindex
+
+  };
+console.log("This is if bodydata",bodyData)
+  const response = await fetch(`http://127.0.0.1:1000/edit_pdf_report_put`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(bodyData),
+
+  });
+ 
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const data = await response.json();
+
+  if (Object.keys(texts).length > 0) {
+    message.success(`${data.filename} File edit successfully!`);
+  } else {
+    message.warning("Please edit the file!");
+  }
+
+}
+
+else{
+
+    const bodyData = {
+      texts: Object.keys(rdata).length > 0 ? rdata : texts,
+      sectionfind: "section_a" ,
+      brsrfilename:brsrFilename // Replace with your actual section identifier
+    };
+    const response = await fetch('http://127.0.0.1:1000/submit/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(bodyData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (data != null) {
+      message.success(`${data} form submitted successfully!`);
+    } else {
+      message.warning("Please upload file or edit !");
+    }
+}
+
+} catch (error) {
+    console.error('Error posting data:', error);
+  }
+};
+
+
+
     const handleFileUpload = async (info: any, questionKey: string,principleKey:string) => {
         const { file } = info;
 
@@ -156,14 +340,11 @@ const handlePost = async () => {
             formData.append('principleKey',principleKey );
 
 
-            console.log("Sending request to server...");
             const response = await fetch('http://127.0.0.1:1000/extract/', {
                 method: 'POST',
                 body: formData,
             });
-            // console.log("129",response)
 
-            console.log("Received response status:", response.status);
 
             if (!response.ok) {
                 const errorText = await response.text();
@@ -171,17 +352,16 @@ const handlePost = async () => {
                 throw new Error(`Server error: ${response.status} - ${errorText}`);
             }
 
-            // First, get the response as text
-            const responseText = await response.text();
+            const data = await response.json();
+            const filename = data.brsrfilename;
+            setBrsrFilename(filename)           
+            const responseText =data.response;
             console.log("Raw response text:", responseText);
-
-            
 
             // Try to parse it as JSON
             let responseData;
             try {
-                responseData = JSON.parse(responseText);
-                console.log("Parsed response data:", responseData);
+                responseData =responseText;
 
 
 
@@ -190,7 +370,6 @@ const handlePost = async () => {
                 console.error("Failed to parse JSON:", jsonError);
                 // If parsing fails, check if it's a simple string response
                 if (responseText.trim().length > 0) {
-                    console.log("Treating response as plain text");
                     responseData = {
                         data: [{
                             section: "section_a",
@@ -210,8 +389,6 @@ const handlePost = async () => {
                     throw new Error("Empty response from server");
                 }
             }
-
-
 const extractQA = (data: any): { [key: string]: any } => {
   const result: { [key: string]: any } = {};
   data?.data?.parts?.forEach((part: any) => {
@@ -224,7 +401,6 @@ const extractQA = (data: any): { [key: string]: any } => {
 setRdata(extractQA(responseData))
 
             
-                console.log("resdata",rdata)
 
             // Ensure we have some data structure to work with
             if (!responseData) {
@@ -232,7 +408,6 @@ setRdata(extractQA(responseData))
             }
             // Flexible response validation - handle both direct array and {data: array} formats
             const responseDataToProcess = responseData.data || responseData;
-            // console.log("sclksmckl",responseDataToProcess)
             if (!responseDataToProcess) {
                 throw new Error("Response does not contain processable data");
             }
@@ -252,7 +427,6 @@ setRdata(extractQA(responseData))
                 
             );
 
-            console.log("Transformed answers:", newAnswers);
 
             // Update the answers state
             setAnswers(prev => {
@@ -395,18 +569,18 @@ setRdata(extractQA(responseData))
                 }
             }
         },
-        'section_b': {
-            'one': {
-                category: 'policy_management',
-                startIndex: 0,
-                questionMap: {}
-            },
-            'two': {
-                category: 'governance_leadership',
-                startIndex: 0,
-                questionMap: {}
-            }
-        }
+        // 'section_b': {
+        //     'one': {
+        //         category: 'policy_management',
+        //         startIndex: 0,
+        //         questionMap: {}
+        //     },
+        //     'two': {
+        //         category: 'governance_leadership',
+        //         startIndex: 0,
+        //         questionMap: {}
+        //     }
+        // }
     };
 
     const transformApiResponseToAnswers = (apiData: any[]) => {
@@ -420,15 +594,11 @@ setRdata(extractQA(responseData))
                 return answers;
             }
         }
-        // console.log("363",apiData)
-
 
         try {
             apiData.forEach((section: any) => {
                 const sectionName = section.section || 'section_a';
                 const partsMap = sectionPartMap[sectionName as keyof typeof sectionPartMap] || {};
-                // console.log("368",partsMap)
-
                 const parts = section.parts || [];
                 parts.forEach((part: any) => {
                     const partNo = part.partNo?.toLowerCase();
@@ -436,18 +606,13 @@ setRdata(extractQA(responseData))
 
                     const partConfig = partsMap[partNo];
                     if (!partConfig || !part.questions || !partConfig.questionMap) return;
-                    // console.log("jsxkn",partConfig)
                     const { category, questionMap } = partConfig;
-                    // console.log("imsmkdjs",category)
-                    // console.log("shcbsjkc",questionMap)
                     const categoryConfig = allCategories.find(c => c.key === category);
-                    // console.log("jjnismcs",categoryConfig)
                     if (!categoryConfig) return;
 
                     part.questions.forEach((apiQuestion: any) => {
                         const answer = apiQuestion.questionAnswer;
                         if (answer === null || answer === "Not provided in the text") return;
-                        // console.log("uimsj",answer)
                         const expectedQuestionText = questionMap[apiQuestion.questionNo];
                         if (!expectedQuestionText) {
                             console.warn(`No mapping for question ${apiQuestion.questionNo}`);
@@ -504,62 +669,6 @@ setRdata(extractQA(responseData))
     function isTableQuestion(question: Question): question is TableQuestion {
         return question.type === 'table';
     }
-
-
-    const handleSubmitAll = (item: any) => {
-        setTrust(item?.isTrusted);
-        setSubmittedAnswers((prev) => ({
-            ...prev,
-            [item]: true,
-        }));
-
-        let anyAnswered = false;
-        const currentCategory = allCategories.find((cat) => cat.key === activeCategory);
-
-        if (currentCategory) {
-            const answeredData: any = [];
-
-            currentCategory.questions.forEach((section: any) => {
-                let answered = 0;
-                const total = section.question.length;
-                section.question.forEach((_: any, questionIndex: any) => {
-                    const questionKey = `${activeCategory}_${section.key}_${questionIndex}`;
-                    const subobj: Record<string, string> = {};
-                    if (answers[questionKey]) {
-                        console.log("question",section.question)
-                        console.log("sslkmsk",questionKey)
-                        console.log("sslkmsk",answers[questionKey])
-                        answered += 1;
-                        anyAnswered = true;
-                    }
-                });
-
-                const questionsAnswer = `${answered}/${total}`;
-                const percentComplete = total > 0 ? Math.round((answered / total) * 100) : 0;
-
-                section.questionsAnswer = questionsAnswer;
-                section.percentComplete = percentComplete;
-
-                answeredData.push({
-                    sectionKey: section.key,
-                    questionsAnswer,
-                    percentComplete,
-                });
-            });
-
-            localStorage.setItem(`${activeCategory}-answeredData`, JSON.stringify(answeredData));
-
-            if (!anyAnswered) {
-                message.warning("Please answer at least one question before submitting.");
-            } else {
-                console.log("tttt",anyAnswered)
-                message.success("Submitted successfully!");
-                setShowQuestions(false);
-            }
-        }
-    };
-
-
 
     const loadAnsweredData = (categoryKey: string, questions: any[]) => {
         const storedData = localStorage.getItem(`${categoryKey}-answeredData`);
@@ -622,10 +731,6 @@ setRdata(extractQA(responseData))
         return `${section}_${key}_${index}`.toLowerCase();
     };
 
-    //  const generateQuestion = (text: string): string => {
-    //     return `${text}`.toLowerCase();
-    // };
-
     const generateQuestion = (text: string): string => {
     return text;
 };
@@ -650,7 +755,6 @@ setRdata(extractQA(responseData))
         }
     }, []);
 
-
     useEffect(() => {
         if (!trust) {
             setAnswers((prevAnswers) => {
@@ -666,6 +770,33 @@ setRdata(extractQA(responseData))
             });
         }
     }, [trust, submittedAnswers]);
+
+
+//   useEffect(() => {
+//   const initialAnswers: Record<string, string> = {};
+
+//   putdata.forEach((item, index) => {
+//     const section = "section_a"
+//     const key = item.categoryNo || "default_key";      
+//     const questionIndex = index;                    
+
+//     const generatedKey = generateQuestionKey(section, key, questionIndex);
+//     initialAnswers[generatedKey] = item.answer;
+//     // console.log(initialAnswers,section,'initialAnswers')
+//   });
+//   setAnswers(initialAnswers);
+// }, [putdata]);
+
+
+
+//     useEffect(() => {
+//   if (putdata[questionIndex]) {
+//     putdata[questionIndex].answer = ""; // ✅ clear the field
+//   }
+// }, [questionIndex]);
+
+
+
 
     const renderQuestionInput = (
         section: string,
@@ -687,7 +818,6 @@ setRdata(extractQA(responseData))
 
         const getQuestionNumber = () => {
             if (question.parent) {
-            // console.log("kjjkjjj",question.parent)
                 let parentCount = 0;
                 for (let i = 0; i <= questionIndex; i++) {
                     if (questionsArray[i].parent) {
@@ -711,25 +841,22 @@ setRdata(extractQA(responseData))
                 return `${alphabet}.`;
             }
         };
-        // console.log("629",answers)
+
         const questionKey = generateQuestionKey(section, key, questionIndex);
-        // console.log("133",questionKey)
         const answerValue = answers[questionKey];
-        // console.log("ans",answerValue)
         const isFileUploaded = !!uploadedFiles[questionKey];
         const isAnswered = !!answers[questionKey];
         if (isViewMode && !isAnswered) {
             return null;
         }
-        if (question?.type === 'table') {
-        // console.log("question",question)
-        // console.log("columns",question.columns)
-        // console.log("rows",question.rows)
-        // console.log("answers",answerValue)
-        // console.log("onchange",section, key, questionIndex)
 
-            return (
-                <div>
+
+
+        if (question?.type === 'table') {
+
+
+        return (
+            <div>
                     <div className="question-text">
                         <div>{qusSection}. {getQuestionNumber()} {question.text}
 
@@ -756,19 +883,24 @@ setRdata(extractQA(responseData))
                             columns={question.columns}
                             rows={question.rows}
                             header={"S.No"}
-                            value={Array.isArray(answerValue) ? answerValue : []}
-                            onChange={(value: any) => handleInputChange(section, key, value, questionIndex,question.text)}
-                        />
-
+                            onChange={(value: any) => HandleInputChange(section, key, value, questionIndex,putdata,question.text)}
+                            value={Array.isArray(answerValue) ||editfindanswertable(putdata,question.text) ||[]}/>
                     </div>
-                </div>
-            );
+                            {/* value={Array.isArray(answerValue) ? answerValue : []} */}
+                    </div>
+                     );
         }
 
 
+
+// function editfindanswertable(data:any[],editquestion:string): string|null {
+// const found = data.find(item => item.question.includes(editquestion));
+//   return found ? found.answer : null;
+// }
+// console.log( putdata[questionIndex].answer)
+
         return (
             <div>
-
                 <div className="question-text">
                     <div>{qusSection}. {getQuestionNumber()} {question.text}
                         {question.isMandatory && <span className="mandatory-asterisk">*</span>}
@@ -789,6 +921,7 @@ setRdata(extractQA(responseData))
                         </button>
                     </Tooltip>
                 </div>
+                
                 {question.isNone ? null : (
                     question.choices === null ? (
                         <div className="area-upload">
@@ -796,9 +929,13 @@ setRdata(extractQA(responseData))
                                 rows={3}
                                 placeholder="Type your answer here"
                                 size="small"
-                                onChange={(e) => handleInputChange(section, key, e.target.value, questionIndex,question.text)}
-                                value={answers[questionKey] || ""}
-                            />
+                                value={answers[questionKey]||""}
+                                
+                                onChange={(e) => { 
+                                     const value = e.target.value;
+                        // putdata[questionIndex].answer = value; 
+         HandleInputChange(section, key,value, questionIndex,putdata,question.text)}
+                    }/>
                         </div>
                     ) : question.choices.length > 4 ? (
                         <SelectDropDown
@@ -808,9 +945,10 @@ setRdata(extractQA(responseData))
                                 value: choice,
                             }))}
                             placeholder="Select options"
+                                onChange={(e) => HandleInputChange(section, key, e.target.value, questionIndex,putdata,question.text)}
                             value={Array.isArray(answerValue) ? answerValue : []}
-                            onChange={(value) => handleInputChange(section, key, value, questionIndex,question.text)}
-                        />
+                            // value={Array.isArray(answerValue) ||editfindanswertable(putdata,question.text) ||[]}
+                            />
                     ) : (
                         <div className="question-options">
                             {question.choices.map((option) => (
@@ -819,7 +957,7 @@ setRdata(extractQA(responseData))
                                         <Radio
                                             value={option}
                                             checked={answerValue === option}
-                                            onChange={() => handleInputChange(section, key, option, questionIndex,question.text)}
+                                onChange={(e) => HandleInputChange(section, key, e.target.value, questionIndex,putdata,question.text)}
                                         >
                                             {option}
                                         </Radio>
@@ -835,6 +973,7 @@ setRdata(extractQA(responseData))
     };
 
     const currentCategory = allCategories.find((cat) => cat.key === activeCategory);
+
     const questions: any = currentCategory?.questions[currentSectionIndex];
 
     const countNonEmptyAnswers = () => {
@@ -861,7 +1000,6 @@ setRdata(extractQA(responseData))
     const progressPercent = singleSectionTextArea > 0
         ? Math.round((countNonEmptyAnswers() / singleSectionTextArea) * 100)
         : 0;
-console.log("sss",questionAnswerMap)
     return (
         <div className="questionnaire-main">
             {loading && (
@@ -883,7 +1021,7 @@ console.log("sss",questionAnswerMap)
 
             <div className="questionnaire-container">
                 <div className="category-card">
-                    <Card title={"Categories"} bordered>
+                    <Card title={"Categories"} variant="outlined">
                         <List
                             key={activeCategory}
                             dataSource={allCategories}
@@ -923,7 +1061,7 @@ console.log("sss",questionAnswerMap)
                                 <Progress
                                     type="circle"
                                     percent={progressPercent}
-                                    width={50}
+                                    size={50}
                                     strokeColor={primaryColor}
                                     format={() => `${countNonEmptyAnswers()}/${singleSectionTextArea}`
                                     }
@@ -931,10 +1069,12 @@ console.log("sss",questionAnswerMap)
 
                             </div >
                         }
-                        bordered
+                        // bordered
                     >
                         {
                             questions?.question.map((q: any, idx: any) => {
+
+
                                 return (
                                     <div key={`${questions.key}-${idx}`}>
                                         {renderQuestionInput(activeCategory, questions.key, q, idx, questions.question, questions.section)}
@@ -946,22 +1086,22 @@ console.log("sss",questionAnswerMap)
                         < div className="subbutton" >
                             <div className="common-submit-btn">
                                 <CustomButton
-                                    label="Submit Answers"
+                                    label="Submit "
                                     type="primary"
-                                    onClick={(item: any) => handleSubmitAll(item)}
+                                    onClick={handlePost}
                                 />
                             </div>
                         </div >
-                        <button onClick={handlePost}>Get PDF</button>
-
+                        
                     </Card >
+
                 </div >
                 {/* )
                 } */}
             </div >
             <Modal
                 title="Unsaved Changes!!!"
-                visible={isUnsavedModalVisible}
+                open={isUnsavedModalVisible}
                 onOk={() => {
                     setIsUnsavedModalVisible(false);
                     setHasUnsavedChanges(false);

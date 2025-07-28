@@ -89,7 +89,7 @@ const RouterConfig = createBrowserRouter([
                 path: 'questionnaire',
                 element:
                     // <ProtectedRoute>
-                    <Questionnaire />
+                    <Questionnaire putdata={[]} selectedindex={""} editOnly={false}/>
                 // </ProtectedRoute>
             },
             {

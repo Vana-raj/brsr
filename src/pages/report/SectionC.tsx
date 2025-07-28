@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ArrowLeftOutlined, BoldOutlined, CheckOutlined, CopyTwoTone, DeleteOutlined, FileAddTwoTone } from "@ant-design/icons";
-import { Card, Input, List, Modal, Progress, Space, Table, Tooltip, Upload, message,Radio } from "antd";
+import { Card, Input, List, Modal, Progress, Space, Table, Tooltip, Upload, message,Radio ,Form} from "antd";
 import CustomButton from "../../component/buttons/CustomButton";
 import { allCategories3 } from "../../utils/Options3";
 import { primaryColor } from '../../style/ColorCode';
@@ -492,13 +492,18 @@ console.log("*****",texts)
 
 const handlePost = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:5000/submit', {
+    const bodyData = {
+      texts: Object.keys(rdata).length > 0 ? rdata : texts,
+      sectionfind: "section_c"  // Replace with your actual section identifier
+    };
+
+      const response = await fetch('http://127.0.0.1:1000/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         // body: JSON.stringify(texts),
-        body: JSON.stringify(Object.keys(rdata).length > 0 ? rdata : texts),
+        body: JSON.stringify(bodyData),
 
       });
 
@@ -508,6 +513,15 @@ const handlePost = async () => {
 
       const data = await response.json();
       console.log('Response:', data);
+      if (data!=null){
+    message.success(`${data} form submited sucessfully!`);
+      }
+      else{
+        message.warning("upload file!")
+      }
+
+
+
     } catch (error) {
       console.error('Error posting data:', error);
     }
@@ -740,35 +754,37 @@ const handlePost = async () => {
         });
     };
 
+
+    
 const handleCategoryClick = (categoryKey: string, id: number) => {
-//   if (!pdf) {
-//     message.warning("Please upload a PDF before selecting a principle.");
-//     return;
-//   }
+  if (!pdf) {
+    message.warning("Please upload a PDF before selecting a principle.");
+    return;
+  }
 
-//   setSections(id);
+  setSections(id);
 
-//   const principles: { [key: number]: string } = {
-//     1: "principle_1",
-//     2: "principle_2",
-//     3: "principle_3",
-//     4: "principle_4",
-//     5: "principle_5",
-//     6: "principle_6",
-//     7: "principle_7",
-//     8: "principle_8",
-//     9: "principle_9",
-//   };
+  const principles: { [key: number]: string } = {
+    1: "principle_1",
+    2: "principle_2",
+    3: "principle_3",
+    4: "principle_4",
+    5: "principle_5",
+    6: "principle_6",
+    7: "principle_7",
+    8: "principle_8",
+    9: "principle_9",
+  };
 
-//   const principleKey = principles[id + 1];
-//   const mockInfo = { file: pdf };
+  const principleKey = principles[id + 1];
+  const mockInfo = { file: pdf };
 
-//   if (principleKey=="principle_1"){
-// console.log("#")
-//   }
-//   else{
-//   handleFileUpload(mockInfo, "section_c", principleKey);
-//   }
+  if (principleKey=="principle_1"){
+console.log("#")
+  }
+  else{
+  handleFileUpload(mockInfo, "section_c", principleKey);
+  }
   confirmNavigation(() => {
     const selectedCategory = allCategories3.find((cat) => cat.key === categoryKey);
     if (selectedCategory) {
@@ -1097,8 +1113,7 @@ const cleanAnswerKeys = (answers: { [key: string]: any }) => {
                                         {renderQuestionInput(activeCategory, questions.key, q, idx, questions.question, questions.section)}
                                     </div>);})
                         }
-                        <button onClick={handlePost}>Get PDF</button>
-
+                        <CustomButton onClick={handlePost} label="SUBMIT" />
                     </Card >
                 </div >
                 {/* )

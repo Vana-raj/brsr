@@ -5,12 +5,6 @@ import InputField from "../inputfield/CustomInputField";
 import './InputTable.scss'
 
 const TableInput = ({ columns, rows, value, header, onChange, className = "custom-table" }: any) => {
-    console.log("columns",columns)
-    console.log("rows",rows)
-    console.log("value",value)
-    console.log("header",header)
-    console.log("onchange",onchange)
-    console.log("className",className)
     const [data, setData] = useState(() => {
         if (rows) {
             return rows.map((row: any) => ({ particulars: row }));
@@ -49,7 +43,6 @@ const addRow = () => {
         setData(newData);
         onChange(newData);
     };
-    // console.log("data",typeof(data),data)
     return (
         <>
             <div className="table-input-container">
@@ -64,7 +57,7 @@ const addRow = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        
+{/*                         
                         {data.map((row: any, index: number) => (
                             <tr key={index}>
                                 {rows && <td>{header === "Policy" ? row.particulars : index + 1}</td>}
@@ -89,7 +82,38 @@ const addRow = () => {
                                     </td>
                                 )}
                             </tr>
-                        ))}
+                        ))} */}
+{Array.isArray(data) ? (
+    data.map((row: any, index: number) => (
+        <tr key={index}>
+            {rows && <td>{header === "Policy" ? row.particulars : index + 1}</td>}
+            {columns.map((col: string, colIndex: number) => (
+                <td key={colIndex}>
+                    <InputField
+                        value={row[col] || ""}
+                        onChange={(e: any) =>
+                            handleCellChange(index, col, e.target.value)
+                        }
+                    />
+                </td>
+            ))}
+            {!rows && (
+                <td>
+                    <CustomButton
+                        icon={<DeleteOutlined />}
+                        onClick={() => deleteRow(index)}
+                        label={""}
+                        disabled={data.length === 1}
+                    />
+                </td>
+            )}
+        </tr>
+    ))
+) : (
+    <tr><td colSpan={columns.length + 2}>No data available</td></tr>
+)}
+
+
                     </tbody>
                 </table>
             </div>

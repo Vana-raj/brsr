@@ -4,7 +4,7 @@ export const primaryColor = "#09B96D";
 
 export const secondaryColor = "#0058EA";
 
-export const bgColor = "#F8F8F8";
+export const bgColor = "#f8f8f8ff";
 export const textColor = "#636363";
 
 export const good = "#8bc34a";
