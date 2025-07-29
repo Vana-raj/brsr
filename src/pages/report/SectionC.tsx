@@ -62,8 +62,8 @@ interface ApiSection {
 interface ApiResponse {
     data: ApiSection[];
 }
-
-const SectionC: React.FC = () => {
+interface SectionCProps { setSectionCProgressPercentage: (percentage: number) => void; }
+const SectionC: React.FC<SectionCProps> = ({setSectionCProgressPercentage) => {
     const [sections, setSections] = useState<number>(0);
 
     const [activeCategory, setActiveCategory] = useState<string>("business");

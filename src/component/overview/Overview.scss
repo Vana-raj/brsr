@@ -1,0 +1,136 @@
+.overview-section {
+  padding: 80px 0;
+  background-color: #f9f9f9;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  .overview-container {
+     width: -webkit-fill-available;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+
+  .overview-card {
+    margin-bottom: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .overview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+
+    @media (max-width: 992px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .overview-image-container {
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @media (max-width: 992px) {
+      order: 2;
+      padding: 20px;
+    }
+
+    .overview-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: scale(1.02);
+      }
+    }
+  }
+
+  .overview-content {
+    padding: 40px;
+    position: relative;
+
+    @media (max-width: 992px) {
+      order: 1;
+      padding: 30px 20px;
+    }
+
+    .overview-subtitle {
+      display: inline-block;
+      margin-bottom: 15px;
+      color: #09b96d;
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .overview-title {
+      margin-bottom: 25px;
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.3;
+      color: #222;
+
+      @media (max-width: 768px) {
+        font-size: 26px;
+      }
+    }
+  }
+
+.overview-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+    
+  .overview-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    padding: 16px 20px;
+    transition: all 0.3s ease;
+
+    .card-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 16px;
+      font-weight: 500;
+
+      i {
+        color: #09b96d;
+        font-size: 18px;
+      }
+    }
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+    }
+  }
+}
+
+
+  // Alternate layout for right image (commented out in original)
+  .overview-grid.reverse {
+    direction: rtl;
+
+    > * {
+      direction: ltr;
+    }
+
+    @media (max-width: 992px) {
+      direction: ltr;
+    }
+  }
+}

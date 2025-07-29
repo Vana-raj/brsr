@@ -5,6 +5,12 @@ import InputField from "../inputfield/CustomInputField";
 import './InputTable.scss'
 
 const TableInput = ({ columns, rows, value, header, onChange, className = "custom-table" }: any) => {
+    // console.log("columns",columns)
+    // console.log("rows",rows)
+    // console.log("value",value)
+    // console.log("header",header)
+    // console.log("onchange",onchange)
+    // console.log("className",className)
     const [data, setData] = useState(() => {
         if (rows) {
             return rows.map((row: any) => ({ particulars: row }));
@@ -17,13 +23,9 @@ const TableInput = ({ columns, rows, value, header, onChange, className = "custo
             setData(value);
         }
     }, [value]);
-// useEffect(() => {
-//     if (!Array.isArray(value)) {
-//         console.warn("Expected 'value' to be an array, got:", value);
-//     }
-// }, [value]);    
+   
 
-const addRow = () => {
+    const addRow = () => {
         if (rows) return;
         const newData = [...data, {}];
         setData(newData);
@@ -57,6 +59,7 @@ const addRow = () => {
                         </tr>
                     </thead>
                     <tbody>
+
 {/*                         
                         {data.map((row: any, index: number) => (
                             <tr key={index}>

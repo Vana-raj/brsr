@@ -1623,8 +1623,3 @@ export const allCategories3 = [
     ]
   },
 ];
-
-
-
-
-

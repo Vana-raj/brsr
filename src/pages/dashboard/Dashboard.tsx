@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col, Card, Progress } from "antd";
 import { Line, Doughnut, Radar } from "react-chartjs-2";
 import {
@@ -29,6 +29,7 @@ ChartJS.register(
 );
 
 const Dashboard = () => {
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const radarData = {
     labels: ["P1", "P2", "P3", "P4", "P8", "P9"],
     datasets: [
@@ -103,6 +104,15 @@ const Dashboard = () => {
       },
     ],
   };
+
+  useEffect(() => {
+    const savedAddress = localStorage.getItem("walletAddress");
+    if (savedAddress) {
+      setWalletAddress(savedAddress);
+    }
+  }, []);
+
+  console.log(walletAddress,'walletAddress')
 
   return (
     <div className="dashboard-container">

@@ -96,11 +96,12 @@ interface ApiResponse {
 interface SectionBProps {
   putdata: Category[];
   selectedindex:string;
-  editOnly:boolean
+  editOnly:boolean;
+  setSectionBProgressPercentage: (percentage: number) => void;
 }
 
 
-const SectionB: React.FC<SectionBProps> = ({ putdata,selectedindex,editOnly}) => {
+const SectionB: React.FC<SectionBProps> = ({ putdata,selectedindex,editOnly,setSectionBProgressPercentage}) => {
     const [activeCategory, setActiveCategory] = useState<string>("policy");
     const [showQuestions, setShowQuestions] = useState<boolean>(false);
     const [answers, setAnswers] = useState<{ [key: string]: any }>({});
