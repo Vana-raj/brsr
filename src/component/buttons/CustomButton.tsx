@@ -5,7 +5,7 @@ import '../buttons/Buttons.scss';
 interface ButtonProps {
   label: string | any;
   onClick?: any;
-  type?: "primary" | "outline" | "secondary" | "default";
+  type?: "primary" | "outline" | "secondary" | "default" | "pdf";
   icon?: any;
   className?: string;
   disabled?: any;
@@ -25,6 +25,7 @@ const CustomButton: React.FC<ButtonProps> = ({ label, onClick, type = "primary",
           {label}
         </Button>
       )}
+
     </>
   );
 };

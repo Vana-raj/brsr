@@ -199,12 +199,12 @@ export const allCategories = [
             text: "Employees and workers (including differently abled):",
             type: "table",
             columns: [
-              "Particulars",
-              "Total (A)",
-              "Male No. (B)",
-              "Male % (B / A)",
-              "Female No. (C)",
-              "Female % (C / A)"
+          "Particulars",
+          "Total (A)",
+          "Male No. (B)",
+          "Male % (B / A)",
+          "Female No. (C)",
+          "Female % (C / A)"
             ],
             "isMandatory": true,
             rows: [
@@ -218,12 +218,13 @@ export const allCategories = [
             text: "Differently abled Employees and workers:",
             type: "table",
             columns: [
-              "Particulars",
-              "Total (A)",
-              "Male No. (B)",
-              "Male % (B / A)",
-              "Female No. (C)",
-              "Female % (C / A)"
+            "Particulars",
+            "Total (A)",
+            "Male No. (B)",
+            "Male % (B / A)",
+            "Female No. (C)",
+            "Female % (C / A)"
+
             ],
             isMandator: true,
             rows: [
@@ -279,7 +280,7 @@ export const allCategories = [
               "Name of the holding / subsidiary / associate companies / joint ventures (A)",
               "Indicate whether holding/ Subsidiary/ Associate/ Joint Venture",
               "% of shares held by listed entity",
-              "Does the entity indicated at column A, participate in the Business Responsibility initiatives of the listed entity? (Yes/ No)"
+              "Does the entity indicated at column A, participate in the Business Responsibility initiatives of the listed entity? (Yes/ No)"        
             ],
           },
 

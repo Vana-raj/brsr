@@ -113,7 +113,25 @@ padding: 54px 10px;
                   font-weight: 500;
                 }
               }
+
+
+
+
+              .pdf-card {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 12px;
+                font-size: 16px; 
+                font-weight: $bold;
         
+                h2 {
+                  margin: 0;
+                  font-size: 16px;
+                  color: #1d1d1d;
+                }
+                }
+           
               p {
                 color: #666;
                 margin-bottom: 20px;
@@ -193,3 +211,66 @@ padding: 54px 10px;
       }
 }
 
+
+
+$primary-color: #0ea5e9; // Sky blue
+$hover-color: darken($primary-color, 10%);
+$text-color: #ffffff;
+$disabled-color: #94a3b8;
+$font-size: 1rem;
+$padding: 0.6rem 1.5rem;
+$border-radius: 0.5rem;
+$transition: all 0.3s ease;
+
+.download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: $font-size;
+  font-weight: 600;
+  padding: $padding;
+  color: $text-color;
+  background-color: $primary-color;
+  border: none;
+  border-radius: $border-radius;
+  cursor: pointer;
+  transition: $transition;
+  text-decoration: none;
+
+  &:hover {
+    background-color: $hover-color;
+    box-shadow: 0 0 0.5rem rgba(14, 165, 233, 0.6);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  &:disabled {
+    background-color: $disabled-color;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  .icon {
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+}
+
+
+
+.custom-tooltip {
+  .ant-tooltip,
+  .ant-tooltip-inner {
+    color: #000 !important; // white text
+  }
+}
+
+
+.menu-item{
+  display:flex;
+  padding: 5px;
+  gap:15px;
+  cursor: pointer;
+}

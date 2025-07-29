@@ -1,17 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { CheckOutlined, CopyTwoTone, FileAddTwoTone } from "@ant-design/icons";
-import { Card, Radio, Input, List, Modal, Progress, Space, Tooltip, Upload, message } from "antd";
+import { Card, Radio, Input, List, Modal, Progress, Space, Tooltip, Upload, message,Form } from "antd";
 import CustomButton from "../../component/buttons/CustomButton";
 import { allCategories2 } from "../../utils/Options2";
 import { primaryColor } from '../../style/ColorCode';
 import SelectDropDown from "../../component/select/SelectDropDown";
 // import TableInput from "../../component/InputTable/InputTable";
-import TableInput from "../../component/InputTable/InputTableB";
+import TableInput from "../../component/InputTable/InputTable2";
 import Loader from "../../component/loader/Loader";
 import "../questionnaire/Questionnaire.scss"
 
 
 const { TextArea } = Input;
+
+
+interface Category {
+  id: number;
+  categoryNo: string;
+  question_no: string;
+  answer: string;
+  section: string;
+  title: string;
+  subtitle: string;
+  question: string;
+  created_at: string;
+}
+
 
 
 interface BaseQuestion {
@@ -24,6 +38,11 @@ interface BaseQuestion {
 interface TextQuestion extends BaseQuestion {
     choices: null;
     type?: 'text';
+}
+interface SectionPartConfig {
+    category: string;
+    startIndex: number;
+    questionMap?: Record<string, string>;
 }
 
 interface ChoiceQuestion extends BaseQuestion {
@@ -72,10 +91,17 @@ interface ApiSection {
 interface ApiResponse {
     data: ApiSection[];
 }
+
+
 interface SectionBProps {
-    setSectionBProgressPercentage: (percentage: number) => void;
+  putdata: Category[];
+  selectedindex:string;
+  editOnly:boolean;
+  setSectionBProgressPercentage: (percentage: number) => void;
 }
-const SectionB: React.FC<SectionBProps> = ({ setSectionBProgressPercentage }) => {
+
+
+const SectionB: React.FC<SectionBProps> = ({ putdata,selectedindex,editOnly,setSectionBProgressPercentage}) => {
     const [activeCategory, setActiveCategory] = useState<string>("policy");
     const [showQuestions, setShowQuestions] = useState<boolean>(false);
     const [answers, setAnswers] = useState<{ [key: string]: any }>({});
@@ -90,9 +116,9 @@ const SectionB: React.FC<SectionBProps> = ({ setSectionBProgressPercentage }) =>
     const [pendingAction, setPendingAction] = useState<() => void | null>();
     const [submittedAnswers, setSubmittedAnswers] = useState<Record<string, boolean>>({});
     const [questionAnswerMap, setQuestionAnswerMap] = useState<Record<string, string>>({});
-    const [texts, setTexts] = useState<{ [key: string]: any }>({});
-    const [rdata, setRdata] = useState<{ [key: string]: any }>({});
-
+    const [texts,setTexts]= useState<{ [key: string]: any }>({});
+    const [rdata,setRdata]= useState<{ [key: string]: any }>({}); 
+    const [brsrFilename,setBrsrFilename] = useState<string>("");
 
 
     const confirmNavigation = (action: () => void) => {
@@ -104,79 +130,172 @@ const SectionB: React.FC<SectionBProps> = ({ setSectionBProgressPercentage }) =>
         }
     };
 
-    const handleInputChange = (section: string, key: string, value: any, questionIndex: number, text: string) => {
+
+
+useEffect(() => {
+  // Clear localStorage on page refresh
+  const handleBeforeUnload = () => {
+    localStorage.removeItem('answeredQuestions');
+  };
+
+  window.addEventListener('beforeunload', handleBeforeUnload);
+
+  return () => {
+    window.removeEventListener('beforeunload', handleBeforeUnload);
+  };
+}, []);
+
+
+
+
+    const handleInputChange = (section: string, key: string, value: any, questionIndex: number ,text:string) => {
         const questionKey = generateQuestionKey(section, key, questionIndex);
         setAnswers((prevAnswers) => ({
             ...prevAnswers,
             [questionKey]: value,
         }));
-        const question = generateQuestion(text);
-        setTexts((prevText) => ({
-            ...prevText,
-            [question]: value,
-        }));
+const question = generateQuestion(text);
+      setTexts((prevText) => ({
+    ...prevText,
+    [question]: value,
+}));
 
 
         setHasUnsavedChanges(answers[questionKey] === "" ? false : true);
-        // console.log("*****vv",value,section,key,questionIndex,questionKey,text)
 
     };
 
-    console.log("*****", texts)
+        console.log("*****",texts)
+
+const output: Record<string, any> = {};
+
+for (const key in texts) {
+  if (typeof texts[key] === "object" && !Array.isArray(texts[key])) {
+    output[key] = [texts[key]];  // wrap object in array
+  } else {
+    output[key] = texts[key];    // keep as is
+  }
+}
 
 
-    const output: Record<string, any> = {};
 
-    for (const key in texts) {
-        if (typeof texts[key] === "object" && !Array.isArray(texts[key])) {
-            output[key] = [texts[key]];  // wrap object in array
-        } else {
-            output[key] = texts[key];    // keep as is
-        }
+const rout: Record<string, any> = {};
+
+for (const key in rdata) {
+  if (typeof rdata[key] === "object" && !Array.isArray(rdata[key])) {
+    rout[key] = [rdata[key]];  // wrap object in array
+  } else {
+    rout[key] = rdata[key];    // keep as is
+  }
+}
+
+
+
+
+
+
+const handlePost = async () => {
+try {
+
+    console.log("editonly",editOnly)
+if(editOnly==true){
+
+const bodyData = {
+texts: Object.keys(rout).length > 0 ? rout : output,
+sectionfind: "section_b",  // Replace with your actual section identifier
+currentsection:currentCategory?.section,
+indexName:selectedindex
+};
+
+console.log("This is if bodydata",bodyData)
+  const response = await fetch(`http://127.0.0.1:1000/edit_pdf_report_put`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(bodyData),
+
+  });
+ 
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const data = await response.json();
+
+  if (Object.keys(texts).length > 0) {
+    message.success(`${data.filename} File edit successfully!`);
+  } else {
+    message.warning("Please edit the file!");
+  }
+
+
+}
+
+
+else{
+    const bodyData = {
+    texts: Object.keys(rout).length > 0 ? rout : output,
+    sectionfind: "section_b",  // Replace with your actual section identifier
+    brsrfilename:brsrFilename
+};
+    console.log(bodyData)
+    const response = await fetch('http://127.0.0.1:1000/submit/', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    // body: JSON.stringify(output),
+    body:  JSON.stringify(bodyData),
+
+});
+
+    if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-
-    console.log("output", output)
-
-    const rout: Record<string, any> = {};
-
-    for (const key in rdata) {
-        if (typeof rdata[key] === "object" && !Array.isArray(rdata[key])) {
-            rout[key] = [rdata[key]];  // wrap object in array
-        } else {
-            rout[key] = rdata[key];    // keep as is
+    const data = await response.json();
+    console.log('Response:', data);
+    if (data!=null){
+        message.success(`${data} form submited sucessfully!`);
         }
-    }
+        else{
+            message.warning("upload file!")
+        }}
+} catch (error) {
+    console.error('Error posting data:', error);
+}
+};
+
+  
 
 
 
+// async function Download_pdf() {
+//   try {
+//     const response = await fetch("http://127.0.0.1:1000/download_pdf/", {
+//       method: "GET",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//     });
 
-    const handlePost = async () => {
-        try {
-            const response = await fetch('http://127.0.0.1:5000/submit', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                // body: JSON.stringify(output),
-                body: JSON.stringify(Object.keys(rout).length > 0 ? rout : output),
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! Status: ${response.status}`);
+//     }
 
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            console.log('Response:', data);
-        } catch (error) {
-            console.error('Error posting data:', error);
-        }
-    };
+//     const data = await response.json();
+//     console.log("Received data:", data);
+//     // Do something with the data (e.g., show in table, trigger PDF download)
+//   } catch (error) {
+//     console.error("Fetch error:", error);
+//   }
+// }
+  
 
 
 
-    const handleFileUpload = async (info: any, questionKey: string, principleKey: string) => {
+    const handleFileUpload = async (info: any, questionKey: string,principleKey:string) => {
         const { file } = info;
 
         if (!file || file.status === "uploading") return;
@@ -186,7 +305,7 @@ const SectionB: React.FC<SectionBProps> = ({ setSectionBProgressPercentage }) =>
             const formData = new FormData();
             formData.append('file', file.originFileObj || file);
             formData.append('questionKey', questionKey);
-            formData.append('principleKey', principleKey);
+            formData.append('principleKey',principleKey );
 
 
             console.log("Sending request to server...");
@@ -194,7 +313,6 @@ const SectionB: React.FC<SectionBProps> = ({ setSectionBProgressPercentage }) =>
                 method: 'POST',
                 body: formData,
             });
-            // console.log("129",response)
 
             console.log("Received response status:", response.status);
 
@@ -205,13 +323,22 @@ const SectionB: React.FC<SectionBProps> = ({ setSectionBProgressPercentage }) =>
             }
 
             // First, get the response as text
-            const responseText = await response.text();
+            const data = await response.json();
+            const filename = data.brsrfilename;
+            // const responseText =data.response.text();
+            console.log(filename)
+            setBrsrFilename(filename)
+            // console.log(responseText)
+            // console.log("Raw response text:", data.response);
+           
+            const responseText =data.response;
             console.log("Raw response text:", responseText);
+
 
             // Try to parse it as JSON
             let responseData;
             try {
-                responseData = JSON.parse(responseText);
+                responseData =responseText;
                 console.log("Parsed response data:", responseData);
             } catch (jsonError) {
                 console.error("Failed to parse JSON:", jsonError);
@@ -237,16 +364,16 @@ const SectionB: React.FC<SectionBProps> = ({ setSectionBProgressPercentage }) =>
                     throw new Error("Empty response from server");
                 }
             }
-            const extractQA = (data: any): { [key: string]: any } => {
-                const result: { [key: string]: any } = {};
-                data?.data?.parts?.forEach((part: any) => {
-                    part?.questions?.forEach((q: any) => {
-                        result[q.question] = q.questionAnswer;
-                    });
-                });
-                return result;
-            };
-            setRdata(extractQA(responseData))
+const extractQA = (data: any): { [key: string]: any } => {
+  const result: { [key: string]: any } = {};
+  data?.data?.parts?.forEach((part: any) => {
+    part?.questions?.forEach((q: any) => {
+      result[q.question] = q.questionAnswer;
+    });
+  });
+  return result;
+};
+setRdata(extractQA(responseData))
 
 
             // Ensure we have some data structure to work with
@@ -256,7 +383,6 @@ const SectionB: React.FC<SectionBProps> = ({ setSectionBProgressPercentage }) =>
 
             // Flexible response validation - handle both direct array and {data: array} formats
             const responseDataToProcess = responseData.data || responseData;
-            // console.log("sclksmckl",responseDataToProcess)
             if (!responseDataToProcess) {
                 throw new Error("Response does not contain processable data");
             }
@@ -273,7 +399,7 @@ const SectionB: React.FC<SectionBProps> = ({ setSectionBProgressPercentage }) =>
                 Array.isArray(responseDataToProcess) ?
                     responseDataToProcess :
                     [responseDataToProcess]
-
+                
             );
 
             console.log("Transformed answers:", newAnswers);
@@ -337,13 +463,8 @@ const SectionB: React.FC<SectionBProps> = ({ setSectionBProgressPercentage }) =>
     };
 
 
-    interface SectionPartConfig {
-        category: string;
-        startIndex: number;
-        questionMap?: Record<string, string>;
-    }
 
-    const sectionPartMap: Record<string, Record<string, SectionPartConfig>> = {
+ const sectionPartMap: Record<string, Record<string, SectionPartConfig>> = {
         'section_b': {
             'one': {
                 category: 'policy',
@@ -367,8 +488,8 @@ const SectionB: React.FC<SectionBProps> = ({ setSectionBProgressPercentage }) =>
                     '1': 'Statement by director responsible for the business responsibility report, highlighting ESG related challenges, targets and achievements (listed entity has flexibility regarding the placement of this disclosure)',
                     '2': 'Details of the highest authority responsible for implementation and oversight of the Business Responsibility policy (ies).',
                     '3': 'Does the entity have a specified Committee of the Board/ Director responsible for decision making on sustainability related issues? (Yes / No). If yes, provide details.',
-                    '4': 'Indicate whether review was undertaken by Director / Committee of the Board/ Any other Committee',
-                    '5': 'Frequency(Annually/ Half yearly/ Quarterly/ Any other – please specify)',
+                    '4':'Indicate whether review was undertaken by Director / Committee of the Board/ Any other Committee',
+                    '5':'Frequency(Annually/ Half yearly/ Quarterly/ Any other – please specify)',
                     '6': 'Has the entity carried out independent assessment/ evaluation of the working of its policies by an external agency? (Yes/No). If yes, provide name of the agency.',
                     '7': 'If answer to question (1) above is “No” i.e. not all Principles are covered by a policy, reasons to be stated, as below:',
                     '8': 'Upstream (Suppliers & Logistics Partners)',
@@ -388,14 +509,12 @@ const SectionB: React.FC<SectionBProps> = ({ setSectionBProgressPercentage }) =>
                 return answers;
             }
         }
-        // console.log("363",apiData)
 
 
         try {
             apiData.forEach((section: any) => {
                 const sectionName = section.section || 'section_b';
                 const partsMap = sectionPartMap[sectionName as keyof typeof sectionPartMap] || {};
-                // console.log("368",partsMap)
 
                 const parts = section.parts || [];
                 parts.forEach((part: any) => {
@@ -404,18 +523,13 @@ const SectionB: React.FC<SectionBProps> = ({ setSectionBProgressPercentage }) =>
 
                     const partConfig = partsMap[partNo];
                     if (!partConfig || !part.questions || !partConfig.questionMap) return;
-                    // console.log("jsxkn",partConfig)
                     const { category, questionMap } = partConfig;
-                    // console.log("imsmkdjs",category)
-                    // console.log("shcbsjkc",questionMap)
                     const categoryConfig = allCategories2.find(c => c.key === category);
-                    // console.log("jjnismcs",categoryConfig)
                     if (!categoryConfig) return;
 
                     part.questions.forEach((apiQuestion: any) => {
                         const answer = apiQuestion.questionAnswer;
                         if (answer === null || answer === "Not provided in the text") return;
-                        // console.log("uimsj",answer)
                         const expectedQuestionText = questionMap[apiQuestion.questionNo];
                         if (!expectedQuestionText) {
                             console.warn(`No mapping for question ${apiQuestion.questionNo}`);
@@ -494,9 +608,6 @@ const SectionB: React.FC<SectionBProps> = ({ setSectionBProgressPercentage }) =>
                     const questionKey = `${activeCategory}_${section.key}_${questionIndex}`;
                     const subobj: Record<string, string> = {};
                     if (answers[questionKey]) {
-                        // console.log("question",section.question)
-                        // console.log("sslkmsk",questionKey)
-                        // console.log("sslkmsk",answers[questionKey])
                         answered += 1;
                         anyAnswered = true;
                     }
@@ -520,7 +631,6 @@ const SectionB: React.FC<SectionBProps> = ({ setSectionBProgressPercentage }) =>
             if (!anyAnswered) {
                 message.warning("Please answer at least one question before submitting.");
             } else {
-                // console.log("tttt",anyAnswered)
                 message.success("Submitted successfully!");
                 setShowQuestions(false);
             }
@@ -590,7 +700,7 @@ const SectionB: React.FC<SectionBProps> = ({ setSectionBProgressPercentage }) =>
         return `${section}_${key}_${index}`.toLowerCase();
     };
 
-    const generateQuestion = (text: string): string => {
+     const generateQuestion = (text: string): string => {
         return `${text}`.toLowerCase();
     };
 
@@ -651,7 +761,6 @@ const SectionB: React.FC<SectionBProps> = ({ setSectionBProgressPercentage }) =>
 
         const getQuestionNumber = () => {
             if (question.parent) {
-                // console.log("kjjkjjj",question.parent)
                 let parentCount = 0;
                 for (let i = 0; i <= questionIndex; i++) {
                     if (questionsArray[i].parent) {
@@ -675,67 +784,45 @@ const SectionB: React.FC<SectionBProps> = ({ setSectionBProgressPercentage }) =>
                 return `${alphabet}.`;
             }
         };
-        // console.log("629",answers)
-        const questionKey = generateQuestionKey(section, key, questionIndex);
-        // console.log("133",questionKey)
-        const answerValue = answers[questionKey];
-        console.log("ans", typeof (answerValue), answerValue)
-        const isFileUploaded = !!uploadedFiles[questionKey];
-        const isAnswered = !!answers[questionKey];
-        if (isViewMode && !isAnswered) {
-            return null;
-        }
-        if (question?.type === 'table') {
-            console.log("question", question)
-            console.log("columns", question.columns)
-            console.log("rows", question.rows)
-            console.log("answers", answerValue)
-            console.log("onchange", section, key, questionIndex)
-
-            return (
-                <div>
-                    <div className="question-text">
-                        <div>{qusSection}. {getQuestionNumber()} {question.text}
-
-                            {question.isMandatory && <span className="mandatory-asterisk">*</span>}
-                            {isAnswered && (
-                                <Tooltip title="Answered">
-                                    <CheckOutlined className="answered-icon" />
-                                </Tooltip>
-
-                            )}
-                        </div>
-                        <Tooltip title="Copy Question">
-                            <button
-                                className="copy-border"
-                                onClick={() => handleCopyText(question?.text)}>
-                                <CopyTwoTone
-                                    className="copy-icon"
-                                />
-                            </button>
-                        </Tooltip>
-                    </div>
-                    <div >
-                        <TableInput
-                            columns={question.columns}
-                            rows={question.rows}
-                            header={"S.No"}
-                            // value={Array.isArray(answerValue) ? answerValue : []}
-                            value={answerValue}
-                            onChange={(value: any) => handleInputChange(section, key, value, questionIndex, question.text)}
-                        />
-
-                    </div>
-                </div>
-            );
-        }
+        
 
 
+
+function editfindanswertextarea(data:any[],editquestion:string): string|null {
+const found = data.find(item => item.question.includes(editquestion));
+  return found ? found.answer : null;
+}
+
+
+function editfindanswertable(data: any[], editquestion: string): any[] | null {
+  const found = data.find(item => item.question.includes(editquestion));
+
+  if (!found || !found.answer) return null;
+
+  try {
+    const parsed = JSON.parse(found.answer);
+    const firstObject = parsed[0];
+
+    // return Array.isArray(parsed) ? parsed : [parsed];
+    return firstObject
+  } catch (error) {
+    console.error("Failed to parse answer as JSON:", error);
+    return null;
+  }
+}
+    const questionKey = generateQuestionKey(section, key, questionIndex);
+    const answerValue = answers[questionKey];
+    const isFileUploaded = !!uploadedFiles[questionKey];
+    const isAnswered = !!answers[questionKey];
+    if (isViewMode && !isAnswered) {
+        return null;
+    }
+    if (question?.type === 'table') {
         return (
             <div>
-
                 <div className="question-text">
                     <div>{qusSection}. {getQuestionNumber()} {question.text}
+
                         {question.isMandatory && <span className="mandatory-asterisk">*</span>}
                         {isAnswered && (
                             <Tooltip title="Answered">
@@ -754,221 +841,232 @@ const SectionB: React.FC<SectionBProps> = ({ setSectionBProgressPercentage }) =>
                         </button>
                     </Tooltip>
                 </div>
-                {question.isNone ? null : (
-                    question.choices === null ? (
-                        <div className="area-upload">
-                            <TextArea
-                                rows={3}
-                                placeholder="Type your answer here"
-                                size="small"
-                                onChange={(e) => handleInputChange(section, key, e.target.value, questionIndex, question.text)}
-                                value={answers[questionKey] || ""}
-                            />
-                        </div>
-                    ) : question.choices.length > 4 ? (
-                        <SelectDropDown
-                            mode="multiple"
-                            options={question.choices.map((choice) => ({
-                                label: choice,
-                                value: choice,
-                            }))}
-                            placeholder="Select options"
-                            value={Array.isArray(answerValue) ? answerValue : []}
-                            onChange={(value) => handleInputChange(section, key, value, questionIndex, question.text)}
-                        />
-                    ) : (
-                        <div className="question-options">
-                            {question.choices.map((option) => (
-                                <label key={option}>
-                                    <Space direction="vertical">
-                                        <Radio
-                                            value={option}
-                                            checked={answerValue === option}
-                                            onChange={() => handleInputChange(section, key, option, questionIndex, question.text)}
-                                        >
-                                            {option}
-                                        </Radio>
-                                    </Space>
-                                </label>
-                            ))}
-                        </div>
-                    )
-                )}
+                <div >
+                    <TableInput
+                        columns={question.columns}
+                        rows={question.rows}
+                        header={"S.No"}
+                        // value={Array.isArray(answerValue) ? answerValue : []}
+                        onChange={(value: any) => handleInputChange(section, key, value, questionIndex,question.text)}
+                        value={answerValue||editfindanswertable(putdata,question.text)||[]}
+                    />
 
+                </div>
             </div>
         );
-    };
-    const currentCategory = allCategories2.find((cat) => cat.key === activeCategory);
-    const questions: any = currentCategory?.questions[currentSectionIndex];
-    const countNonEmptyAnswers = () => {
-        let answered = 0;
-        const currentCategory = allCategories2.find(cat => cat.key === activeCategory);
+    }
 
-        if (currentCategory && currentSectionIndex < currentCategory.questions.length) {
-            const section = currentCategory.questions[currentSectionIndex];
-            section.question.forEach((_, questionIndex) => {
-                const questionKey = `${activeCategory}-${section.key}-${questionIndex}`;
-                const answer = answers[questionKey];
-
-                // Check for non-empty answers
-                if (answer !== undefined && answer !== null && answer !== "") {
-                    if (Array.isArray(answer)) {
-                        if (answer.length > 0 && !answer.every(item => item === "")) answered++;
-                    } else if (typeof answer === 'object') {
-                        if (Object.keys(answer).length > 0) answered++;
-                    } else {
-                        answered++;
-                    }
-                }
-            });
-        }
-        return answered;
-    };
-
-    // 2. Updated progress calculation with debugging
-    const totalInSection = currentCategory?.questions[currentSectionIndex]?.question.length || 0;
-    const answeredCount = countNonEmptyAnswers();
-
-    // Debug logs
-    console.log('Current answers:', answers);
-    console.log(`Counting: ${answeredCount} answered out of ${totalInSection} total questions`);
-
-    const sectionProgressPercent = totalInSection > 0
-        ? Math.round((answeredCount / totalInSection) * 100)
-        : 0;
-
-    // 3. Update parent component with useEffect
-    useEffect(() => {
-        setSectionBProgressPercentage(sectionProgressPercent);
-    }, [sectionProgressPercent, setSectionBProgressPercentage]);
-
-    const totalTextAreasInSection = questions?.question.length || 0;
-
-    useEffect(() => {
-        setsingleSectionTextArea(totalTextAreasInSection);
-    }, [totalTextAreasInSection, questions]);
-
-
-    const progressPercent = singleSectionTextArea > 0
-        ? Math.round((countNonEmptyAnswers() / singleSectionTextArea) * 100)
-        : 0;
     return (
-        <div className="questionnaire-main">
-            {loading && (
-                <div style={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    zIndex: 1000
-                }}>
-                    <Loader />
+        <div>
+
+            <div className="question-text">
+                <div>{qusSection}. {getQuestionNumber()} {question.text}
+                    {question.isMandatory && <span className="mandatory-asterisk">*</span>}
+                    {isAnswered && (
+                        <Tooltip title="Answered">
+                            <CheckOutlined className="answered-icon" />
+                        </Tooltip>
+
+                    )}
                 </div>
+                <Tooltip title="Copy Question">
+                    <button
+                        className="copy-border"
+                        onClick={() => handleCopyText(question?.text)}>
+                        <CopyTwoTone
+                            className="copy-icon"
+                        />
+                    </button>
+                </Tooltip>
+            </div>
+            {question.isNone ? null : (
+                question.choices === null ? (
+                    <div className="area-upload">
+                        <TextArea
+                            rows={3}
+                            placeholder="Type your answer here"
+                            size="small"
+                            onChange={(e) => handleInputChange(section, key, e.target.value, questionIndex,question.text)}
+                            // value={answers[questionKey] || ""}
+                            value={answers[questionKey] ||editfindanswertextarea(putdata,question.text) ||""}
+                        />
+                    </div>
+                ) : question.choices.length > 4 ? (
+                    <SelectDropDown
+                        mode="multiple"
+                        options={question.choices.map((choice) => ({
+                            label: choice,
+                            value: choice,
+                        }))}
+                        placeholder="Select options"
+                        value={Array.isArray(answerValue) ? answerValue : []}
+                        onChange={(value) => handleInputChange(section, key, value, questionIndex,question.text)}
+                    />
+                ) : (
+                    <div className="question-options">
+                        {question.choices.map((option) => (
+                            <label key={option}>
+                                <Space direction="vertical">
+                                    <Radio
+                                        value={option}
+                                        checked={answerValue === option}
+                                        onChange={() => handleInputChange(section, key, option, questionIndex,question.text)}
+                                    >
+                                        {option}
+                                    </Radio>
+                                </Space>
+                            </label>
+                        ))}
+                    </div>
+                )
             )}
 
-            <div className="questionnaire-container">
-                <div className="category-card">
-                    <Card title={"Categories"} bordered>
-                        <List
-                            key={activeCategory}
-                            dataSource={allCategories2}
-                            renderItem={(category, id: number) => (
-                                <List.Item
-                                    key={category.key}
-                                    onClick={() => handleCategoryClick(category.key)}
-                                    className={`category-item ${activeCategory === category.key ? "active" : ""} `}
-                                >
-                                    {category.section}
-                                </List.Item>
-                            )}
-                        />
-                    </Card>
-                </div>
-                <div className="question-card">
-                    <Card
-                        title={
-                            <div>
-                                {questions?.quesSection}
-                            </div>
-                        }
-                        extra={
-                            <div style={{ textAlign: "center", display: "flex", gap: "10px", alignItems: 'center' }}>
-                                <Tooltip title="Upload">
-                                    <Upload
-                                        showUploadList={false}
-                                        customRequest={(options) => {
-                                            const { onSuccess } = options;
-                                            setTimeout(() => onSuccess?.("ok"), 0);
-                                        }}
-                                        onChange={(info) => handleFileUpload(info, 'section_b', "null")}
-                                    >
-                                        <FileAddTwoTone className="upload-icon" />
-                                    </Upload>
-                                </Tooltip>
-                                <Progress
-                                    type="circle"
-                                    percent={progressPercent}
-                                    width={50}
-                                    strokeColor={primaryColor}
-                                    format={() => `${countNonEmptyAnswers()}/${singleSectionTextArea}`
-                                    }
-                                />
-
-                            </div >
-                        }
-                        bordered
-                    >
-                        {
-                            questions?.question.map((q: any, idx: any) => {
-                                return (
-                                    <div key={`${questions.key}-${idx}`}>
-                                        {renderQuestionInput(activeCategory, questions.key, q, idx, questions.question, questions.section)}
-                                    </div>
-                                );
-                            })
-                        }
-
-                        < div className="subbutton" >
-                            <div className="common-submit-btn">
-                                <CustomButton
-                                    label="Submit Answers"
-                                    type="primary"
-                                    onClick={(item: any) => handleSubmitAll(item)}
-                                />
-                            </div>
-                        </div >
-                        <button onClick={handlePost}>Get PDF</button>
-
-                    </Card >
-                </div >
-                {/* )
-                } */}
-            </div >
-            <Modal
-                title="Unsaved Changes!!!"
-                visible={isUnsavedModalVisible}
-                onOk={() => {
-                    setIsUnsavedModalVisible(false);
-                    setHasUnsavedChanges(false);
-                    if (pendingAction) pendingAction();
-                }}
-                onCancel={() => setIsUnsavedModalVisible(false)}
-                okText="Yes"
-                cancelText="No"
-                centered
-            >
-                <div className="model-ques-content">Do You Want to Exit Without Saving?</div>
-            </Modal>
-
-
-        </div >
-
+        </div>
     );
+};
+
+const currentCategory = allCategories2.find((cat) => cat.key === activeCategory);
+const questions: any = currentCategory?.questions[currentSectionIndex];
+
+const countNonEmptyAnswers = () => {
+    let nonEmptyCount = 0;
+    if (currentCategory) {
+        currentCategory.questions[currentSectionIndex]?.question.forEach((_, questionIndex) => {
+            const questionKey = `${activeCategory}_${questions.key}_${questionIndex} `;
+            if (answers[questionKey]) {
+                nonEmptyCount += 1;
+            }
+        });
+    }
+
+    return nonEmptyCount;
+};
+
+const totalTextAreasInSection = questions?.question.length || 0;
+
+useEffect(() => {
+    setsingleSectionTextArea(totalTextAreasInSection);
+}, [totalTextAreasInSection, questions]);
+
+
+const progressPercent = singleSectionTextArea > 0
+    ? Math.round((countNonEmptyAnswers() / singleSectionTextArea) * 100)
+    : 0;
+return (
+    <div className="questionnaire-main">
+        {loading && (
+            <div style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                zIndex: 1000
+            }}>
+                <Loader />
+            </div>
+        )}
+
+        <div className="questionnaire-container">
+            <div className="category-card">
+                <Card title={"Categories"} bordered>
+                    <List
+                        key={activeCategory}
+                        dataSource={allCategories2}
+                        renderItem={(category, id: number) => (
+                            <List.Item
+                                key={category.key}
+                                onClick={() => handleCategoryClick(category.key)}
+                                className={`category-item ${activeCategory === category.key ? "active" : ""} `}
+                            >
+                                {category.section}
+                            </List.Item>
+                        )}
+                    />
+                </Card>
+            </div>
+            <div className="question-card">
+                <Card
+                    title={
+                        <div>
+                            {questions?.quesSection}
+                        </div>
+                    }
+                    extra={
+                        <div style={{ textAlign: "center", display: "flex", gap: "10px", alignItems: 'center' }}>
+                            <Tooltip title="Upload">
+                                <Upload
+                                    showUploadList={false}
+                                    customRequest={(options) => {
+                                        const { onSuccess } = options;
+                                        setTimeout(() => onSuccess?.("ok"), 0);
+                                    }}
+                                    onChange={(info) => handleFileUpload(info, 'section_b',"null")}
+                                >
+                                    <FileAddTwoTone className="upload-icon" />
+                                </Upload>
+                            </Tooltip>
+                            <Progress
+                                type="circle"
+                                percent={progressPercent}
+                                width={50}
+                                strokeColor={primaryColor}
+                                format={() => `${countNonEmptyAnswers()}/${singleSectionTextArea}`
+                                }
+                            />
+
+                        </div >
+                    }
+                    bordered
+                >
+                    {
+                        questions?.question.map((q: any, idx: any) => {
+                            return (
+                                <div key={`${questions.key}-${idx}`}>
+                                    {renderQuestionInput(activeCategory, questions.key, q, idx, questions.question, questions.section)}
+                                </div>
+                            );
+                        })
+                    }
+
+                    < div className="subbutton">
+                        <div className="common-submit-btn">
+                            <CustomButton
+                                label="Submit Answers"
+                                type="primary"
+                                onClick={handlePost}
+                            />
+                        </div>
+                    </div >
+                </Card >
+            </div >
+            {/* )
+            } */}
+        </div >
+        <Modal
+            title="Unsaved Changes!!!"
+            visible={isUnsavedModalVisible}
+            onOk={() => {
+                setIsUnsavedModalVisible(false);
+                setHasUnsavedChanges(false);
+                if (pendingAction) pendingAction();
+            }}
+            onCancel={() => setIsUnsavedModalVisible(false)}
+            okText="Yes"
+            cancelText="No"
+            centered
+        >
+            <div className="model-ques-content">Do You Want to Exit Without Saving?</div>
+        </Modal>
+
+
+    </div >
+
+);
 
 };
 
