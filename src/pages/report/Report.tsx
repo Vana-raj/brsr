@@ -8,13 +8,12 @@ import CustomTable from '../../component/table/CustomTable'
 import CustomButton from '../../component/buttons/CustomButton'
 import CustomPdfButton from '../../component/buttons/CustomPdfButton';
 import './Report.scss'
-import Questionnaire from '../questionnaire/Questionnaire';
 import MeterCard from '../../component/cards/MeterCard';
 import CircularChart from '../../component/circlepercentagechart/CircleChart';
 import SectionB from './SectionB';
 import SectionC from './SectionC';
 import { fetchReportList } from '../questionnaire/report_list';
-import demoPost from '../questionnaire/Questionnaire';
+import Questionnaire from '../questionnaire/Questionnaire';
 
 const Report: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = useState<string>("");
@@ -110,7 +109,7 @@ const Report: React.FC = () => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [isReport, setIsReport] = useState<boolean>(false);
-  const [addData, setAddData] = useState<any>(null);
+  const [addData, setAddData] = useState<any>("section_a");
   const [sectionProgressPercentage, setSectionProgressPercentage] = useState<number>(0);
   const [sectionBProgressPercentage, setSectionBProgressPercentage] = useState<number>(0);
   const [sectionCProgressPercentage, setSectionCProgressPercentage] = useState<number>(0);
@@ -125,7 +124,7 @@ const Report: React.FC = () => {
 
 const edit_pdf_report = async (index:any) => {
   try {
-    const response = await fetch(`http://127.0.0.1:1000/edit_pdf_report_get/${encodeURIComponent(index.name)}`, {
+    const response = await fetch(`http://192.168.2.27:1000/edit_pdf_report_get/${encodeURIComponent(index.name)}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -152,7 +151,7 @@ const edit_pdf_report = async (index:any) => {
 
 const delete_pdf_report=async (index:any)=>{
   try {
-    const response = await fetch(`http://127.0.0.1:1000/delete_pdf_report/${encodeURIComponent(index.name)}`, {
+    const response = await fetch(`http://192.168.2.27:1000/delete_pdf_report/${encodeURIComponent(index.name)}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -177,7 +176,7 @@ const delete_pdf_report=async (index:any)=>{
 const download_pdf_report = async (index: any) => {
 
   try {
-    const response = await fetch(`http://127.0.0.1:1000/download_pdf_report/${encodeURIComponent(index.name)}`, {
+    const response = await fetch(`http://192.168.2.27:1000/download_pdf_report/${encodeURIComponent(index.name)}`, {
       method: "GET",
     });
 
@@ -436,7 +435,7 @@ const download_pdf_report = async (index: any) => {
             <Questionnaire putdata={dataarr} selectedindex={selectedIndex} editOnly={editonlyState} setSectionProgressPercentage={setSectionProgressPercentage}/>
           }
           {addData === "section_b" &&
-            <SectionB putdata={dataarr} selectedindex={selectedIndex} editOnly={editonlyState} setSectionBProgressPercentage={setSectionBProgressPercentage}/>
+            <SectionB putdata={dataarr} selectedindex={selectedIndex} editOnly={editonlyState} />
           }
           {addData === "section_c" &&
             <SectionC setSectionCProgressPercentage={setSectionCProgressPercentage} />

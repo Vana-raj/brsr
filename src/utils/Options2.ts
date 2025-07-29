@@ -193,6 +193,7 @@ export const allCategories2 = [
             ],
             isMandatory: true,
             parent: true
+
           },          
           {
             text: "Performance of the entity against the specific commitments, goals and targets along-with reasons in case the same are not met.", choices: null,
@@ -221,6 +222,7 @@ export const allCategories2 = [
           { text: "Statement by director responsible for the business responsibility report, highlighting ESG related challenges, targets and achievements (listed entity has flexibility regarding the placement of this disclosure)", choices: null, isMandatory: false, parent: true },
 
           { text: "Details of the highest authority responsible for implementation and oversight of the Business Responsibility policy (ies).", choices: null, isMandatory: false, parent: true },
+ 
           {
             text: "Does the entity have a specified Committee of the Board/ Director responsible for decision making on sustainability related issues? (Yes / No). If yes, provide details.", choices: null, isMandatory: false, type: "table",
             columns: [
@@ -326,10 +328,9 @@ export const allCategories2 = [
           // },
           {
             text: "Upstream (Suppliers & Logistics Partners)", parent: false,choices: null, isMandatory: false},
-          },
+
           {
             text: "Downstream (Distributors & Customers)", parent: false,choices: null, isMandatory: false},
-          },
         ],
       },
 

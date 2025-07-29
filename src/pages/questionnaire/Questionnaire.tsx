@@ -9,7 +9,6 @@ import SelectDropDown from "../../component/select/SelectDropDown";
 import TableInput from "../../component/InputTable/InputTable";
 import Loader from "../../component/loader/Loader";
 import "./Questionnaire.scss";
-import { text } from "node:stream/consumers";
 
 
 
@@ -88,6 +87,8 @@ interface ApiSection {
 interface ApiResponse {
     data: ApiSection[];
 }
+
+
 interface QuestionnaireProps {
   putdata: Category[];
   selectedindex:string;
@@ -96,6 +97,7 @@ interface QuestionnaireProps {
 }
 
 const Questionnaire: React.FC<QuestionnaireProps> = ({ putdata,selectedindex,editOnly,setSectionProgressPercentage}) => {
+
     const [activeCategory, setActiveCategory] = useState<string>("details");
     const [showQuestions, setShowQuestions] = useState<boolean>(false);
     const [answers, setAnswers] = useState<{ [key: string]: any }>({});
@@ -111,13 +113,12 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ putdata,selectedindex,edi
     const [pendingAction, setPendingAction] = useState<() => void | null>();
     const [submittedAnswers, setSubmittedAnswers] = useState<Record<string, boolean>>({});
     const [questionAnswerMap, setQuestionAnswerMap] = useState<Record<string, string>>({});
-
     const [texts,setTexts]= useState<{ [key: string]: any }>({});
     const [rdata,setRdata]= useState<{ [key: string]: any }>({});
     const [brsrFilename,setBrsrFilename] = useState<string>("");
     const [value, setValue] = useState('');
     const [questionIndex, setQuestionIndex] = useState(0);
-
+    
 
     const confirmNavigation = (action: () => void) => {
         if (hasUnsavedChanges && showQuestions) {
@@ -127,6 +128,7 @@ const Questionnaire: React.FC<QuestionnaireProps> = ({ putdata,selectedindex,edi
             action();
         }
     };
+
 
     useEffect(() => {
   // Clear localStorage on page refresh
@@ -267,7 +269,7 @@ if (editOnly==true) {
 
   };
 console.log("This is if bodydata",bodyData)
-  const response = await fetch(`http://127.0.0.1:1000/edit_pdf_report_put`, {
+  const response = await fetch(`http://192.168.2.27:1000/edit_pdf_report_put`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -296,9 +298,8 @@ else{
       texts: Object.keys(rdata).length > 0 ? rdata : texts,
       sectionfind: "section_a" ,
       brsrfilename:brsrFilename // Replace with your actual section identifier
-
     };
-    const response = await fetch('http://127.0.0.1:1000/submit/', {
+    const response = await fetch('http://192.168.2.27:1000/submit/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -325,6 +326,7 @@ else{
 };
 
 
+
     const handleFileUpload = async (info: any, questionKey: string,principleKey:string) => {
         const { file } = info;
 
@@ -337,10 +339,13 @@ else{
             formData.append('questionKey', questionKey);
             formData.append('principleKey',principleKey );
 
-            const response = await fetch('http://127.0.0.1:1000/extract/', {
+
+            const response = await fetch('http://192.168.2.27:1000/extract/', {
                 method: 'POST',
                 body: formData,
             });
+
+
             if (!response.ok) {
                 const errorText = await response.text();
                 console.error("Server responded with error:", errorText);
@@ -353,14 +358,14 @@ else{
             const responseText =data.response;
             console.log("Raw response text:", responseText);
 
-
-
             // Try to parse it as JSON
             let responseData;
             try {
                 responseData =responseText;
-//                 responseData = JSON.parse(responseText);
-//                 console.log("Parsed response data:", responseData);
+
+
+
+
             } catch (jsonError) {
                 console.error("Failed to parse JSON:", jsonError);
                 // If parsing fails, check if it's a simple string response
@@ -397,28 +402,12 @@ setRdata(extractQA(responseData))
 
             
 
-
-            const extractQA = (data: any): { [key: string]: any } => {
-                const result: { [key: string]: any } = {};
-                data?.data?.parts?.forEach((part: any) => {
-                    part?.questions?.forEach((q: any) => {
-                        result[q.question] = q.questionAnswer;
-                    });
-                });
-                return result;
-            };
-            setRdata(extractQA(responseData))
-
-
-            console.log("resdata", rdata)
-
             // Ensure we have some data structure to work with
             if (!responseData) {
                 throw new Error("No data received from server");
             }
             // Flexible response validation - handle both direct array and {data: array} formats
             const responseDataToProcess = responseData.data || responseData;
-            // console.log("sclksmckl",responseDataToProcess)
             if (!responseDataToProcess) {
                 throw new Error("Response does not contain processable data");
             }
@@ -435,6 +424,7 @@ setRdata(extractQA(responseData))
                 Array.isArray(responseDataToProcess) ?
                     responseDataToProcess :
                     [responseDataToProcess]
+                
             );
 
 
@@ -604,8 +594,6 @@ setRdata(extractQA(responseData))
                 return answers;
             }
         }
-        // console.log("363",apiData)
-
 
         try {
             apiData.forEach((section: any) => {
@@ -619,10 +607,7 @@ setRdata(extractQA(responseData))
                     const partConfig = partsMap[partNo];
                     if (!partConfig || !part.questions || !partConfig.questionMap) return;
                     const { category, questionMap } = partConfig;
-                    // console.log("imsmkdjs",category)
-                    // console.log("shcbsjkc",questionMap)
                     const categoryConfig = allCategories.find(c => c.key === category);
-                    // console.log("jjnismcs",categoryConfig)
                     if (!categoryConfig) return;
 
                     part.questions.forEach((apiQuestion: any) => {
@@ -684,60 +669,6 @@ setRdata(extractQA(responseData))
     function isTableQuestion(question: Question): question is TableQuestion {
         return question.type === 'table';
     }
-
-
-<!--     const handleSubmitAll = (item: any) => {
-        setTrust(item?.isTrusted);
-        setSubmittedAnswers((prev) => ({
-            ...prev,
-            [item]: true,
-        }));
-
-        let anyAnswered = false;
-        const currentCategory = allCategories.find((cat) => cat.key === activeCategory);
-
-        if (currentCategory) {
-            const answeredData: any = [];
-
-            currentCategory.questions.forEach((section: any) => {
-                let answered = 0;
-                const total = section.question.length;
-                section.question.forEach((_: any, questionIndex: any) => {
-                    const questionKey = `${activeCategory}_${section.key}_${questionIndex}`;
-                    const subobj: Record<string, string> = {};
-                    if (answers[questionKey]) {
-                        console.log("question", section.question)
-                        console.log("sslkmsk", questionKey)
-                        console.log("sslkmsk", answers[questionKey])
-                        answered += 1;
-                        anyAnswered = true;
-                    }
-                });
-
-                const questionsAnswer = `${answered}/${total}`;
-                const percentComplete = total > 0 ? Math.round((answered / total) * 100) : 0;
-
-                section.questionsAnswer = questionsAnswer;
-                section.percentComplete = percentComplete;
-
-                answeredData.push({
-                    sectionKey: section.key,
-                    questionsAnswer,
-                    percentComplete,
-                });
-            });
-
-            localStorage.setItem(`${activeCategory}-answeredData`, JSON.stringify(answeredData));
-
-            if (!anyAnswered) {
-                message.warning("Please answer at least one question before submitting.");
-            } else {
-                console.log("tttt", anyAnswered)
-                message.success("Submitted successfully!");
-                setShowQuestions(false);
-            }
-        }
-    }; -->
 
     const loadAnsweredData = (categoryKey: string, questions: any[]) => {
         const storedData = localStorage.getItem(`${categoryKey}-answeredData`);
@@ -803,7 +734,6 @@ setRdata(extractQA(responseData))
     const generateQuestion = (text: string): string => {
     return text;
 };
-
 
     const cleanAnswerKeys = (answers: { [key: string]: any }) => {
         const cleaned: { [key: string]: any } = {};
@@ -888,7 +818,6 @@ setRdata(extractQA(responseData))
 
         const getQuestionNumber = () => {
             if (question.parent) {
-                // console.log("kjjkjjj",question.parent)
                 let parentCount = 0;
                 for (let i = 0; i <= questionIndex; i++) {
                     if (questionsArray[i].parent) {
@@ -912,10 +841,9 @@ setRdata(extractQA(responseData))
                 return `${alphabet}.`;
             }
         };
+
         const questionKey = generateQuestionKey(section, key, questionIndex);
-        // console.log("133",questionKey)
         const answerValue = answers[questionKey];
-        // console.log("ans",answerValue)
         const isFileUploaded = !!uploadedFiles[questionKey];
         const isAnswered = !!answers[questionKey];
         if (isViewMode && !isAnswered) {
@@ -925,10 +853,10 @@ setRdata(extractQA(responseData))
 
 
         if (question?.type === 'table') {
+
+
         return (
             <div>
-            return (
-                <div>
                     <div className="question-text">
                         <div>{qusSection}. {getQuestionNumber()} {question.text}
 
@@ -955,13 +883,8 @@ setRdata(extractQA(responseData))
                             columns={question.columns}
                             rows={question.rows}
                             header={"S.No"}
-
                             onChange={(value: any) => HandleInputChange(section, key, value, questionIndex,putdata,question.text)}
                             value={Array.isArray(answerValue) ||editfindanswertable(putdata,question.text) ||[]}/>
-<!--                        value={Array.isArray(answerValue) ? answerValue : []}
-                            onChange={(value: any) => handleInputChange(section, key, value, questionIndex, question.text)} -->
-                        />
-
                     </div>
                             {/* value={Array.isArray(answerValue) ? answerValue : []} */}
                     </div>
@@ -978,7 +901,6 @@ setRdata(extractQA(responseData))
 
         return (
             <div>
-
                 <div className="question-text">
                     <div>{qusSection}. {getQuestionNumber()} {question.text}
                         {question.isMandatory && <span className="mandatory-asterisk">*</span>}
@@ -1027,7 +949,6 @@ setRdata(extractQA(responseData))
                             value={Array.isArray(answerValue) ? answerValue : []}
                             // value={Array.isArray(answerValue) ||editfindanswertable(putdata,question.text) ||[]}
                             />
-
                     ) : (
                         <div className="question-options">
                             {question.choices.map((option) => (
@@ -1036,7 +957,7 @@ setRdata(extractQA(responseData))
                                         <Radio
                                             value={option}
                                             checked={answerValue === option}
-                                             onChange={(e) => HandleInputChange(section, key, e.target.value, questionIndex,putdata,question.text)}
+                                onChange={(e) => HandleInputChange(section, key, e.target.value, questionIndex,putdata,question.text)}
                                         >
                                             {option}
                                         </Radio>
@@ -1056,27 +977,19 @@ setRdata(extractQA(responseData))
     const questions: any = currentCategory?.questions[currentSectionIndex];
 
     const countNonEmptyAnswers = () => {
-        let answered = 0;
-        const currentCategory = allCategories.find(cat => cat.key === activeCategory);
-
-        if (currentCategory && currentSectionIndex < currentCategory.questions.length) {
-            const section = currentCategory.questions[currentSectionIndex];
-            section.question.forEach((_, questionIndex) => {
-                const questionKey = `${activeCategory}_${section.key}_${questionIndex}`;
+        let nonEmptyCount = 0;
+        if (currentCategory) {
+            currentCategory.questions[currentSectionIndex]?.question.forEach((_, questionIndex) => {
+                const questionKey = `${activeCategory}_${questions.key}_${questionIndex} `;
                 if (answers[questionKey]) {
-                    answered++;
+                    nonEmptyCount += 1;
                 }
             });
         }
 
-        return answered;
+        return nonEmptyCount;
     };
 
-    const totalInSection = currentCategory?.questions[currentSectionIndex]?.question.length || 0;
-    const sectionProgressPercent = totalInSection > 0
-        ? Math.round((countNonEmptyAnswers() / totalInSection) * 100)
-        : 0;
-    setSectionProgressPercentage(sectionProgressPercent)
     const totalTextAreasInSection = questions?.question.length || 0;
 
     useEffect(() => {
@@ -1179,6 +1092,7 @@ setRdata(extractQA(responseData))
                                 />
                             </div>
                         </div >
+                        
                     </Card >
 
                 </div >

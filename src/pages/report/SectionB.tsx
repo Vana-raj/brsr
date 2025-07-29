@@ -5,7 +5,6 @@ import CustomButton from "../../component/buttons/CustomButton";
 import { allCategories2 } from "../../utils/Options2";
 import { primaryColor } from '../../style/ColorCode';
 import SelectDropDown from "../../component/select/SelectDropDown";
-// import TableInput from "../../component/InputTable/InputTable";
 import TableInput from "../../component/InputTable/InputTable2";
 import Loader from "../../component/loader/Loader";
 import "../questionnaire/Questionnaire.scss"
@@ -96,12 +95,11 @@ interface ApiResponse {
 interface SectionBProps {
   putdata: Category[];
   selectedindex:string;
-  editOnly:boolean;
-  setSectionBProgressPercentage: (percentage: number) => void;
+  editOnly:boolean
 }
 
 
-const SectionB: React.FC<SectionBProps> = ({ putdata,selectedindex,editOnly,setSectionBProgressPercentage}) => {
+const SectionB: React.FC<SectionBProps> = ({ putdata,selectedindex,editOnly}) => {
     const [activeCategory, setActiveCategory] = useState<string>("policy");
     const [showQuestions, setShowQuestions] = useState<boolean>(false);
     const [answers, setAnswers] = useState<{ [key: string]: any }>({});
@@ -208,7 +206,7 @@ indexName:selectedindex
 };
 
 console.log("This is if bodydata",bodyData)
-  const response = await fetch(`http://127.0.0.1:1000/edit_pdf_report_put`, {
+  const response = await fetch(`http://192.168.2.27:1000/edit_pdf_report_put`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -240,7 +238,7 @@ else{
     brsrfilename:brsrFilename
 };
     console.log(bodyData)
-    const response = await fetch('http://127.0.0.1:1000/submit/', {
+    const response = await fetch('http://192.168.2.27:1000/submit/', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',
@@ -273,7 +271,7 @@ else{
 
 // async function Download_pdf() {
 //   try {
-//     const response = await fetch("http://127.0.0.1:1000/download_pdf/", {
+//     const response = await fetch("http://192.168.2.27:1000/download_pdf/", {
 //       method: "GET",
 //       headers: {
 //         "Content-Type": "application/json",
@@ -309,7 +307,7 @@ else{
 
 
             console.log("Sending request to server...");
-            const response = await fetch('http://127.0.0.1:1000/extract/', {
+            const response = await fetch('http://192.168.2.27:1000/extract/', {
                 method: 'POST',
                 body: formData,
             });

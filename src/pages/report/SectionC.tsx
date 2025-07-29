@@ -63,7 +63,7 @@ interface ApiResponse {
     data: ApiSection[];
 }
 interface SectionCProps { setSectionCProgressPercentage: (percentage: number) => void; }
-const SectionC: React.FC<SectionCProps> = ({setSectionCProgressPercentage) => {
+const SectionC: React.FC<SectionCProps> = ({setSectionCProgressPercentage}) => {
     const [sections, setSections] = useState<number>(0);
 
     const [activeCategory, setActiveCategory] = useState<string>("business");
@@ -497,7 +497,7 @@ const handlePost = async () => {
       sectionfind: "section_c"  // Replace with your actual section identifier
     };
 
-      const response = await fetch('http://127.0.0.1:1000/submit', {
+      const response = await fetch('http://192.168.2.27:1000/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -543,7 +543,7 @@ const handlePost = async () => {
             formData.append('principleKey',principleKey );
 
 
-            const response = await fetch('http://127.0.0.1:1000/extract/', {
+            const response = await fetch('http://192.168.2.27:1000/extract/', {
                 method: 'POST',
                 body: formData,
             });

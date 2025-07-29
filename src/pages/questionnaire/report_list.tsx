@@ -39,10 +39,9 @@ function transformColumnsToRows(data: ColumnData): RowData {
 
 
 
-// Report_list.js
 export async function fetchReportList() {
   try {
-    const response = await fetch("http://127.0.0.1:1000/report_list/", {
+    const response = await fetch("http://192.168.2.27:1000/report_list/", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
