@@ -224,7 +224,6 @@ export const allCategories = [
             "Male % (B / A)",
             "Female No. (C)",
             "Female % (C / A)"
-
             ],
             isMandator: true,
             rows: [

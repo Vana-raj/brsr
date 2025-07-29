@@ -12,10 +12,14 @@ import MeterCard from '../../component/cards/MeterCard';
 import CircularChart from '../../component/circlepercentagechart/CircleChart';
 import SectionB from './SectionB';
 import SectionC from './SectionC';
-import { fetchReportList } from '../questionnaire/report_list';
+import { fetchReportList } from '../questionnaire/reportActions';
 import Questionnaire from '../questionnaire/Questionnaire';
+import QuestionnaireWrapper from '../questionnaire/QuestionnaireWrapper';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Report: React.FC = () => {
+    const { mode, section } = useParams();
+  
   const [selectedIndex, setSelectedIndex] = useState<string>("");
   const columns = [
     {
@@ -49,7 +53,6 @@ const Report: React.FC = () => {
           showInfo={true}
           strokeColor={progress >= 100 ? '#52c41a' : primaryColor}
           strokeWidth={15}
-          // size={15}
         />
       )
     },
@@ -78,15 +81,15 @@ const Report: React.FC = () => {
                 <UnorderedListOutlined className="list-icon" />
                 <div>View details</div>
               </div>
-              <div className="menu-item" role="button" onClick={()=>edit_pdf_report(index)}>
+              <div className="menu-item" role="button" onClick={()=>handleEdit(index)}>
                 <EditOutlined className="edit-icon" />
                 <div>Edit item</div>
               </div>
-              <div className="menu-item" role="button" onClick={()=>delete_pdf_report(index)}>
+              <div className="menu-item" role="button" onClick={()=>handleDelete(index)}>
                 <DeleteOutlined className="delete-icon" />
                 <div>Delete item </div>
               </div>
-              <div className="menu-item" role="button" onClick={() => download_pdf_report(index)}>
+              <div className="menu-item" role="button" onClick={() => handlePdf(index)}>
                 <DownloadOutlined className="delete-icon" />
                 <div>Download pdf</div>
               </div>
@@ -97,7 +100,6 @@ const Report: React.FC = () => {
           <div className="action-menu">
             <span
               className="three-dot-menu"
-            // onClick={() => handleMenuClick(record.key)}
             >
               •••
             </span>
@@ -108,21 +110,15 @@ const Report: React.FC = () => {
   ];
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [isReport, setIsReport] = useState<boolean>(false);
   const [addData, setAddData] = useState<any>("section_a");
+  const [singledata, setSingleData] = useState<any>(null);
+  
   const [sectionProgressPercentage, setSectionProgressPercentage] = useState<number>(0);
   const [sectionBProgressPercentage, setSectionBProgressPercentage] = useState<number>(0);
   const [sectionCProgressPercentage, setSectionCProgressPercentage] = useState<number>(0);
-
-  const [compliantPercentage, setCompliantPercentage] = useState<number>(0);
-  const [nonCompliantPercentage, setNonCompliantPercentage] = useState<number>(0);
-  const [dataarr,setDataarr]=useState([]);
-  const [filename,setFilename]=useState<any>();
   const [editonlyState, setEditonlyState] = useState<boolean>(false);
-
-
-
-const edit_pdf_report = async (index:any) => {
+const navigate = useNavigate();
+const handleEdit = async (index:any) => {
   try {
     const response = await fetch(`http://192.168.2.27:1000/edit_pdf_report_get/${encodeURIComponent(index.name)}`, {
       method: "GET",
@@ -132,31 +128,29 @@ const edit_pdf_report = async (index:any) => {
       
       
     });
-    console.log("huhuhuhuh")
     setSelectedIndex(index.name)
-    setEditonlyState(true)
+    setEditonlyState(mode === 'edit' ? true : false);
     if (!response.ok) {
       throw new Error(`HTTP Status: ${response.status}`);
     }
     const data = await response.json();
-    // message.success(`${data.table} downloaded successfully!`);
-    setAddData(data.section)
-    setDataarr(data.data)
-    handleReport(true)
-
+   setSelectedIndex(index.name);
+     setEditonlyState(mode === 'edit' ? true : false);
+  setAddData(data.section);
+  setSingleData(data)
+  navigate(`/reports/questionnaire/edit/${data.section}`);
   } catch (error) {
     console.error("Fetch error:", error);
   }
 };
 
-const delete_pdf_report=async (index:any)=>{
+const handleDelete=async (index:any)=>{
   try {
     const response = await fetch(`http://192.168.2.27:1000/delete_pdf_report/${encodeURIComponent(index.name)}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-      
       
     });
     if (!response.ok) {
@@ -171,9 +165,9 @@ const delete_pdf_report=async (index:any)=>{
 
 };
 
+console.log(singledata,'singledata')
 
-
-const download_pdf_report = async (index: any) => {
+const handlePdf = async (index: any) => {
 
   try {
     const response = await fetch(`http://192.168.2.27:1000/download_pdf_report/${encodeURIComponent(index.name)}`, {
@@ -183,10 +177,8 @@ const download_pdf_report = async (index: any) => {
     if (!response.ok) {
       throw new Error(`HTTP Status: ${response.status}`);
     }
-    // Get the PDF blob
     const blob = await response.blob();
 
-    // Extract filename from Content-Disposition header
     const contentDisposition = response.headers.get("Content-Disposition");
     let fileName = index.name+".pdf";
     if (contentDisposition) {
@@ -196,7 +188,6 @@ const download_pdf_report = async (index: any) => {
       }
     }
 
-    // Create a blob link and click it to trigger download
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -215,9 +206,10 @@ const download_pdf_report = async (index: any) => {
 
   
 
-  const handleAddData = (sectionType: string) => [
-    setAddData(sectionType)
-  ]
+ const handleAddData = (sectionType: string) => {
+  setAddData(sectionType);
+  navigate(`/reports/questionnaire/add/${sectionType}`);
+};
   const handleImport = () => {
     const input = document.createElement("input");
     input.type = "file";
@@ -255,21 +247,19 @@ const download_pdf_report = async (index: any) => {
   };
 
 
-  useEffect(() => {
+useEffect(() => {
   const loadReportData = async () => {
     try {
-      const reportData = await fetchReportList(); // your FastAPI call
+      const reportData = await fetchReportList();
       if (reportData) {
-        setData(reportData);
-        setLoading(false);
+        setData(reportData?.rows);
       } else {
-        console.error('Error fetching the data:')
-        setLoading(false);
-
+        console.error('No data received');
       }
     } catch (error) {
-      console.error("Error fetching report list:", error);
-      setLoading(true); // optionally set to false if you want to show error instead of loader
+      console.error("Unexpected error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -278,43 +268,42 @@ const download_pdf_report = async (index: any) => {
 
 
 
-
-  const handleReport = (item: boolean) => {
-    setIsReport(item)
+  const handleReport = (item: string) => {
+  navigate(`/reports/questionnaire/add/${item}`);
+  }
+  const handleback = () => {
+  navigate(`/reports`);
   }
 
   if (loading) {
     return <Loader />;
   }
-  console.log(sectionProgressPercentage, 'progressPercent')
 
   return (
     <div className='main-report'>
-
-      {!isReport &&
+      {!section &&
         <div className='rpt-btn'>
           <CustomButton
-            label={'Add New Reports'} onClick={() => handleReport(true)} type="primary" icon={<PlusOutlined />} disabled={false}
+            label={'Add New Reports'} onClick={() => handleReport("section_a")} type="primary" icon={<PlusOutlined />} disabled={false}
           />
         </div>
-        
       }
 
-      {!isReport &&
+      {!section &&
         <div className='report-table'>
           <CustomTable
             title="Report List"
             columns={columns}
-            data={data?.rows}
+            data={data?.reports}
             bordered={false}
             pagination={true}
           />
         </div>
       }
-      {isReport &&
+      {section &&
         <div className="section-container">
           <div className="progress-header">
-            <div className='back-btn' onClick={() => handleReport(false)}>
+            <div className='back-btn' onClick={() => handleback()}>
               <ArrowLeftOutlined color='' />
               <div>BRSR 2025</div>
             </div>
@@ -334,8 +323,6 @@ const download_pdf_report = async (index: any) => {
                   status="active"
                   showInfo={false}
                   strokeColor="#1890ff"
-                  // size={10}
-                  width={100}
                 />
                 <div className="add-data-btn">
                   <CustomButton
@@ -360,8 +347,6 @@ const download_pdf_report = async (index: any) => {
                   status="active"
                   showInfo={false}
                   strokeColor="#1890ff"
-                  // size={10}
-                  width={100}
                 />
                 <div className="add-data-btn">
                   <CustomButton
@@ -386,8 +371,6 @@ const download_pdf_report = async (index: any) => {
                   status="active"
                   showInfo={false}
                   strokeColor="#1890ff"
-                  // size={10}
-                  width={100}
                 />
                 <div className="add-data-btn">
                   <CustomButton
@@ -399,16 +382,15 @@ const download_pdf_report = async (index: any) => {
                 </div>
               </div>
 
-
             </div>
             <div className="progress-cards">
               <div className='progress-card'>
                 <div>
                   <CircularChart
-                    percentageCompleted={nonCompliantPercentage || 60}
-                    percentageRemaining={compliantPercentage || 40}
+                    percentageCompleted={sectionProgressPercentage || 60}
+                    percentageRemaining={sectionBProgressPercentage || 40}
+                    percentageMiddle={sectionCProgressPercentage || 50}
                     type={''}
-                  // score={''}
                   />
                 </div>
                 <div>
@@ -424,23 +406,11 @@ const download_pdf_report = async (index: any) => {
                     <div className="third-box"></div>
                     <span className="legend-box-compliant"></span>Section C <span className='second-percentage '>{sectionCProgressPercentage}% </span>
                   </div>
-
                 </div>
-
               </div>
             </div>
           </div>
-          
-          {addData === "section_a" &&
-            <Questionnaire putdata={dataarr} selectedindex={selectedIndex} editOnly={editonlyState} setSectionProgressPercentage={setSectionProgressPercentage}/>
-          }
-          {addData === "section_b" &&
-            <SectionB putdata={dataarr} selectedindex={selectedIndex} editOnly={editonlyState} />
-          }
-          {addData === "section_c" &&
-            <SectionC setSectionCProgressPercentage={setSectionCProgressPercentage} />
-          }
-
+           <QuestionnaireWrapper addData={addData} putdata={[]} selectedindex={selectedIndex} editOnly={editonlyState} setSectionProgressPercentage={setSectionProgressPercentage} setSectionBProgressPercentage={setSectionBProgressPercentage} setSectionCProgressPercentage={setSectionCProgressPercentage} />
         </div>
       }
       

@@ -106,6 +106,7 @@ const MeterCard: React.FC<MeterCardProps> = ({
               <CircularChart
                 percentageCompleted={nonCompliantPercentage || 0}
                 percentageRemaining={record?.riskScore || compliantPercentage}
+                percentageMiddle={0}
                 type={type}
                 score={record?.riskScore}
               />

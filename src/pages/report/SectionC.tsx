@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { ArrowLeftOutlined, BoldOutlined, CheckOutlined, CopyTwoTone, DeleteOutlined, FileAddTwoTone } from "@ant-design/icons";
-import { Card, Input, List, Modal, Progress, Space, Table, Tooltip, Upload, message,Radio ,Form} from "antd";
+import { CheckOutlined, CopyTwoTone, FileAddTwoTone } from "@ant-design/icons";
+import { Card, Input, List, Progress, Space, Tooltip, Upload, message,Radio} from "antd";
 import CustomButton from "../../component/buttons/CustomButton";
 import { allCategories3 } from "../../utils/Options3";
 import { primaryColor } from '../../style/ColorCode';
@@ -8,60 +8,10 @@ import SelectDropDown from "../../component/select/SelectDropDown";
 import TableInput from "../../component/InputTable/InputTable";
 import Loader from "../../component/loader/Loader";
 import "../questionnaire/Questionnaire.scss"
-import { info } from "sass";
 
 
 const { TextArea } = Input;
 
-interface BaseQuestion {
-    text: string;
-    choices: string[] | null;
-    isMandatory: boolean;
-    parent?: boolean;
-    isNone?: boolean;
-    label?: string;
-}
-
-interface TableQuestion extends BaseQuestion {
-    type: "table";
-    columns: string[];
-    rows: string[];
-}
-
-interface TextQuestion extends BaseQuestion {
-    type?: undefined;
-    choices: null;
-}
-
-interface ChoiceQuestion extends BaseQuestion {
-    type?: undefined;
-    choices: string[];
-}
-
-type Question = TableQuestion | TextQuestion | ChoiceQuestion;
-
-interface ApiQuestion {
-    questionNo: string;
-    question: string;
-    questionOptions: Array<{ option: string; value: any }>;
-    questionAnswer: string | null;
-}
-
-interface ApiPart {
-    partNo: string;
-    subtitle: string;
-    questions: ApiQuestion[];
-}
-
-interface ApiSection {
-    title: string;
-    section: string;
-    parts: ApiPart[];
-}
-
-interface ApiResponse {
-    data: ApiSection[];
-}
 interface SectionCProps { setSectionCProgressPercentage: (percentage: number) => void; }
 const SectionC: React.FC<SectionCProps> = ({setSectionCProgressPercentage}) => {
     const [sections, setSections] = useState<number>(0);
@@ -84,7 +34,6 @@ const SectionC: React.FC<SectionCProps> = ({setSectionCProgressPercentage}) => {
     const [rdata,setRdata]= useState<{ [key: string]: any }>({}); 
     const [gm, setGm] = useState<any>(null);
     const [pdf, setPdf] = useState<File | null>(null);
-    const [selectedId, setSelectedId] = useState<number | null>(null);
 
 
 
@@ -1009,30 +958,43 @@ const cleanAnswerKeys = (answers: { [key: string]: any }) => {
     const currentCategory = allCategories3.find((cat) => cat.key === activeCategory);
     const questions: any = currentCategory?.questions[currentSectionIndex];
 
-    const countNonEmptyAnswers = () => {
-        let nonEmptyCount = 0;
-        if (currentCategory) {
-            currentCategory.questions[currentSectionIndex]?.question.forEach((_, questionIndex) => {
-                const questionKey = `${activeCategory}-${questions.key}-${questionIndex} `;
-                if (answers[questionKey]) {
-                    nonEmptyCount += 1;
-                }
-            });
-        }
+ const countNonEmptyAnswers = () => {
+     let answered = 0;
+ 
+     allCategories3.forEach(category => {
+         const section = category.questions[currentSectionIndex];
+         if (section) {
+             section.question.forEach((_, questionIndex) => {
+                 const questionKey = `${category.key}_${section.key}_${questionIndex}`;
+                 if (answers[questionKey]) {
+                     answered++;
+                 }
+             });
+         }
+     });
+ 
+     return answered;
+ };
+ 
+ const totalTextAreasInSection = allCategories3.reduce((total, category) => {
+     const section = category.questions[currentSectionIndex];
+     return section ? total + section.question.length : total;
+ }, 0);
+ 
+    const sectionProgressPercent = totalTextAreasInSection > 0
+     ? Math.round((countNonEmptyAnswers() / totalTextAreasInSection) * 100)
+     : 0;
+ 
+         const totalInSection = currentCategory?.questions[currentSectionIndex]?.question.length || 0;
+     const sectionCProgressPercentage = totalInSection > 0
+         ? Math.round((countNonEmptyAnswers() / totalInSection) * 100)
+         : 0;
+ setSectionCProgressPercentage(sectionProgressPercent);
+  const totaloneTextAreasInSection = questions?.question.length || 0;
+     useEffect(() => {
+         setsingleSectionTextArea(totaloneTextAreasInSection);
+     }, [totaloneTextAreasInSection, questions]);
 
-        return nonEmptyCount;
-    };
-
-    const totalTextAreasInSection = questions?.question.length || 0;
-
-    useEffect(() => {
-        setsingleSectionTextArea(totalTextAreasInSection);
-    }, [totalTextAreasInSection, questions]);
-
-
-    const progressPercent = singleSectionTextArea > 0
-        ? Math.round((countNonEmptyAnswers() / singleSectionTextArea) * 100)
-        : 0;
 
     return (
         <div className="questionnaire-main">
@@ -1096,7 +1058,7 @@ const cleanAnswerKeys = (answers: { [key: string]: any }) => {
                                 </Tooltip>
                                 <Progress
                                     type="circle"
-                                    percent={progressPercent}
+                                    percent={sectionCProgressPercentage}
                                     width={50}
                                     strokeColor={primaryColor}
                                     format={() => `${countNonEmptyAnswers()}/${singleSectionTextArea}`

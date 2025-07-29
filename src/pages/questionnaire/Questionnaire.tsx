@@ -339,7 +339,6 @@ else{
             formData.append('questionKey', questionKey);
             formData.append('principleKey',principleKey );
 
-
             const response = await fetch('http://192.168.2.27:1000/extract/', {
                 method: 'POST',
                 body: formData,
@@ -884,9 +883,10 @@ setRdata(extractQA(responseData))
                             rows={question.rows}
                             header={"S.No"}
                             onChange={(value: any) => HandleInputChange(section, key, value, questionIndex,putdata,question.text)}
-                            value={Array.isArray(answerValue) ||editfindanswertable(putdata,question.text) ||[]}/>
+                            // value={Array.isArray(answerValue) ||editfindanswertable(putdata,question.text) ||[]}
+                            value={Array.isArray(answerValue) ? answerValue : []}
+                            />
                     </div>
-                            {/* value={Array.isArray(answerValue) ? answerValue : []} */}
                     </div>
                      );
         }
@@ -976,30 +976,44 @@ setRdata(extractQA(responseData))
 
     const questions: any = currentCategory?.questions[currentSectionIndex];
 
-    const countNonEmptyAnswers = () => {
-        let nonEmptyCount = 0;
-        if (currentCategory) {
-            currentCategory.questions[currentSectionIndex]?.question.forEach((_, questionIndex) => {
-                const questionKey = `${activeCategory}_${questions.key}_${questionIndex} `;
+const countNonEmptyAnswers = () => {
+    let answered = 0;
+
+    allCategories.forEach(category => {
+        const section = category.questions[currentSectionIndex];
+        if (section) {
+            section.question.forEach((_, questionIndex) => {
+                const questionKey = `${category.key}_${section.key}_${questionIndex}`;
                 if (answers[questionKey]) {
-                    nonEmptyCount += 1;
+                    answered++;
                 }
             });
         }
+    });
 
-        return nonEmptyCount;
-    };
+    return answered;
+};
 
-    const totalTextAreasInSection = questions?.question.length || 0;
+const totalTextAreasInSection = allCategories.reduce((total, category) => {
+    const section = category.questions[currentSectionIndex];
+    return section ? total + section.question.length : total;
+}, 0);
 
-    useEffect(() => {
-        setsingleSectionTextArea(totalTextAreasInSection);
-    }, [totalTextAreasInSection, questions]);
+   const sectionProgressPercent = totalTextAreasInSection > 0
+    ? Math.round((countNonEmptyAnswers() / totalTextAreasInSection) * 100)
+    : 0;
 
-
-    const progressPercent = singleSectionTextArea > 0
-        ? Math.round((countNonEmptyAnswers() / singleSectionTextArea) * 100)
+        const totalInSection = currentCategory?.questions[currentSectionIndex]?.question.length || 0;
+    const sectionProgressPercentage = totalInSection > 0
+        ? Math.round((countNonEmptyAnswers() / totalInSection) * 100)
         : 0;
+setSectionProgressPercentage(sectionProgressPercent);
+ const totaloneTextAreasInSection = questions?.question.length || 0;
+    useEffect(() => {
+        setsingleSectionTextArea(totaloneTextAreasInSection);
+    }, [totaloneTextAreasInSection, questions]);
+
+
     return (
         <div className="questionnaire-main">
             {loading && (
@@ -1060,7 +1074,7 @@ setRdata(extractQA(responseData))
                                 </Tooltip>
                                 <Progress
                                     type="circle"
-                                    percent={progressPercent}
+                                    percent={sectionProgressPercentage}
                                     size={50}
                                     strokeColor={primaryColor}
                                     format={() => `${countNonEmptyAnswers()}/${singleSectionTextArea}`

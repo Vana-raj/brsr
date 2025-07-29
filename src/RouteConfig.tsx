@@ -18,10 +18,10 @@ import StrategyRoadMap from "./pages/supplierdetails/supplierstrategy/StrategyRo
 import Questionnaire from "./pages/questionnaire/Questionnaire";
 import CompanyDetailsForm from "./pages/form/FormPage";
 import SupplierManage from "./pages/supplier/SupplierManage";
-import Login from "./pages/login/Login";
 import UserManagement from "./pages/usermanagement/UserManagement";
 import UserCreation from "./pages/usercreation/UserCreation";
 import LandingPage from "./pages/landingpage/LandingPage";
+import QuestionnaireWrapper from "./pages/questionnaire/QuestionnaireWrapper";
 // import ProtectedRoute from "./ProdectedRoute";
 
 const RouterConfig = createBrowserRouter([
@@ -51,13 +51,26 @@ const RouterConfig = createBrowserRouter([
                     <UserCreation />
                 // </ProtectedRoute>
             },
-            {
-                path: 'reports',
-                element:
-                    // <ProtectedRoute>
-                    <Report />
-                // </ProtectedRoute>,
-            },
+           {
+  path: 'reports',
+  element: <Report />, 
+  children: [
+    {
+      path: 'questionnaire/:mode/:section',
+      element: (
+        <QuestionnaireWrapper
+          addData={() => {}}
+          putdata={[]}
+          selectedindex={""}
+          editOnly={false}
+          setSectionProgressPercentage={() => {}}
+            setSectionBProgressPercentage={() => {}}
+            setSectionCProgressPercentage={() => {}}
+        />
+      )
+    }
+  ]
+},
             {
                 path: 'quality',
                 element:

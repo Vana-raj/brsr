@@ -8,7 +8,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 interface CircularChartProps {
   percentageCompleted: number;
   percentageRemaining: number;
-  percentageMiddle?: number;
+  percentageMiddle: number;
   type?: string;
   score?: number;
 }
@@ -16,7 +16,7 @@ interface CircularChartProps {
 const CircularChart: React.FC<CircularChartProps> = ({
   percentageCompleted,
   percentageRemaining,
-  percentageMiddle = 50,
+  percentageMiddle,
   type,
   score,
 }) => {
@@ -58,7 +58,7 @@ const CircularChart: React.FC<CircularChartProps> = ({
   const chartData = {
     datasets: [
       {
-        data: [percentageRemaining, 100 - percentageRemaining],
+        data: [percentageCompleted, 100 - percentageCompleted],
         backgroundColor: getBackgroundColor(percentageRemaining, type || ''),
         borderColor: '#ffffff',
         borderWidth: 2,
@@ -66,7 +66,7 @@ const CircularChart: React.FC<CircularChartProps> = ({
         weight: 3,
       },
       {
-        data: [percentageMiddle, 100 - percentageMiddle],
+        data: [percentageRemaining, 100 - percentageRemaining],
         backgroundColor: ["#0058EA", "#ffff"],
         borderColor: '#ffffff',
         borderWidth: 2,
@@ -74,7 +74,7 @@ const CircularChart: React.FC<CircularChartProps> = ({
         weight: 3,
       },
       {
-        data: [percentageCompleted, 100 - percentageCompleted],
+        data: [percentageMiddle, 100 - percentageMiddle],
         backgroundColor: ["#ec70b4", "#ffff"],
         borderColor: '#ffffff',
         borderWidth: 2,

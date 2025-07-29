@@ -95,11 +95,12 @@ interface ApiResponse {
 interface SectionBProps {
   putdata: Category[];
   selectedindex:string;
-  editOnly:boolean
+  editOnly:boolean;
+  setSectionBProgressPercentage: (percentage: number) => void;
 }
 
 
-const SectionB: React.FC<SectionBProps> = ({ putdata,selectedindex,editOnly}) => {
+const SectionB: React.FC<SectionBProps> = ({ putdata,selectedindex,editOnly,setSectionBProgressPercentage}) => {
     const [activeCategory, setActiveCategory] = useState<string>("policy");
     const [showQuestions, setShowQuestions] = useState<boolean>(false);
     const [answers, setAnswers] = useState<{ [key: string]: any }>({});
@@ -927,29 +928,42 @@ const currentCategory = allCategories2.find((cat) => cat.key === activeCategory)
 const questions: any = currentCategory?.questions[currentSectionIndex];
 
 const countNonEmptyAnswers = () => {
-    let nonEmptyCount = 0;
-    if (currentCategory) {
-        currentCategory.questions[currentSectionIndex]?.question.forEach((_, questionIndex) => {
-            const questionKey = `${activeCategory}_${questions.key}_${questionIndex} `;
-            if (answers[questionKey]) {
-                nonEmptyCount += 1;
-            }
-        });
-    }
+    let answered = 0;
 
-    return nonEmptyCount;
+    allCategories2.forEach(category => {
+        const section = category.questions[currentSectionIndex];
+        if (section) {
+            section.question.forEach((_, questionIndex) => {
+                const questionKey = `${category.key}_${section.key}_${questionIndex}`;
+                if (answers[questionKey]) {
+                    answered++;
+                }
+            });
+        }
+    });
+
+    return answered;
 };
 
-const totalTextAreasInSection = questions?.question.length || 0;
+const totalTextAreasInSection = allCategories2.reduce((total, category) => {
+    const section = category.questions[currentSectionIndex];
+    return section ? total + section.question.length : total;
+}, 0);
 
-useEffect(() => {
-    setsingleSectionTextArea(totalTextAreasInSection);
-}, [totalTextAreasInSection, questions]);
-
-
-const progressPercent = singleSectionTextArea > 0
-    ? Math.round((countNonEmptyAnswers() / singleSectionTextArea) * 100)
+   const sectionProgressPercent = totalTextAreasInSection > 0
+    ? Math.round((countNonEmptyAnswers() / totalTextAreasInSection) * 100)
     : 0;
+
+        const totalInSection = currentCategory?.questions[currentSectionIndex]?.question.length || 0;
+    const sectionBProgressPercentage = totalInSection > 0
+        ? Math.round((countNonEmptyAnswers() / totalInSection) * 100)
+        : 0;
+setSectionBProgressPercentage(sectionProgressPercent);
+ const totaloneTextAreasInSection = questions?.question.length || 0;
+    useEffect(() => {
+        setsingleSectionTextArea(totaloneTextAreasInSection);
+    }, [totaloneTextAreasInSection, questions]);
+
 return (
     <div className="questionnaire-main">
         {loading && (
@@ -1010,7 +1024,7 @@ return (
                             </Tooltip>
                             <Progress
                                 type="circle"
-                                percent={progressPercent}
+                                percent={sectionBProgressPercentage}
                                 width={50}
                                 strokeColor={primaryColor}
                                 format={() => `${countNonEmptyAnswers()}/${singleSectionTextArea}`
