@@ -38,21 +38,21 @@ const RouterConfig = createBrowserRouter([
         element: <Home />,
         children: [
             {
-                path: 'dashboard',
+                path: 'brsr/dashboard',
                 element:
                     // <ProtectedRoute>
                     <Dashboard />
                 // </ProtectedRoute>
             },
             {
-                path: 'user-creation',
+                path: 'brsr/user-creation',
                 element:
                     // <ProtectedRoute>
                     <UserCreation />
                 // </ProtectedRoute>
             },
            {
-  path: 'reports',
+  path: 'brsr/reports',
   element: <Report />, 
   children: [
     {
@@ -72,35 +72,35 @@ const RouterConfig = createBrowserRouter([
   ]
 },
             {
-                path: 'quality',
+                path: 'brsr/quality',
                 element:
                     // <ProtectedRoute>
                     <Quality />
                 // </ProtectedRoute>,
             },
             {
-                path: 'analytics',
+                path: 'brsr/analytics',
                 element:
                     // <ProtectedRoute>
                     <Analytics />
                 // </ProtectedRoute>,
             },
             {
-                path: 'company',
+                path: 'brsr/company',
                 element:
                     // <ProtectedRoute>
                     <CompanyDetailsForm />
                 // </ProtectedRoute>
             },
             {
-                path: 'profile',
+                path: 'brsr/profile',
                 element:
                     //  <ProtectedRoute>
                     <ProfilePage />
                 // </ProtectedRoute>
             },
             {
-                path: 'questionnaire',
+                path: 'brsr/questionnaire',
                 element: 
                     // <ProtectedRoute>
                     <Questionnaire putdata={[]} selectedindex={""} editOnly={false} setSectionProgressPercentage={(percentage) => {
@@ -110,14 +110,14 @@ const RouterConfig = createBrowserRouter([
                 // </ProtectedRoute>
             },
             {
-                path: 'user-management',
+                path: 'brsr/user-management',
                 element:
                     // <ProtectedRoute>
                     <UserManagement />
                 // </ProtectedRoute>
             },
             {
-                path: 'supplier-management',
+                path: 'brsr/supplier-management',
                 element:
                     // <ProtectedRoute>
                     <SupplierManage />
@@ -126,7 +126,7 @@ const RouterConfig = createBrowserRouter([
         ],
     },
     {
-        path: "supplier/:id",
+        path: "brsr/supplier/:id",
         element:
             // <ProtectedRoute>
             <SupplierDetailsPage />,

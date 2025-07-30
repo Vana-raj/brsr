@@ -24,7 +24,7 @@ const HomeNavbar: React.FC = () => {
                 const address = accounts;
                 setWalletAddress(accounts[0]);
                 localStorage.setItem("walletAddress", address);
-                navigate("/dashboard");
+                navigate("/brsr/dashboard");
             } catch (err) {
                 console.error("User rejected the connection", err);
             }

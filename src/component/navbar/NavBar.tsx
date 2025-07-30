@@ -31,18 +31,18 @@ const NavBar: React.FC = () => {
     const [walletAddress, setWalletAddress] = useState<string | null>(null);
 
     const searchConfig: SearchRoute[] = [
-        { keys: ['dashboard', 'home'], path: '/dashboard' },
-        { keys: ['reports', 'document'], path: '/reports' },
+        { keys: ['dashboard', 'home'], path: '/brsr/dashboard' },
+        { keys: ['reports', 'document'], path: '/brsr/reports' },
         // { keys: ['quality', 'standard'], path: '/quality' },
-        { keys: ['analytics', 'stats'], path: '/analytics' },
-        { keys: ['profile', 'account'], path: '/profile' },
-        { keys: ['supplier', 'vendor'], path: '/supplier-management' },
-        { keys: ['questionnaire', 'survey'], path: '/questionnaire' },
+        { keys: ['analytics', 'stats'], path: '/brsr/analytics' },
+        { keys: ['profile', 'account'], path: '/brsr/profile' },
+        { keys: ['supplier', 'vendor'], path: '/brsr/supplier-management' },
+        { keys: ['questionnaire', 'survey'], path: '/brsr/questionnaire' },
         { keys: ['user', 'management', 'settings', 'role'], path: '/user-creation' },
-        { keys: ['company', 'organization'], path: '/company' },
+        { keys: ['company', 'organization'], path: '/brsr/company' },
         {
             keys: ['supplier details', 'supplier'],
-            path: '/supplier/:id',
+            path: '/brsr/supplier/:id',
             children: [
                 { keys: ['overview', 'overall report'], path: 'overview' },
                 { keys: ['company governance'], path: 'company' },
@@ -111,7 +111,7 @@ const NavBar: React.FC = () => {
         });
 
         if (results.length > 0) {
-            navigate(results[0].path);
+            navigate(results[1].path);
             setSearchQuery('');
         }
     }, [searchQuery, processedRoutes, navigate]);
@@ -151,7 +151,7 @@ const NavBar: React.FC = () => {
     };
 
     useEffect(() => {
-        const path = location.pathname.split('/')[1];
+        const path = location.pathname.split('/')[2];
         setActiveLink(path || 'dashboard');
     }, [location.pathname]);
 
@@ -173,7 +173,7 @@ const NavBar: React.FC = () => {
     const handleLogout = () => {
         disconnectWallet();
         setIsDropdownOpen(!isDropdownOpen);
-        navigate('/');
+        window.location.href = `http://localhost:3001/landing_page`;
         localStorage.removeItem('record');
         localStorage.removeItem('activeTab');
         localStorage.removeItem('totalAnswered');
@@ -184,27 +184,27 @@ const NavBar: React.FC = () => {
 
 
     const goToProfile = () => {
-        navigate('/profile');
+        navigate('/brsr/profile');
     };
 
     const goToQuestionnaire = () => {
-        navigate('/questionnaire');
+        navigate('/brsr/questionnaire');
     };
 
     const goToUserManagement = () => {
-        navigate('/user-creation');
+        navigate('/brsr/user-creation');
     };
 
     const goToCompanyForm = () => {
-        navigate('/company');
+        navigate('/brsr/company');
     };
 
     const goToHomePage = () => {
-        navigate('/dashboard');
+        window.location.href = `http://localhost:3001/landing_page`;
     };
 
     const goToSupplierManagement = () => {
-        navigate('/supplier-management');
+        navigate('/brsr/supplier-management');
     };
 
     const setting = (
@@ -246,10 +246,9 @@ const NavBar: React.FC = () => {
             </div>
         </div>
     );
-
     return (
         <>
-            <div className="navbar">
+            <div className="navbar1">
                 <div className="navbar-logo">
                     <img
                         width={180}
@@ -262,7 +261,7 @@ const NavBar: React.FC = () => {
                     <ul>
                         <li>
                             <Link
-                                to="/dashboard"
+                                to="/brsr/dashboard"
                                 className={activeLink === 'dashboard' ? 'active' : ''}
                                 onClick={() => handleLinkClick('dashboard')}
                             >
@@ -271,7 +270,7 @@ const NavBar: React.FC = () => {
                         </li>
                         <li>
                             <Link
-                                to="/reports"
+                                to="/brsr/reports"
                                 className={activeLink === 'reports' ? 'active' : ''}
                                 onClick={() => handleLinkClick('reports')}
                             >
@@ -281,7 +280,7 @@ const NavBar: React.FC = () => {
 
                         <li>
                             <Link
-                                to="/analytics"
+                                to="/brsr/analytics"
                                 className={activeLink === 'analytics' ? 'active' : ''}
                                 onClick={() => handleLinkClick('analytics')}
                             >

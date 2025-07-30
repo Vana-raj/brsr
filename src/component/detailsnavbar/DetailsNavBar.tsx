@@ -54,7 +54,7 @@ const NavBar: React.FC<NavBarProps> = ({ activeLink, setActiveLink, id, record }
   const goBackToDash = () => {
     localStorage.removeItem("record");
     localStorage.removeItem("activeTab");
-    navigate("/dashboard");
+    navigate("/brsr/dashboard");
   };
 
   const visibleTabs = isMobile ? tabs.slice(0, 3) : tabs.slice(0, 8);

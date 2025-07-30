@@ -9,7 +9,7 @@ body {
     body {
       background-color: $white;
     }
-    .navbar {
+    .navbar1 {
       display: $flex;
       flex-wrap: wrap;
       background: $grey;
@@ -18,7 +18,7 @@ body {
       justify-content: space-between;
       padding: $commonPadding;
     }
-    .navbar ul {
+    .navbar1 ul {
       list-style-type: none;
       margin: 0;
       padding: 0;
@@ -31,7 +31,7 @@ body {
     body {
       background-color: $white;
     }
-    .navbar {
+    .navbar1 {
       display: $flex;
       flex-wrap: wrap;
       background: $grey;
@@ -41,7 +41,7 @@ body {
        padding: $commonPadding;
     }
   
-    .navbar ul {
+    .navbar1 ul {
       list-style-type: none;
       margin: 0;
       padding: 0;
@@ -51,7 +51,7 @@ body {
 
     }
   }
-.navbar {
+.navbar1 {
   background: $grey;
   border-radius: 25px;
   display: $flex;
@@ -65,18 +65,18 @@ body {
 }
 
 
-.navbar ul {
+.navbar1 ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
   display: $flex;
 }
 
-.navbar li {
+.navbar1 li {
   margin: 10px;
 }
 
-.navbar a {
+.navbar1 a {
   color: $textColor;
   font-size: 16px;
   font-weight: $bold;
@@ -85,7 +85,7 @@ body {
   text-decoration-skip-ink: none;
 }
 
-.navbar ul li a {
+.navbar1 ul li a {
   padding: 5px 10px;
   text-decoration: none;
   color: $textColor;
@@ -97,7 +97,7 @@ body {
   text-decoration-skip-ink: none;
 }
 
-.navbar ul li a.active {
+.navbar1 ul li a.active {
   background-color: $primary;
   border-radius: $commonRadius;
   color: $white;

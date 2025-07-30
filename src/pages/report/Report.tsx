@@ -138,7 +138,7 @@ const handleEdit = async (index:any) => {
      setEditonlyState(mode === 'edit' ? true : false);
   setAddData(data.section);
   setSingleData(data)
-  navigate(`/reports/questionnaire/edit/${data.section}`);
+  navigate(`/brsr/reports/questionnaire/edit/${data.section}`);
   } catch (error) {
     console.error("Fetch error:", error);
   }
@@ -208,7 +208,7 @@ const handlePdf = async (index: any) => {
 
  const handleAddData = (sectionType: string) => {
   setAddData(sectionType);
-  navigate(`/reports/questionnaire/add/${sectionType}`);
+  navigate(`/brsr/reports/questionnaire/add/${sectionType}`);
 };
   const handleImport = () => {
     const input = document.createElement("input");
@@ -269,10 +269,10 @@ useEffect(() => {
 
 
   const handleReport = (item: string) => {
-  navigate(`/reports/questionnaire/add/${item}`);
+  navigate(`/brsr/reports/questionnaire/add/${item}`);
   }
   const handleback = () => {
-  navigate(`/reports`);
+  navigate(`/brsr/reports`);
   }
 
   if (loading) {

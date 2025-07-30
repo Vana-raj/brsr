@@ -38,7 +38,7 @@ const LoginPage = () => {
             return;
         }
         if (email === correctUsername && password === correctPassword) {
-            navigate('/dashboard');
+            navigate('/brsr/dashboard');
         } else {
             message.error('Invalid username or password!');
         }
