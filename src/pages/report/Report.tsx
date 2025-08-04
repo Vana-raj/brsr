@@ -16,6 +16,7 @@ import { fetchReportList } from '../questionnaire/reportActions';
 import Questionnaire from '../questionnaire/Questionnaire';
 import QuestionnaireWrapper from '../questionnaire/QuestionnaireWrapper';
 import { useNavigate, useParams } from 'react-router-dom';
+import { add } from 'date-fns';
 
 const Report: React.FC = () => {
     const { mode, section } = useParams();
@@ -112,6 +113,7 @@ const Report: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [addData, setAddData] = useState<any>("section_a");
   const [singledata, setSingleData] = useState<any>(null);
+  
   
   const [sectionProgressPercentage, setSectionProgressPercentage] = useState<number>(0);
   const [sectionBProgressPercentage, setSectionBProgressPercentage] = useState<number>(0);
@@ -278,7 +280,6 @@ useEffect(() => {
   if (loading) {
     return <Loader />;
   }
-
   return (
     <div className='main-report'>
       {!section &&
@@ -312,6 +313,8 @@ useEffect(() => {
             <div className="section-cards">
               <div className={`section-card ${addData === 'section_a' ? 'selected' : addData ? 'faded' : ''}`}
                 onClick={() => handleAddData('section_a')}
+                style={{ pointerEvents: addData === 'section_b' || addData === 'section_c' ? 'none' : 'auto' }}
+
               >
                 <div className="section-header">
                   <div className='xbrl-header'>SECTION A</div>
@@ -336,6 +339,8 @@ useEffect(() => {
 
               <div className={`section-card ${addData === 'section_b' ? 'selected' : addData ? 'faded' : ''}`}
                 onClick={() => handleAddData('section_b')}
+                style={{ pointerEvents: addData === 'section_a' || addData === 'section_c' ? 'none' : 'auto' }}
+
               >
                 <div className="section-header">
                   <div className='xbrl-header'>SECTION B</div>
@@ -360,6 +365,7 @@ useEffect(() => {
 
               <div className={`section-card ${addData === 'section_c' ? 'selected' : addData ? 'faded' : ''}`}
                 onClick={() => handleAddData('section_c')}
+                style={{ pointerEvents: addData === 'section_b' || addData === 'section_a' ? 'none' : 'auto' }}
               >
                 <div className="section-header">
                   <div className='xbrl-header'>SECTION C </div>
@@ -410,7 +416,7 @@ useEffect(() => {
               </div>
             </div>
           </div>
-           <QuestionnaireWrapper addData={addData} putdata={[]} selectedindex={selectedIndex} editOnly={editonlyState} setSectionProgressPercentage={setSectionProgressPercentage} setSectionBProgressPercentage={setSectionBProgressPercentage} setSectionCProgressPercentage={setSectionCProgressPercentage} />
+           <QuestionnaireWrapper addData={addData} putdata={singledata?.data} selectedindex={selectedIndex} editOnly={editonlyState} setSectionProgressPercentage={setSectionProgressPercentage} setSectionBProgressPercentage={setSectionBProgressPercentage} setSectionCProgressPercentage={setSectionCProgressPercentage} singledata={singledata} />
         </div>
       }
       

@@ -28,12 +28,12 @@ const RouterConfig = createBrowserRouter([
 
     {
         path: '/',
-        element: <Navigate to="/login" replace />,
+        element: <Navigate to="/brsr/dashboard" replace />,
     },
-    {
-        path: 'login',
-        element: <LandingPage />
-    },
+    // {
+    //     path: 'login',
+    //     element: <LandingPage />
+    // },
     {
         element: <Home />,
         children: [
@@ -64,8 +64,9 @@ const RouterConfig = createBrowserRouter([
           selectedindex={""}
           editOnly={false}
           setSectionProgressPercentage={() => {}}
-            setSectionBProgressPercentage={() => {}}
-            setSectionCProgressPercentage={() => {}}
+          setSectionBProgressPercentage={() => {}}
+          setSectionCProgressPercentage={() => {}}
+          singledata={[]} 
         />
       )
     }

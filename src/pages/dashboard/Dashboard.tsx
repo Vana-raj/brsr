@@ -29,7 +29,13 @@ ChartJS.register(
 );
 
 const Dashboard = () => {
-  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+const params = new URLSearchParams(window.location.search);
+const walletAdd = params.get("wallet");
+
+if (walletAdd) {
+  localStorage.setItem("walletAddress", walletAdd);
+}
+const [walletAddress, setWalletAddress] = useState<string | null>(walletAdd);
   const radarData = {
     labels: ["P1", "P2", "P3", "P4", "P8", "P9"],
     datasets: [
@@ -118,7 +124,6 @@ const Dashboard = () => {
     <div className="dashboard-container">
       <h2 className="dashboard-title">BRSR Dashboard</h2>
 
-      {/* Top Two Rows: Left column (two rows) + Radar Card on right */}
       <Row gutter={[16, 16]} className="top-two-rows">
         <Col span={18} className="top-two-columns">
           <Row gutter={[16, 16]} className="row1">

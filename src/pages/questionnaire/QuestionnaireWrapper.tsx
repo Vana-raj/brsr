@@ -1,4 +1,3 @@
-// components/QuestionnaireWrapper.tsx
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import Questionnaire from './Questionnaire';
@@ -13,6 +12,7 @@ interface QuestionnaireWrapperProps {
   setSectionProgressPercentage: (percentage: number) => void;
   setSectionBProgressPercentage: (percentage: number) => void;
   setSectionCProgressPercentage: (percentage: number) => void;
+  singledata?: any;
 }
 
 interface Category {
@@ -26,7 +26,7 @@ interface Category {
   question: string;
   created_at: string;
 }
-const QuestionnaireWrapper: React.FC<QuestionnaireWrapperProps> = ({addData, putdata, selectedindex, editOnly, setSectionProgressPercentage, setSectionBProgressPercentage, setSectionCProgressPercentage}) => {
+const QuestionnaireWrapper: React.FC<QuestionnaireWrapperProps> = ({addData, putdata, selectedindex, editOnly, setSectionProgressPercentage, setSectionBProgressPercentage, setSectionCProgressPercentage,singledata}) => {
   const { mode, section } = useParams();
 
   const isEditMode = mode === 'edit';
@@ -35,14 +35,15 @@ const QuestionnaireWrapper: React.FC<QuestionnaireWrapperProps> = ({addData, put
     selectedindex:selectedindex,
     editOnly: isEditMode,
     addData:addData,
-     setSectionProgressPercentage:setSectionProgressPercentage,
-      setSectionBProgressPercentage:setSectionBProgressPercentage,
-       setSectionCProgressPercentage:setSectionCProgressPercentage
+    setSectionProgressPercentage:setSectionProgressPercentage,
+    setSectionBProgressPercentage:setSectionBProgressPercentage,
+    setSectionCProgressPercentage:setSectionCProgressPercentage,
+    singledata: singledata
   };
 
   switch (section) {
     case 'section_a':
-      return <Questionnaire {...commonProps}/>
+      return <Questionnaire {...commonProps} />
 
     case 'section_b':
       return  <SectionB {...commonProps} />

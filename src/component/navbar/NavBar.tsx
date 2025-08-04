@@ -156,31 +156,103 @@ const NavBar: React.FC = () => {
     }, [location.pathname]);
 
     const handleLinkClick = (linkName: string) => {
-        setActiveLink(linkName);
-    };
-    const disconnectWallet = () => {
-        if (window.ethereum && window.ethereum.disconnect) {
-            window.ethereum.disconnect();
-        }
-        if (window.ethereum && window.ethereum.provider && window.ethereum.provider.disconnect) {
-            window.ethereum.provider.disconnect();
-        }
-        localStorage.removeItem('walletConnected');
-        localStorage.removeItem('walletAddress');
-        localStorage.removeItem('walletProvider');
-    };
-
-    const handleLogout = () => {
-        disconnectWallet();
-        setIsDropdownOpen(!isDropdownOpen);
-        window.location.href = `http://localhost:3001/landing_page`;
+          if(linkName === "home") {
         localStorage.removeItem('record');
         localStorage.removeItem('activeTab');
         localStorage.removeItem('totalAnswered');
         localStorage.removeItem('answeredQuestions');
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
+        }
+        setActiveLink(linkName);
     };
+const handleAccountsChanged = (accounts:string[]) => {
+  if (accounts.length === 0) {
+    console.log('Wallet disconnected');
+    localStorage.removeItem('walletAddress');
+  } else {
+    const newAddress = accounts[0];
+    localStorage.setItem('walletAddress', newAddress);
+  }
+};
+
+const handleChainChanged = (chainId:string) => {
+  console.log('Chain changed:', chainId);
+  window.location.reload();
+};
+
+const setupWalletListeners = () => {
+  if (window.ethereum) {
+    window.ethereum.on('accountsChanged', handleAccountsChanged);
+    window.ethereum.on('chainChanged', handleChainChanged);
+  }
+};
+ const removeWalletListeners = () => {
+    if (window.ethereum) {
+      window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+      window.ethereum.removeListener('chainChanged', handleChainChanged);
+    }
+  };
+
+ useEffect(() => {
+        setupWalletListeners();
+        return () => {
+            removeWalletListeners();
+        };
+    }, []);
+
+const disconnectWallet = async () => {
+  try {
+    localStorage.removeItem('walletConnected');
+    localStorage.removeItem('walletAddress');
+    localStorage.removeItem('walletProvider');
+    
+    if (window.ethereum) {
+      if (window.ethereum.removeListener) {
+        window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+        window.ethereum.removeListener('chainChanged', handleChainChanged);
+      }
+      
+      try {
+        await window.ethereum.request({
+          method: 'wallet_revokePermissions',
+          params: [{ eth_accounts: {} }]
+        });
+      } catch (error) {
+        console.log('Revoke permissions not supported', error);
+      }
+    }
+    
+    if (window.ethereum?.disconnect) {
+      await window.ethereum.disconnect();
+    }
+  } catch (error) {
+    console.error('Error disconnecting wallet:', error);
+  }
+};
+
+// const handleLogout = async () => {
+//   try {
+//     const channel = new BroadcastChannel("wallet-sync");
+//     channel.postMessage("logout");
+//     channel.close();
+
+//     await disconnectWallet();
+//     setIsDropdownOpen(false);
+//     localStorage.clear();
+
+//     window.location.href = `http://localhost:3001/login`;
+//   } catch (error) {
+//     console.error("Logout error:", error);
+//   }
+// };
+const handleLogout = () => {
+  const channel = new BroadcastChannel("wallet-sync");
+  setIsDropdownOpen(false);
+  localStorage.clear();
+  setWalletAddress("");
+  channel.postMessage("logout");
+  channel.close();
+  window.location.href = "http://localhost:3001/login";
+};
 
 
     const goToProfile = () => {
@@ -259,6 +331,15 @@ const NavBar: React.FC = () => {
                 </div>
                 <div className="flex">
                     <ul>
+                        <li>
+                            <Link
+                                to="http://localhost:3001/landing_page"
+                                className={activeLink === 'home' ? 'active' : ''}
+                                onClick={() => handleLinkClick('home')}
+                            >
+                                Home
+                            </Link>
+                        </li>
                         <li>
                             <Link
                                 to="/brsr/dashboard"

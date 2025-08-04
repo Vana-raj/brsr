@@ -140,7 +140,7 @@ export const allCategories = [
         section: "A III",
         question: [
           {
-            text: "Number of locations where plants and offices of the entity are situated:", columns: [
+            text: "Number of locations where plants and/or operations/offices of the entity are situated", columns: [
               "Location",
               "No. of plants",
               "No. of offices",
@@ -153,7 +153,7 @@ export const allCategories = [
           // },
           {
             text: "Number of locations", columns: [
-              "Location",
+              "Locations",
               "Number",
             ], type: "table", choices: null, isMandatory: true, parent: true,
           },
@@ -274,7 +274,7 @@ export const allCategories = [
         section: "A V",
         question: [
           {
-            text: "How many products have undergone a carbon footprint assessment?", type: "table", choices: null, isMandatory: true,
+            text: "Names of holding/subsidiary/associate companies/joint ventures", type: "table", choices: null, isMandatory: true,
             parent: true, columns: [
               "Name of the holding / subsidiary / associate companies / joint ventures (A)",
               "Indicate whether holding/ Subsidiary/ Associate/ Joint Venture",
@@ -354,7 +354,6 @@ export const allCategories = [
           // },
           {
             text: "Please indicate material responsible business conduct and sustainability issues pertaining to environmental and social matters that present a risk or an opportunity to your business, rationale for identifying the same, approach to adapt or mitigate the risk along-with its financial implications, as per the following format.", choices: null, isMandatory: false, parent: false, type: "table", columns: [
-              "S.no",
               "Material issue identified",
               "Indicate whether risk or opportunity (R/O)",
               "Rationale for identifying the risk / opportunity",

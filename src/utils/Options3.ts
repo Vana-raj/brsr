@@ -182,7 +182,7 @@ export const allCategories3 = [
             columns: [
         "Total no of awareness programs held",
         "Topics / principles covered under the training",
-        "% of value chain partners covered (by value of business done withsuch partners) under the awarenessprogrammes"
+        "% of value chain partners covered (by value of business done with such partners) under the awareness programmes"
 
             ],
           },
@@ -230,7 +230,6 @@ export const allCategories3 = [
             type: "table",
             label: "",
             columns: [
-              "S.No",
               "NIC Code",
               "Name of Product /Service",
               "% of total Turnover contributed",
@@ -528,9 +527,6 @@ export const allCategories3 = [
               "Total Permanent Workers(Total)",
 
             ]
-
-
-
           },
           
           // { text: "Health and safety management system:", choices: null, isMandatory: true, parent: true},
@@ -560,7 +556,7 @@ export const allCategories3 = [
           },
           { text: "Describe the measures taken by the entity to ensure a safe and healthy work place", choices: null, isMandatory: true, parent: true },
           {
-            text: "Number of Complaints on the following made by employees and workers:", choices: null, isMandatory: true
+            text: "Number of Complaints on the following made by employees and workers", choices: null, isMandatory: true
             , parent: true,
             type: "table",
             label: "",
@@ -582,7 +578,7 @@ export const allCategories3 = [
 
           },
           {
-            text: "Assessments for the year:", choices: null, isMandatory: true
+            text: "Assessments for the year", choices: null, isMandatory: true
             , parent: true,
             type: "table",
             label: "",
@@ -624,7 +620,7 @@ export const allCategories3 = [
           },
           { text: "Does the entity provide transition assistance programs to facilitate continued employability and the management of career endings resulting from retirement or termination of employment? (Yes/ No)", choices: null, isMandatory: false, parent: true },
           {
-            text: "Details on assessment of value chain partners:", choices: null, isMandatory: false, parent: true
+            text: "Details on assessment of value chain partners", choices: null, isMandatory: false, parent: true
             ,
             type: "table",
             label: "",
@@ -658,7 +654,7 @@ export const allCategories3 = [
         question: [
           { text: "Describe the processes for identifying key stakeholder groups of the entity.", choices: null, isMandatory: false, parent: true },
           {
-            text: "List stakeholder groups identified as key for your entity and the frequency of engagement with each stakeholder group.", choices: null, isMandatory: true
+            text: "List stakeholder groups identified as key for your entity and the frequency of engagement with each stakeholder group", choices: null, isMandatory: true
             , parent: true,
             type: "table",
             label: "",
@@ -701,7 +697,7 @@ export const allCategories3 = [
         section: "C V",
         question: [
           {
-            text: "Employees and workers who have been provided training on human rights issues and policy(ies) of the entity, in the following format:", choices: null, isMandatory: true, parent: true
+            text: "Employees and workers who have been provided training on human rights issues and policy(ies) of the entity, in the following format", choices: null, isMandatory: true, parent: true
             ,
             type: "table",
             label: "",
@@ -725,7 +721,7 @@ export const allCategories3 = [
 
           },
           {
-            text: "Details of minimum wages paid to employees and workers, in the following format:", choices: null, isMandatory: true, parent: true,
+            text: "Details of minimum wages paid to employees and workers, in the following format", choices: null, isMandatory: true, parent: true,
             type: "table",
             label: "",
             columns: [
@@ -763,7 +759,7 @@ export const allCategories3 = [
           },
           // { text: "Details of remuneration/salary/wages", choices: null, isMandatory: true, isNone: true, parent: true },
           {
-            text: "Details of remuneration/salary/wages", choices: null, isMandatory: true, parent: true
+            text: "Details of remuneration/salary/wages, in the following format", choices: null, isMandatory: true, parent: true
             ,
             type: "table",
             label: "",
@@ -789,19 +785,18 @@ export const allCategories3 = [
           { text: "Do you have a focal point (Individual/ Committee) responsible for addressing human rights impacts or issues caused or contributed to by the business? (Yes/ No)", choices: null, isMandatory: true, parent: true },
           { text: "Describe the internal mechanisms in place to redress grievances related to human rights issues.", choices: null, isMandatory: true, parent: true },
           {
-            text: "Number of Complaints on the following made by employees and workers:", choices: null, isMandatory: true,
+            text: "Number of Complaints on the following made by employees and workers", choices: null, isMandatory: true,
             parent: true,
             type: "table",
             label: "",
             columns: [
               "Category",
-              "FY 2024-25Current Financial Year (Filed during the year)",
-              "FY 2024-25Current Financial Year (Pending resolution at the end of year)",
-              "FY 2024-25Current Financial Year (Remarks)",
-
-              "FY 2023-24Previous Financial Year (Filed during the year)",
-              "FY 2023-24Previous Financial Year (Pending resolution at the end of year)",
-              "FY 2023-24Previous Financial Year (Remarks)",
+              "FY 2024-25 Current Financial Year (Filed during the year)",
+              "FY 2024-25 Current Financial Year (Pending resolution at the end of year)",
+              "FY 2024-25 Current Financial Year (Remarks)",
+              "FY 2023-24 Previous Financial Year (Filed during the year)",
+              "FY 2023-24 Previous Financial Year (Pending resolution at the end of year)",
+              "FY 2023-24 Previous Financial Year (Remarks)",
 
             ],
             rows: [
@@ -815,7 +810,7 @@ export const allCategories3 = [
 
           },
           {
-            text: "Complaints filed under the Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013, in the following format:", choices: null, isMandatory: true, parent: true
+            text: "Complaints filed under the Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013, in the following format", choices: null, isMandatory: true, parent: true
             ,
             type: "table",
             label: "",
@@ -837,7 +832,7 @@ export const allCategories3 = [
           { text: "Mechanisms to prevent adverse consequences to the complainant in discrimination and harassment cases.", choices: null, isMandatory: true, parent: true },
           { text: "Do human rights requirements form part of your business agreements and contracts? (Yes/ No)", choices: null, isMandatory: true, parent: true },
           {
-            text: "Assessments for the year:", choices: null, isMandatory: true, parent: true
+            text: "Assessments for the year", choices: null, isMandatory: true, parent: true
             ,
             type: "table",
             label: "",
@@ -901,14 +896,14 @@ export const allCategories3 = [
         section: "C VI",
         question: [
           {
-            text: "Details of total energy consumption (in Joules or multiples) and energy intensity, in the following format:", choices: null, isMandatory: true, parent: true
+            text: "Details of total energy consumption (in Joules or multiples) and energy intensity, in the following format", choices: null, isMandatory: true, parent: true
             ,
             type: "table",
             label: "",
             columns: [
         "Parameter",
-        "FY 2024-25(Current Financial Year)",
-        "FY 2023-24(Previous Financial Year)"
+        "FY 2024-25 (Current Financial Year)",
+        "FY 2023-24 (Previous Financial Year)"
 
             ],
             rows: [
@@ -935,7 +930,7 @@ export const allCategories3 = [
           },
           { text: "Does the entity have any sites / facilities identified as designated consumers (DCs) under the Performance, Achieve and Trade (PAT) Scheme of the Government of India? (Y/N) If yes, disclose whether targets set under the PAT scheme have been achieved. In case targets have not been achieved, provide the remedial action taken, if any.", choices: null, isMandatory: true, parent: true },
           {
-            text: "Provide details of the following disclosures related to water, in the following format:", choices: null, isMandatory: true, parent: true
+            text: "Provide details of the following disclosures related to water, in the following format", choices: null, isMandatory: true, parent: true
             ,
             type: "table",
             label: "",
@@ -943,7 +938,6 @@ export const allCategories3 = [
             "Parameter",
             "FY 2023-2024",
             "FY 2022-2023"
-
             ],
             rows: [
               "Surface water",
@@ -963,7 +957,7 @@ export const allCategories3 = [
 
           },
           {
-            text: "Provide the following details related to water discharged:", choices: null, isMandatory: true, parent: true
+            text: "Provide the following details related to water discharged", choices: null, isMandatory: true, parent: true
             ,
             type: "table",
             label: "",
@@ -997,7 +991,7 @@ export const allCategories3 = [
           },
           { text: "Has the entity implemented a mechanism for Zero Liquid Discharge? If yes, provide details of its coverage and implementation", choices: null, isMandatory: true, parent: true },
           {
-            text: "Please provide details of air emissions (other than GHG emissions) by the entity, in the following format:", choices: null, isMandatory: true, parent: true
+            text: "Please provide details of air emissions (other than GHG emissions) by the entity, in the following format", choices: null, isMandatory: true, parent: true
             , type: "table",
             label: "",
             columns: [
@@ -1005,8 +999,6 @@ export const allCategories3 = [
               "Please specify unit",
               "FY 2024-25(Current Financial Year)",
               "FY 2023-24(Previous Financial Year)",
-              ""
-
             ],
             rows: [
               "NOx",
@@ -1022,7 +1014,7 @@ export const allCategories3 = [
 
           },
           {
-            text: "Provide details of greenhouse gas emissions (Scope 1 and Scope 2 emissions) & its intensity, in the following format:", choices: null, isMandatory: true, parent: true
+            text: "Provide details of greenhouse gas emissions (Scope 1 and Scope 2 emissions) & its intensity, in the following format", choices: null, isMandatory: true, parent: true
             ,
             type: "table",
             label: "",
@@ -1047,7 +1039,7 @@ export const allCategories3 = [
           },
           { text: "Does the entity have any project related to reducing Green House Gas emission? If Yes, then provide details.", choices: null, isMandatory: true, parent: true },
           {
-            text: "Provide details related to waste management by the entity, in the following format:", choices: null, isMandatory: true, parent: true
+            text: "Provide details related to waste management by the entity, in the following format", choices: null, isMandatory: true, parent: true
             ,
             type: "table",
             label: "",
@@ -1092,7 +1084,7 @@ export const allCategories3 = [
           },
           { text: "Briefly describe the waste management practices adopted in your establishments. Describe the strategy adopted by your company to reduce usage of hazardous and toxic chemicals in your products and processes and the practices adopted to manage such wastes.", choices: null, isMandatory: true, parent: true },
           {
-            text: "If the entity has operations/offices in/around ecologically sensitive areas (such as national parks, wildlife sanctuaries, biosphere reserves, wetlands, biodiversity hotspots, forests, coastal regulation zones etc.) where environmental approvals / clearances are required, please specify details in the following format:", choices: null, isMandatory: true, parent: true
+            text: "If the entity has operations/offices in/around ecologically sensitive areas (such as national parks, wildlife sanctuaries, biosphere reserves, wetlands, biodiversity hotspots, forests, coastal regulation zones etc.) where environmental approvals / clearances are required, please specify details in the following format", choices: null, isMandatory: true, parent: true
             ,
             type: "table",
             label: "",
@@ -1112,7 +1104,7 @@ export const allCategories3 = [
 
           },
           {
-            text: "Details of environmental impact assessments of projects undertaken by the entity based on applicable laws, in the current financial year:", choices: null, isMandatory: true, parent: true
+            text: "Details of environmental impact assessments of projects undertaken by the entity based on applicable laws, in the current financial year", choices: null, isMandatory: true, parent: true
             ,
             type: "table",
             label: "",
@@ -1137,12 +1129,11 @@ export const allCategories3 = [
 
           },
           {
-            text: "Is the entity compliant with the applicable environmental law/ regulations/ guidelines in India; such as the Water (Prevention and Control of Pollution) Act, Air (Prevention and Control of Pollution) Act, Environment protection act and rules thereunder (Y/N). If not, provide details of all such non-compliances, in the following format:", choices: null, isMandatory: true, parent: true
+            text: "Is the entity compliant with the applicable environmental law/ regulations/ guidelines in India; such as the Water (Prevention and Control of Pollution) Act, Air (Prevention and Control of Pollution) Act, Environment protection act and rules thereunder (Y/N). If not, provide details of all such non-compliances, in the following format", choices: null, isMandatory: true, parent: true
             ,
             type: "table",
             label: "",
             columns: [
-              "S. No.",
               "Specify the law / regulation / guidelines which was not complied with",
               "Provide details of the non-compliance",
               "Any fines / penalties / action taken by regulatory agencies such as pollution control boards or by courts",
@@ -1162,7 +1153,7 @@ export const allCategories3 = [
 
           },
           {
-            text: "Water withdrawal, consumption and discharge in areas of water stress (in kilolitres):", choices: null, isMandatory: false, parent: true,
+            text: "Water withdrawal, consumption and discharge in areas of water stress (in kilolitres)", choices: null, isMandatory: false, parent: true,
             type: "table",
             label: "",
             columns: [
@@ -1198,12 +1189,11 @@ export const allCategories3 = [
           },
           { text: "With respect to the ecologically sensitive areas reported at Question 10 of Essential Indicators above, provide details of significant direct & indirect impact of the entity on biodiversity in such areas along-with prevention and remediation activities", choices: null, isMandatory: false, parent: true },
           {
-            text: "If the entity has undertaken any specific initiatives or used innovative technology or solutions to improve resource efficiency, or reduce impact due to emissions / effluent discharge / waste generated, please provide details of the same as well as outcome of such initiatives, as per the following format:", choices: null, isMandatory: false, parent: true
+            text: "If the entity has undertaken any specific initiatives or used innovative technology or solutions to improve resource efficiency, or reduce impact due to emissions / effluent discharge / waste generated, please provide details of the same as well as outcome of such initiatives, as per the following format", choices: null, isMandatory: false, parent: true
             ,
             type: "table",
             label: "",
             columns: [
-              "S. No.",
               "Initiative undertaken",
               "Details of the initiative (Web-link, if any, may be provided along-with summary)",
               "Outcome of the initiative"
@@ -1241,7 +1231,7 @@ export const allCategories3 = [
           { text: "Number of affiliations with trade and industry chambers/ associations.", choices: null, isMandatory: false, parent: true },
 
           {
-            text: "List the top 10 trade and industry chambers/ associations (determined based on the total members of such body) the entity is a member of/ affiliated to, in the following format", choices: null, isMandatory: true, parent: true
+            text: "List the top 10 trade and industry chambers/associations (determined based on the total members of such body) the entity is a member of/affiliated to", choices: null, isMandatory: true, parent: true
             ,
             type: "table",
             label: "",
@@ -1262,7 +1252,7 @@ export const allCategories3 = [
 
           },
           {
-            text: "Provide details of corrective action taken or underway on any issues related to anti-competitive conduct by the entity, based on adverse orders from regulatory authorities.", choices: null, isMandatory: true, parent: true
+            text: "Provide details of corrective action taken or underway on any issues related to anti-competitive conduct by the entity, based on adverse orders from regulatory authorities", choices: null, isMandatory: true, parent: true
             ,
             type: "table",
             label: "",
@@ -1284,7 +1274,7 @@ export const allCategories3 = [
 
           },
           {
-            text: "Details of public policy positions advocated by the entity:", choices: null, isMandatory: false, parent: true
+            text: "Details of public policy positions advocated by the entity", choices: null, isMandatory: false, parent: true
             ,
             type: "table",
             label: "",
@@ -1325,7 +1315,7 @@ export const allCategories3 = [
         section: "C VIII",
         question: [
           {
-            text: "Details of Social Impact Assessments (SIA) of projects undertaken by the entity based on applicable laws, in the current financial year.", choices: null, isMandatory: true
+            text: "Details of Social Impact Assessments (SIA) of projects undertaken by the entity based on applicable laws, in the current financial year", choices: null, isMandatory: true
             ,
             type: "table",
             label: "",
@@ -1418,7 +1408,7 @@ export const allCategories3 = [
 
           },
           {
-            text: "Provide details of actions taken to mitigate any negative social impacts identified in the Social Impact Assessments (Reference: Question 1 of Essential Indicators above):", choices: null, isMandatory: false, parent: true
+            text: "Provide details of actions taken to mitigate any negative social impacts identified in the Social Impact Assessments (Reference: Question 1 of Essential Indicators above)", choices: null, isMandatory: false, parent: true
             ,
             type: "table",
             label: "",
@@ -1465,7 +1455,7 @@ export const allCategories3 = [
           { text: "What percentage of total procurement (by value) does it constitute?", choices: null, isMandatory: false, parent: true },
 
           {
-            text: "Details of the benefits derived and shared from the intellectual properties owned or acquired by your entity (in the current financial year), based on traditional knowledge:", choices: null, isMandatory: false, parent: true
+            text: "Details of the benefits derived and shared from the intellectual properties owned or acquired by your entity (in the current financial year), based on traditional knowledge", choices: null, isMandatory: false, parent: true
             ,
             type: "table",
             label: "",
@@ -1488,7 +1478,7 @@ export const allCategories3 = [
 
           },
           {
-            text: "Details of corrective actions taken or underway, based on any adverse order in intellectual property related disputes wherein usage of traditional knowledge is involved.", choices: null, isMandatory: false, parent: true
+            text: "Details of corrective actions taken or underway, based on any adverse order in intellectual property related disputes wherein usage of traditional knowledge is involved", choices: null, isMandatory: false, parent: true
             ,
             type: "table",
             label: "",
@@ -1506,7 +1496,7 @@ export const allCategories3 = [
 
           },
           {
-            text: "Details of beneficiaries of CSR Projects:", choices: null, isMandatory: false, parent: true
+            text: "Details of beneficiaries of CSR Projects", choices: null, isMandatory: false, parent: true
             ,
             type: "table",
             label: "",
@@ -1544,7 +1534,7 @@ export const allCategories3 = [
         question: [
           { text: "Describe the mechanisms in place to receive and respond to consumer complaints and feedback.", choices: null, isMandatory: true, parent: true },
           {
-            text: "Turnover of products and/ services as a percentage of turnover from all products/service that carry information about:", choices: null, isMandatory: true,parent:true
+            text: "Turnover of products and/ services as a percentage of turnover from all products/service that carry information about", choices: null, isMandatory: true,parent:true
 
             , type: "table",
             label: "",
@@ -1561,7 +1551,7 @@ export const allCategories3 = [
 
           },
           {
-            text: "Number of consumer complaints in respect of the following:", choices: null, isMandatory: true, parent: true,
+            text: "Number of consumer complaints in respect of the following", choices: null, isMandatory: true, parent: true,
             type: "table",
             label: "",
             columns: [
@@ -1587,7 +1577,7 @@ export const allCategories3 = [
 
           },
           {
-            text: "Details of instances of product recalls on account of safety issues:", choices: null, isMandatory: true, parent: true
+            text: "Details of instances of product recalls on account of safety issues", choices: null, isMandatory: true, parent: true
             ,
             type: "table",
             label: "",

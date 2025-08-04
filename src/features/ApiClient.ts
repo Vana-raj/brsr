@@ -12,7 +12,8 @@ let subscribers: Array<(token: string) => void> = [];
 
 const navigateToLogin = () => {
     localStorage.clear();
-    window.location.href = "/login";
+    window.location.href = `http://localhost:3001/login`;
+
 };
 
 const refreshToken = async () => {
