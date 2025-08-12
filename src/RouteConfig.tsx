@@ -105,7 +105,6 @@ const RouterConfig = createBrowserRouter([
                 element: 
                     // <ProtectedRoute>
                     <Questionnaire putdata={[]} selectedindex={""} editOnly={false} setSectionProgressPercentage={(percentage) => {
-                    // Here you would typically update some state with the percentage
                     console.log('Progress percentage:', percentage);
                 }} />
                 // </ProtectedRoute>

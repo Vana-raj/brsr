@@ -78,7 +78,7 @@ const Report: React.FC = () => {
           className="custom-tooltip"
           title={
             <div className="menu-options">
-              <div className="menu-item" role="button" >
+              <div className="menu-item" role="button" onClick={()=>handleView(index)}>
                 <UnorderedListOutlined className="list-icon" />
                 <div>View details</div>
               </div>
@@ -119,25 +119,23 @@ const Report: React.FC = () => {
   const [sectionBProgressPercentage, setSectionBProgressPercentage] = useState<number>(0);
   const [sectionCProgressPercentage, setSectionCProgressPercentage] = useState<number>(0);
   const [editonlyState, setEditonlyState] = useState<boolean>(false);
-const navigate = useNavigate();
-const handleEdit = async (index:any) => {
+  const navigate = useNavigate();
+  const handleEdit = async (index:any) => {
   try {
     const response = await fetch(`http://192.168.2.27:1000/edit_pdf_report_get/${encodeURIComponent(index.name)}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-      
-      
     });
     setSelectedIndex(index.name)
     setEditonlyState(mode === 'edit' ? true : false);
     if (!response.ok) {
       throw new Error(`HTTP Status: ${response.status}`);
     }
-    const data = await response.json();
-   setSelectedIndex(index.name);
-     setEditonlyState(mode === 'edit' ? true : false);
+  const data = await response.json();
+  setSelectedIndex(index.name);
+  setEditonlyState(mode === 'edit' ? true : false);
   setAddData(data.section);
   setSingleData(data)
   navigate(`/brsr/reports/questionnaire/edit/${data.section}`);
@@ -146,6 +144,30 @@ const handleEdit = async (index:any) => {
   }
 };
 
+  const handleView = async (index:any) => {
+  try {
+    const response = await fetch(`http://192.168.2.27:1000/edit_pdf_report_get/${encodeURIComponent(index.name)}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    setSelectedIndex(index.name)
+    setEditonlyState(mode === 'view' ? true : false);
+    if (!response.ok) {
+      throw new Error(`HTTP Status: ${response.status}`);
+    }
+  const data = await response.json();
+  setSelectedIndex(index.name);
+  setEditonlyState(mode === 'view' ? true : false);
+  setAddData(data.section);
+  setSingleData(data)
+  navigate(`/brsr/reports/questionnaire/view/${data.section}`);
+  } catch (error) {
+    console.error("Fetch error:", error);
+  }
+};
+console.log("sinf",singledata);
 const handleDelete=async (index:any)=>{
   try {
     const response = await fetch(`http://192.168.2.27:1000/delete_pdf_report/${encodeURIComponent(index.name)}`, {
@@ -153,7 +175,6 @@ const handleDelete=async (index:any)=>{
       headers: {
         "Content-Type": "application/json",
       },
-      
     });
     if (!response.ok) {
       throw new Error(`HTTP Status: ${response.status}`);
@@ -166,8 +187,6 @@ const handleDelete=async (index:any)=>{
   }
 
 };
-
-console.log(singledata,'singledata')
 
 const handlePdf = async (index: any) => {
 
@@ -275,6 +294,9 @@ useEffect(() => {
   }
   const handleback = () => {
   navigate(`/brsr/reports`);
+  setAddData("section_a");
+  localStorage.clear();
+  setSingleData(null)
   }
 
   if (loading) {
@@ -313,7 +335,7 @@ useEffect(() => {
             <div className="section-cards">
               <div className={`section-card ${addData === 'section_a' ? 'selected' : addData ? 'faded' : ''}`}
                 onClick={() => handleAddData('section_a')}
-                style={{ pointerEvents: addData === 'section_b' || addData === 'section_c' ? 'none' : 'auto' }}
+                style={{ pointerEvents: mode === "add" ? "auto" : 'none' }}
 
               >
                 <div className="section-header">
@@ -339,7 +361,8 @@ useEffect(() => {
 
               <div className={`section-card ${addData === 'section_b' ? 'selected' : addData ? 'faded' : ''}`}
                 onClick={() => handleAddData('section_b')}
-                style={{ pointerEvents: addData === 'section_a' || addData === 'section_c' ? 'none' : 'auto' }}
+                style={{ pointerEvents: mode === "add" ? "auto" : 'none' }}
+
 
               >
                 <div className="section-header">
@@ -365,7 +388,8 @@ useEffect(() => {
 
               <div className={`section-card ${addData === 'section_c' ? 'selected' : addData ? 'faded' : ''}`}
                 onClick={() => handleAddData('section_c')}
-                style={{ pointerEvents: addData === 'section_b' || addData === 'section_a' ? 'none' : 'auto' }}
+                style={{ pointerEvents: mode === "add" ? "auto" : 'none' }}
+
               >
                 <div className="section-header">
                   <div className='xbrl-header'>SECTION C </div>

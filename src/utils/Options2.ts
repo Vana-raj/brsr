@@ -66,7 +66,7 @@ export const allCategories2 = [
         section: "B I",
         question: [
           {
-            text: "Whether your entity’s policy/policies cover each principle and its core elements of the NGRBCs. (Yes/No)", choices: null,
+            text:"Whether your entity’s policy/policies cover each principle and its core elements of the NGRBCs. (Yes/No)", choices: null,
             type: "table",
             label: "Policy",
             columns: [
@@ -82,7 +82,7 @@ export const allCategories2 = [
             ],
             isMandatory: true,
             parent: true
-
+ 
           },
           {
             text: "Has the policy been approved by the Board? (Yes/No)", choices: null,
@@ -110,17 +110,17 @@ export const allCategories2 = [
               "P8",
               "P9"
             ],
-
+ 
             isMandatory: true,
             parent: true
-
+ 
           },
           {
             text: "Web Link of the Policies, if available.", choices:null,
             label: "Policy",
             isMandatory: true,
             parent: true
-
+ 
           },
           {
             text: "Whether the entity has translated the policy into procedures. (Yes / No)", choices: ["Yes", "No", "In Progress"],
@@ -174,7 +174,7 @@ export const allCategories2 = [
             ],
             isMandatory: true,
             parent: true
-
+ 
           },
           {
             text: "Specific commitments, goals and targets set by the entity with defined timelines, if any.", choices: ["Yes", "No", "In Progress"],
@@ -193,14 +193,14 @@ export const allCategories2 = [
             ],
             isMandatory: true,
             parent: true
-
+ 
           },          
           {
             text: "Performance of the entity against the specific commitments, goals and targets along-with reasons in case the same are not met.", choices: null,
             label: "Policy",
             isMandatory: true,
             parent: true
-
+ 
           },
         ],
       },
@@ -220,7 +220,7 @@ export const allCategories2 = [
         section: "B II",
         question: [
           { text: "Statement by director responsible for the business responsibility report, highlighting ESG related challenges, targets and achievements (listed entity has flexibility regarding the placement of this disclosure)", choices: null, isMandatory: false, parent: true },
-
+ 
           { text: "Details of the highest authority responsible for implementation and oversight of the Business Responsibility policy (ies).", choices: null, isMandatory: false, parent: true },
  
           {
@@ -261,7 +261,7 @@ export const allCategories2 = [
             //   "Performance against above policies and follow up action"
             // ],
           },
-
+ 
           {
             text: "Frequency(Annually/ Half yearly/ Quarterly/ Any other – please specify)", choices: ["Yes", "No", "In Progress"], isMandatory: false, parent: false,
             label: "Compliance with statutory requirements of relevance to the principles, and, rectification of any non-compliances",
@@ -282,7 +282,7 @@ export const allCategories2 = [
             //   "Compliance with statutory requirements of relevance to the principles, and, rectification of any non-compliances"
             // ],
           },
-
+ 
           {
             text: "Has the entity carried out independent assessment/ evaluation of the working of its policies by an external agency? (Yes/No). If yes, provide name of the agency.", choices: null, isMandatory: false, parent: true,
             type: "table",
@@ -322,18 +322,18 @@ export const allCategories2 = [
               "Any other reason (please specify)"
             ]
           },
-
+ 
           // {
           //   text: "Supply Chain Mangement", choices: null, isMandatory: false, parent: true, isNone: true
           // },
           {
             text: "Upstream (Suppliers & Logistics Partners)", parent: false,choices: null, isMandatory: false},
-
+ 
           {
             text: "Downstream (Distributors & Customers)", parent: false,choices: null, isMandatory: false},
         ],
       },
-
+ 
     ],
   },
 ];

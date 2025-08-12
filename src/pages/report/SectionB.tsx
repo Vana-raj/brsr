@@ -8,6 +8,7 @@ import SelectDropDown from "../../component/select/SelectDropDown";
 import TableInput from "../../component/InputTable/InputTable2";
 import Loader from "../../component/loader/Loader";
 import "../questionnaire/Questionnaire.scss"
+import { useNavigate } from "react-router-dom";
 
 
 const { TextArea } = Input;
@@ -57,16 +58,6 @@ interface TableQuestion extends BaseQuestion {
 }
 
 type Question = TextQuestion | ChoiceQuestion | TableQuestion;
-// interface Question {
-//     text: string;
-//     choices: string[] | null;
-//     isMandatory: boolean;
-//     type?: 'text' | 'radio' | 'checkbox' | 'table';
-//     columns?: string[];
-//     rows?: string[];
-//     parent?: boolean;
-//     isNone?: boolean;
-// }
 
 interface ApiQuestion {
     questionNo: string;
@@ -101,6 +92,7 @@ interface SectionBProps {
 
 
 const SectionB: React.FC<SectionBProps> = ({ putdata,selectedindex,editOnly,setSectionBProgressPercentage}) => {
+    const navigate = useNavigate();
     const [activeCategory, setActiveCategory] = useState<string>("policy");
     const [showQuestions, setShowQuestions] = useState<boolean>(false);
     const [answers, setAnswers] = useState<{ [key: string]: any }>({});
@@ -114,7 +106,6 @@ const SectionB: React.FC<SectionBProps> = ({ putdata,selectedindex,editOnly,setS
     const [isUnsavedModalVisible, setIsUnsavedModalVisible] = useState(false);
     const [pendingAction, setPendingAction] = useState<() => void | null>();
     const [submittedAnswers, setSubmittedAnswers] = useState<Record<string, boolean>>({});
-    const [questionAnswerMap, setQuestionAnswerMap] = useState<Record<string, string>>({});
     const [texts,setTexts]= useState<{ [key: string]: any }>({});
     const [rdata,setRdata]= useState<{ [key: string]: any }>({}); 
     const [brsrFilename,setBrsrFilename] = useState<string>("");
@@ -130,9 +121,47 @@ const SectionB: React.FC<SectionBProps> = ({ putdata,selectedindex,editOnly,setS
     };
 
 
+useEffect(() => {
+  if (editOnly && putdata?.length) {
+    const initialAnswers: Record<string, any> = {};
+    const initialTexts: Record<string, any> = {};
+
+    putdata.forEach(item => {
+      if (!item.question || item.answer === null) return;
+
+      for (const category of allCategories2) {
+        for (const questionGroup of category.questions) {
+          const questionIndex = questionGroup.question.findIndex(
+            q => q.text.trim() === item.question.trim()
+          );
+
+          if (questionIndex !== -1) {
+            const questionKey = `${category.key}_${questionGroup.key}_${questionIndex}`;
+            
+            if (questionGroup.question[questionIndex].type === 'table') {
+              try {
+                initialAnswers[questionKey] = JSON.parse(item.answer);
+                initialTexts[item.question] = JSON.parse(item.answer);
+              } catch (e) {
+                initialAnswers[questionKey] = [];
+                initialTexts[item.question] = [];
+              }
+            } else {
+              initialAnswers[questionKey] = item.answer;
+              initialTexts[item.question] = item.answer;
+            }
+            break;
+          }
+        }
+      }
+    });
+
+    setAnswers(initialAnswers);
+    setTexts(initialTexts);
+  }
+}, [editOnly, putdata]);
 
 useEffect(() => {
-  // Clear localStorage on page refresh
   const handleBeforeUnload = () => {
     localStorage.removeItem('answeredQuestions');
   };
@@ -144,69 +173,66 @@ useEffect(() => {
   };
 }, []);
 
+function editfindanswertable(data: any[], editquestion: string): any[] | null {
+  if (!data || !Array.isArray(data)) return null;
+  
+  const found = data.find(item => 
+    item.question?.trim() === editquestion?.trim()
+  );
 
+  if (!found || !found.answer) return null;
 
-
-    const handleInputChange = (section: string, key: string, value: any, questionIndex: number ,text:string) => {
-        const questionKey = generateQuestionKey(section, key, questionIndex);
-        setAnswers((prevAnswers) => ({
-            ...prevAnswers,
-            [questionKey]: value,
-        }));
-const question = generateQuestion(text);
-      setTexts((prevText) => ({
-    ...prevText,
-    [question]: value,
-}));
-
-
-        setHasUnsavedChanges(answers[questionKey] === "" ? false : true);
-
-    };
-
-        console.log("*****",texts)
-
-const output: Record<string, any> = {};
-
-for (const key in texts) {
-  if (typeof texts[key] === "object" && !Array.isArray(texts[key])) {
-    output[key] = [texts[key]];  // wrap object in array
-  } else {
-    output[key] = texts[key];    // keep as is
+  try {
+    const parsed = typeof found.answer === 'string' 
+      ? JSON.parse(found.answer) 
+      : found.answer;
+    return Array.isArray(parsed) ? parsed : [parsed];
+  } catch (error) {
+    console.error("Failed to parse answer as JSON:", error);
+    return null;
   }
 }
 
+const handleInputChange = (
+  section: string, 
+  key: string, 
+  value: any, 
+  questionIndex: number,
+  text: string
+) => {
+  const questionKey = generateQuestionKey(section, key, questionIndex);
+  
+  console.log('Updating:', {
+    questionKey,
+    text,
+    value,
+    currentAnswers: answers[questionKey],
+    currentTexts: texts[text]
+  });
 
+  setAnswers(prev => ({
+    ...prev,
+    [questionKey]: value
+  }));
 
-const rout: Record<string, any> = {};
+  setTexts(prev => ({
+    ...prev,
+    [text]: value
+  }));
 
-for (const key in rdata) {
-  if (typeof rdata[key] === "object" && !Array.isArray(rdata[key])) {
-    rout[key] = [rdata[key]];  // wrap object in array
-  } else {
-    rout[key] = rdata[key];    // keep as is
-  }
-}
-
-
-
-
-
+  setHasUnsavedChanges(true);
+};
 
 const handlePost = async () => {
 try {
-
-    console.log("editonly",editOnly)
-if(editOnly==true){
-
+if(editOnly===true){
 const bodyData = {
-texts: Object.keys(rout).length > 0 ? rout : output,
-sectionfind: "section_b",  // Replace with your actual section identifier
+texts: texts,
+sectionfind: "section_b",
 currentsection:currentCategory?.section,
 indexName:selectedindex
 };
 
-console.log("This is if bodydata",bodyData)
   const response = await fetch(`http://192.168.2.27:1000/edit_pdf_report_put`, {
     method: 'PUT',
     headers: {
@@ -224,124 +250,67 @@ console.log("This is if bodydata",bodyData)
 
   if (Object.keys(texts).length > 0) {
     message.success(`${data.filename} File edit successfully!`);
+    navigate("/brsr/reports")
   } else {
     message.warning("Please edit the file!");
   }
-
-
 }
-
-
 else{
     const bodyData = {
-    texts: Object.keys(rout).length > 0 ? rout : output,
-    sectionfind: "section_b",  // Replace with your actual section identifier
+    texts: texts,
+    sectionfind: "section_b",
     brsrfilename:brsrFilename
 };
-    console.log(bodyData)
     const response = await fetch('http://192.168.2.27:1000/submit/', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',
     },
-    // body: JSON.stringify(output),
-    body:  JSON.stringify(bodyData),
-
+    body: JSON.stringify(bodyData),
 });
-
     if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
     }
-
     const data = await response.json();
     console.log('Response:', data);
     if (data!=null){
         message.success(`${data} form submited sucessfully!`);
         }
         else{
-            message.warning("upload file!")
+            message.warning("Please upload file or edit !");
         }}
 } catch (error) {
     console.error('Error posting data:', error);
 }
 };
 
-  
-
-
-
-// async function Download_pdf() {
-//   try {
-//     const response = await fetch("http://192.168.2.27:1000/download_pdf/", {
-//       method: "GET",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//     });
-
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! Status: ${response.status}`);
-//     }
-
-//     const data = await response.json();
-//     console.log("Received data:", data);
-//     // Do something with the data (e.g., show in table, trigger PDF download)
-//   } catch (error) {
-//     console.error("Fetch error:", error);
-//   }
-// }
-  
-
-
-
     const handleFileUpload = async (info: any, questionKey: string,principleKey:string) => {
         const { file } = info;
-
         if (!file || file.status === "uploading") return;
         setLoading(true);
-
         try {
             const formData = new FormData();
             formData.append('file', file.originFileObj || file);
             formData.append('questionKey', questionKey);
             formData.append('principleKey',principleKey );
-
-
-            console.log("Sending request to server...");
             const response = await fetch('http://192.168.2.27:1000/extract/', {
                 method: 'POST',
                 body: formData,
             });
-
-            console.log("Received response status:", response.status);
-
             if (!response.ok) {
                 const errorText = await response.text();
                 console.error("Server responded with error:", errorText);
                 throw new Error(`Server error: ${response.status} - ${errorText}`);
             }
-
-            // First, get the response as text
             const data = await response.json();
             const filename = data.brsrfilename;
-            // const responseText =data.response.text();
-            console.log(filename)
             setBrsrFilename(filename)
-            // console.log(responseText)
-            // console.log("Raw response text:", data.response);
-           
             const responseText =data.response;
-            console.log("Raw response text:", responseText);
-
-
-            // Try to parse it as JSON
             let responseData;
             try {
                 responseData =responseText;
-                console.log("Parsed response data:", responseData);
             } catch (jsonError) {
                 console.error("Failed to parse JSON:", jsonError);
-                // If parsing fails, check if it's a simple string response
                 if (responseText.trim().length > 0) {
                     console.log("Treating response as plain text");
                     responseData = {
@@ -373,37 +342,24 @@ const extractQA = (data: any): { [key: string]: any } => {
   return result;
 };
 setRdata(extractQA(responseData))
-
-
-            // Ensure we have some data structure to work with
             if (!responseData) {
                 throw new Error("No data received from server");
             }
-
-            // Flexible response validation - handle both direct array and {data: array} formats
             const responseDataToProcess = responseData.data || responseData;
             if (!responseDataToProcess) {
                 throw new Error("Response does not contain processable data");
             }
-
-            // Process the file upload info
             const fileSize = `${(file.size / 1024).toFixed(2)} KB`;
             setUploadedFiles(prev => ({
                 ...prev,
                 [questionKey]: { name: file.name, size: fileSize },
             }));
-
-            // Transform the API response to answers
             const newAnswers = transformApiResponseToAnswers(
                 Array.isArray(responseDataToProcess) ?
                     responseDataToProcess :
                     [responseDataToProcess]
                 
             );
-
-            console.log("Transformed answers:", newAnswers);
-
-            // Update the answers state
             setAnswers(prev => {
                 const updated = { ...prev };
                 Object.entries(newAnswers).forEach(([key, value]) => {
@@ -413,13 +369,10 @@ setRdata(extractQA(responseData))
                 });
                 return updated;
             });
-
-            // Save to localStorage
             localStorage.setItem('answeredQuestions', JSON.stringify({
                 ...answers,
                 ...newAnswers
             }));
-
             message.success(`${file.name} processed successfully!`);
         } catch (error) {
             console.error('Full upload error:', error);
@@ -461,8 +414,6 @@ setRdata(extractQA(responseData))
         }
     };
 
-
-
  const sectionPartMap: Record<string, Record<string, SectionPartConfig>> = {
         'section_b': {
             'one': {
@@ -499,7 +450,6 @@ setRdata(extractQA(responseData))
     };
     const transformApiResponseToAnswers = (apiData: any[]) => {
         const answers: { [key: string]: any } = {};
-
         if (!Array.isArray(apiData)) {
             if (apiData && typeof apiData === 'object') {
                 apiData = [apiData];
@@ -509,23 +459,19 @@ setRdata(extractQA(responseData))
             }
         }
 
-
         try {
             apiData.forEach((section: any) => {
                 const sectionName = section.section || 'section_b';
                 const partsMap = sectionPartMap[sectionName as keyof typeof sectionPartMap] || {};
-
                 const parts = section.parts || [];
                 parts.forEach((part: any) => {
                     const partNo = part.partNo?.toLowerCase();
                     if (!partNo) return;
-
                     const partConfig = partsMap[partNo];
                     if (!partConfig || !part.questions || !partConfig.questionMap) return;
                     const { category, questionMap } = partConfig;
                     const categoryConfig = allCategories2.find(c => c.key === category);
                     if (!categoryConfig) return;
-
                     part.questions.forEach((apiQuestion: any) => {
                         const answer = apiQuestion.questionAnswer;
                         if (answer === null || answer === "Not provided in the text") return;
@@ -586,58 +532,6 @@ setRdata(extractQA(responseData))
         return question.type === 'table';
     }
 
-
-    const handleSubmitAll = (item: any) => {
-        setTrust(item?.isTrusted);
-        setSubmittedAnswers((prev) => ({
-            ...prev,
-            [item]: true,
-        }));
-
-        let anyAnswered = false;
-        const currentCategory = allCategories2.find((cat) => cat.key === activeCategory);
-
-        if (currentCategory) {
-            const answeredData: any = [];
-
-            currentCategory.questions.forEach((section: any) => {
-                let answered = 0;
-                const total = section.question.length;
-                section.question.forEach((_: any, questionIndex: any) => {
-                    const questionKey = `${activeCategory}_${section.key}_${questionIndex}`;
-                    const subobj: Record<string, string> = {};
-                    if (answers[questionKey]) {
-                        answered += 1;
-                        anyAnswered = true;
-                    }
-                });
-
-                const questionsAnswer = `${answered}/${total}`;
-                const percentComplete = total > 0 ? Math.round((answered / total) * 100) : 0;
-
-                section.questionsAnswer = questionsAnswer;
-                section.percentComplete = percentComplete;
-
-                answeredData.push({
-                    sectionKey: section.key,
-                    questionsAnswer,
-                    percentComplete,
-                });
-            });
-
-            localStorage.setItem(`${activeCategory}-answeredData`, JSON.stringify(answeredData));
-
-            if (!anyAnswered) {
-                message.warning("Please answer at least one question before submitting.");
-            } else {
-                message.success("Submitted successfully!");
-                setShowQuestions(false);
-            }
-        }
-    };
-
-
-
     const loadAnsweredData = (categoryKey: string, questions: any[]) => {
         const storedData = localStorage.getItem(`${categoryKey}-answeredData`);
         if (storedData) {
@@ -680,14 +574,12 @@ setRdata(extractQA(responseData))
 
     const handleCategoryClick = (categoryKey: string) => {
         confirmNavigation(() => {
-
             const selectedCategory = allCategories2.find((cat) => cat.key === categoryKey);
             if (selectedCategory) {
                 loadAnsweredData(categoryKey, selectedCategory.questions);
             }
             setActiveCategory(categoryKey);
             const savedAnswers = localStorage.getItem('answeredQuestions');
-
             if (savedAnswers) {
                 setAnswers(JSON.parse(savedAnswers));
             }
@@ -705,7 +597,6 @@ setRdata(extractQA(responseData))
 
     const cleanAnswerKeys = (answers: { [key: string]: any }) => {
         const cleaned: { [key: string]: any } = {};
-
         Object.entries(answers).forEach(([key, value]) => {
             const cleanKey = key.toLowerCase().replace(/-/g, '_');
             if (!cleaned[cleanKey]) {
@@ -722,7 +613,6 @@ setRdata(extractQA(responseData))
             setAnswers(cleanAnswerKeys(JSON.parse(savedAnswers)));
         }
     }, []);
-
 
     useEffect(() => {
         if (!trust) {
@@ -784,31 +674,6 @@ setRdata(extractQA(responseData))
             }
         };
         
-
-
-
-function editfindanswertextarea(data:any[],editquestion:string): string|null {
-const found = data.find(item => item.question.includes(editquestion));
-  return found ? found.answer : null;
-}
-
-
-function editfindanswertable(data: any[], editquestion: string): any[] | null {
-  const found = data.find(item => item.question.includes(editquestion));
-
-  if (!found || !found.answer) return null;
-
-  try {
-    const parsed = JSON.parse(found.answer);
-    const firstObject = parsed[0];
-
-    // return Array.isArray(parsed) ? parsed : [parsed];
-    return firstObject
-  } catch (error) {
-    console.error("Failed to parse answer as JSON:", error);
-    return null;
-  }
-}
     const questionKey = generateQuestionKey(section, key, questionIndex);
     const answerValue = answers[questionKey];
     const isFileUploaded = !!uploadedFiles[questionKey];
@@ -841,15 +706,26 @@ function editfindanswertable(data: any[], editquestion: string): any[] | null {
                     </Tooltip>
                 </div>
                 <div >
-                    <TableInput
-                        columns={question.columns}
-                        rows={question.rows}
-                        header={"S.No"}
-                        // value={Array.isArray(answerValue) ? answerValue : []}
-                        onChange={(value: any) => handleInputChange(section, key, value, questionIndex,question.text)}
-                        value={answerValue||editfindanswertable(putdata,question.text)||[]}
-                    />
-
+                   <TableInput
+  columns={question.columns}
+  rows={question.rows}
+  header={"S.No"}
+  onChange={(value: any) => {
+    console.log('TableInput onChange:', value);
+    handleInputChange(
+      section, 
+      key, 
+      value, 
+      questionIndex,
+      question.text
+    );
+  }}
+  value={
+    answers[generateQuestionKey(section, key, questionIndex)] || 
+    editfindanswertable(putdata, question.text) || 
+    []
+  }
+/>
                 </div>
             </div>
         );
@@ -881,14 +757,17 @@ function editfindanswertable(data: any[], editquestion: string): any[] | null {
             {question.isNone ? null : (
                 question.choices === null ? (
                     <div className="area-upload">
-                        <TextArea
-                            rows={3}
-                            placeholder="Type your answer here"
-                            size="small"
-                            onChange={(e) => handleInputChange(section, key, e.target.value, questionIndex,question.text)}
-                            // value={answers[questionKey] || ""}
-                            value={answers[questionKey] ||editfindanswertextarea(putdata,question.text) ||""}
-                        />
+                       <TextArea
+                                rows={3}
+                                placeholder="Type your answer here"
+                                size="small"
+                                value={answers[questionKey] || ""}
+                                onChange={(e) => { 
+                                     const value = e.target.value;
+    console.log('TableInput onChange:', e);
+
+         handleInputChange(section, key,value, questionIndex,question.text)}
+                    }/>
                     </div>
                 ) : question.choices.length > 4 ? (
                     <SelectDropDown
@@ -899,7 +778,12 @@ function editfindanswertable(data: any[], editquestion: string): any[] | null {
                         }))}
                         placeholder="Select options"
                         value={Array.isArray(answerValue) ? answerValue : []}
-                        onChange={(value) => handleInputChange(section, key, value, questionIndex,question.text)}
+                         onChange={(e) => { 
+                                     const value = e.target.value;
+    console.log('TableInput onChange:', e);
+
+         handleInputChange(section, key,value, questionIndex,question.text)}
+                    }
                     />
                 ) : (
                     <div className="question-options">
@@ -909,7 +793,12 @@ function editfindanswertable(data: any[], editquestion: string): any[] | null {
                                     <Radio
                                         value={option}
                                         checked={answerValue === option}
-                                        onChange={() => handleInputChange(section, key, option, questionIndex,question.text)}
+                                          onChange={(e) => { 
+                                     const value = e.target.value;
+    console.log('TableInput onChange:', e);
+
+         handleInputChange(section, key,value, questionIndex,question.text)}
+                    }
                                     >
                                         {option}
                                     </Radio>
@@ -1048,7 +937,7 @@ return (
                     < div className="subbutton">
                         <div className="common-submit-btn">
                             <CustomButton
-                                label="Submit Answers"
+                                 label={editOnly ? "Update" :"Submit"}
                                 type="primary"
                                 onClick={handlePost}
                             />

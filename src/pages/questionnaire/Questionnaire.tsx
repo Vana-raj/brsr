@@ -9,7 +9,7 @@ import SelectDropDown from "../../component/select/SelectDropDown";
 import TableInput from "../../component/InputTable/InputTable";
 import Loader from "../../component/loader/Loader";
 import "./Questionnaire.scss";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 
 
@@ -25,6 +25,11 @@ interface Category {
   created_at: string;
 }
 
+interface SectionPartConfig {
+        category: string;
+        startIndex: number;
+        questionMap?: Record<string, string>;
+}
 
 
 const { TextArea } = Input;
@@ -89,6 +94,7 @@ interface QuestionnaireProps {
 }
 
 const Questionnaire: React.FC<QuestionnaireProps> = ({ putdata,selectedindex,editOnly,setSectionProgressPercentage,singledata}) => {
+    const { mode, section } = useParams();
 const navigate = useNavigate();
     const [activeCategory, setActiveCategory] = useState<string>("details");
     const [showQuestions, setShowQuestions] = useState<boolean>(false);
@@ -129,10 +135,9 @@ useEffect(() => {
     putdata.forEach(item => {
       if (!item.question || item.answer === null) return;
 
-      // Find matching question in allCategories
       for (const category of allCategories) {
         for (const questionGroup of category.questions) {
-          const questionIndex = questionGroup.question.findIndex(
+          const questionIndex = questionGroup.question?.findIndex(
             q => q.text.trim().toLowerCase() === item.question.trim().toLowerCase()
           );
 
@@ -150,8 +155,8 @@ useEffect(() => {
     setTexts(initialTexts);
   }
 }, [editOnly, putdata]);
+
     useEffect(() => {
-  // Clear localStorage on page refresh
   const handleBeforeUnload = () => {
     localStorage.removeItem('answeredQuestions');
   };
@@ -163,18 +168,9 @@ useEffect(() => {
   };
 }, []);
 
-function editfindanswertextarea(data:any[],editquestion:string): any|null {
-
-console.log(data)
-console.log(editquestion,'kjjjjjjjj')
-    
-const found = data.find(item => item.question.includes(editquestion));
-  return found ? found.answer :"";
-}
-
 function editfindanswertable(data: any[], editquestion: string): any[] | null {
-  const found = data.find(item => item.question.includes(editquestion));
-
+  const found = data?.find(item => item.question.includes(editquestion));
+  console.log(found,'found')
   if (!found || !found.answer) return null;
 
   try {
@@ -190,9 +186,7 @@ const HandleInputChange = (
 section: string, key: string, value: any, questionIndex: number ,putdata:Category[],text:string) => {
 
  const questionKey = generateQuestionKey(section, key, questionIndex);
-  
-  // Update answers state
-  setAnswers(prev => ({
+    setAnswers(prev => ({
     ...prev,
     [questionKey]: value
   }));
@@ -204,13 +198,6 @@ section: string, key: string, value: any, questionIndex: number ,putdata:Categor
 
   setHasUnsavedChanges(true);
 };
-
-// useEffect(() => {
-//   if (questions.text) {
-//     const answer = editAnswers[questions.text] || "";
-//     setValue(answer);
-//   }
-// }, [texts, editAnswers]);
 
 const handlePost = async () => {
     try {
@@ -294,6 +281,8 @@ else{
             const filename = data.brsrfilename;
             setBrsrFilename(filename)           
             const responseText =data.response;
+               console.log(responseText,'responseText')
+
             let responseData;
             try {
                 responseData =responseText;
@@ -329,7 +318,6 @@ const extractQA = (data: any): { [key: string]: any } => {
   return result;
 };
 setRdata(extractQA(responseData))
-
             if (!responseData) {
                 throw new Error("No data received from server");
             }
@@ -359,12 +347,10 @@ setRdata(extractQA(responseData))
                 });
                 return updated;
             });
-
             localStorage.setItem('answeredQuestions', JSON.stringify({
                 ...answers,
                 ...newAnswers
             }));
-
             message.success(`${file.name} processed successfully!`);
         } catch (error) {
             console.error('Full upload error:', error);
@@ -406,13 +392,6 @@ setRdata(extractQA(responseData))
         }
     };
 
-
-    interface SectionPartConfig {
-        category: string;
-        startIndex: number;
-        questionMap?: Record<string, string>;
-    }
-
     const sectionPartMap: Record<string, Record<string, SectionPartConfig>> = {
         'section_a': {
             'one': {
@@ -448,10 +427,10 @@ setRdata(extractQA(responseData))
                 category: 'operations',
                 startIndex: 0,
                 questionMap: {
-                    '1': 'Number of locations where plants and offices of the entity are situated:',
+                    '1':'Number of locations where plants and/or operations/offices of the entity are situated',
                     '2':'Number of locations',
                     '3':'What is the contribution of exports as a percentage of the total turnover of the entity?'  ,
-                    '4':'A brief on types of customers'          }   
+                    '4':'A brief on types of customers'          }  
             },
             'four': {
                 category: 'employees',
@@ -467,18 +446,18 @@ setRdata(extractQA(responseData))
                 category: 'holding',
                 startIndex: 0,
                 questionMap: {
-                    '1': 'How many products have undergone a carbon footprint assessment?'
+                    '1': 'Names of holding/subsidiary/associate companies/joint ventures'
                 }
             },
             'six': {
                 category: 'csr_details',
                 startIndex: 1,
                 questionMap: {
-
+                    // '1': 'CSR_details',
                     '1':"Whether CSR is applicable as per section 135 of Companies Act, 2013: (Yes/No)",
                     '2':"Turnover (in Rs.)",
                     '3':"Net worth (in Rs.)"
-                }   
+                }  
             },
             'seven': {
                 category: 'transparency',
@@ -489,11 +468,22 @@ setRdata(extractQA(responseData))
                 }
             }
         },
+        // 'section_b': {
+        //     'one': {
+        //         category: 'policy_management',
+        //         startIndex: 0,
+        //         questionMap: {}
+        //     },
+        //     'two': {
+        //         category: 'governance_leadership',
+        //         startIndex: 0,
+        //         questionMap: {}
+        //     }
+        // }
     };
 
     const transformApiResponseToAnswers = (apiData: any[]) => {
         const answers: { [key: string]: any } = {};
-
         if (!Array.isArray(apiData)) {
             if (apiData && typeof apiData === 'object') {
                 apiData = [apiData];
@@ -515,9 +505,8 @@ setRdata(extractQA(responseData))
                     const partConfig = partsMap[partNo];
                     if (!partConfig || !part.questions || !partConfig.questionMap) return;
                     const { category, questionMap } = partConfig;
-                    const categoryConfig = allCategories.find(c => c.key === category);
+                    const categoryConfig = allCategories?.find(c => c.key === category);
                     if (!categoryConfig) return;
-
                     part.questions.forEach((apiQuestion: any) => {
                         const answer = apiQuestion.questionAnswer;
                         if (answer === null || answer === "Not provided in the text") return;
@@ -532,7 +521,7 @@ setRdata(extractQA(responseData))
                         let sectionKey = '';
 
                         for (const section of categoryConfig.questions) {
-                            const index = section.question.findIndex((q: any) => {
+                            const index = section.question?.findIndex((q: any) => {
                                 if (!q || !q.text) return false;
                                 return q.text.trim() === expectedQuestionText.trim();
                             });
@@ -551,7 +540,6 @@ setRdata(extractQA(responseData))
                         }
 
                         const formKey = `${category}_${sectionKey}_${matchingQuestionIndex}`;
-
                         if (isTableQuestion(targetQuestion)) {
                             try {
                                 answers[formKey] = typeof answer === 'string' ?
@@ -583,7 +571,7 @@ setRdata(extractQA(responseData))
         if (storedData) {
             const parsedData = JSON.parse(storedData);
             questions.forEach((section) => {
-                const storedSection = parsedData.find((data: any) => data.sectionKey === section.key);
+                const storedSection = parsedData?.find((data: any) => data.sectionKey === section.key);
                 if (storedSection) {
                     section.questionsAnswer = storedSection.questionsAnswer;
                     section.percentComplete = storedSection.percentComplete;
@@ -620,14 +608,12 @@ setRdata(extractQA(responseData))
 
     const handleCategoryClick = (categoryKey: string) => {
         confirmNavigation(() => {
-
-            const selectedCategory = allCategories.find((cat) => cat.key === categoryKey);
+            const selectedCategory = allCategories?.find((cat) => cat.key === categoryKey);
             if (selectedCategory) {
                 loadAnsweredData(categoryKey, selectedCategory.questions);
             }
             setActiveCategory(categoryKey);
             const savedAnswers = localStorage.getItem('answeredQuestions');
-
             if (savedAnswers) {
                 setAnswers(JSON.parse(savedAnswers));
             }
@@ -645,7 +631,6 @@ setRdata(extractQA(responseData))
 
     const cleanAnswerKeys = (answers: { [key: string]: any }) => {
         const cleaned: { [key: string]: any } = {};
-
         Object.entries(answers).forEach(([key, value]) => {
             const cleanKey = key.toLowerCase().replace(/-/g, '_');
             if (!cleaned[cleanKey]) {
@@ -730,23 +715,16 @@ setRdata(extractQA(responseData))
         if (isViewMode && !isAnswered) {
             return null;
         }
-
-
-
         if (question?.type === 'table') {
-
-
         return (
             <div>
                     <div className="question-text">
                         <div>{qusSection}. {getQuestionNumber()} {question.text}
-
                             {question.isMandatory && <span className="mandatory-asterisk">*</span>}
                             {isAnswered && (
                                 <Tooltip title="Answered">
                                     <CheckOutlined className="answered-icon" />
                                 </Tooltip>
-
                             )}
                         </div>
                         <Tooltip title="Copy Question">
@@ -765,14 +743,12 @@ setRdata(extractQA(responseData))
                             rows={question.rows}
                             header={"S.No"}
                             onChange={(value: any) => HandleInputChange(section, key, value, questionIndex,putdata,question.text)}
-                            value={Array.isArray(answerValue) ||editfindanswertable(putdata,question.text)|| []}
-                            // value={Array.isArray(answerValue) ? answerValue : []}
+                            value={ answers[generateQuestionKey(section, key, questionIndex)]  ||editfindanswertable(putdata,question.text)}
                             />
                     </div>
                     </div>
                      );
         }
-
         return (
             <div>
                 <div className="question-text">
@@ -817,9 +793,8 @@ setRdata(extractQA(responseData))
                                 value: choice,
                             }))}
                             placeholder="Select options"
-                                onChange={(e) => HandleInputChange(section, key, e.target.value, questionIndex,putdata,question.text)}
+                            onChange={(e) => HandleInputChange(section, key, e.target.value, questionIndex,putdata,question.text)}
                             value={Array.isArray(answerValue) ? answerValue : []}
-                            // value={Array.isArray(answerValue) ||editfindanswertable(putdata,question.text) ||[]}
                             />
                     ) : (
                         <div className="question-options">
@@ -829,7 +804,7 @@ setRdata(extractQA(responseData))
                                         <Radio
                                             value={option}
                                             checked={answerValue === option}
-                                onChange={(e) => HandleInputChange(section, key, e.target.value, questionIndex,putdata,question.text)}
+                                            onChange={(e) => HandleInputChange(section, key, e.target.value, questionIndex,putdata,question.text)}
                                         >
                                             {option}
                                         </Radio>
@@ -844,7 +819,7 @@ setRdata(extractQA(responseData))
         );
     };
 
-    const currentCategory = allCategories.find((cat) => cat.key === activeCategory);
+    const currentCategory = allCategories?.find((cat) => cat.key === activeCategory);
 
     const questions: any = currentCategory?.questions[currentSectionIndex];
 
@@ -899,13 +874,13 @@ setSectionProgressPercentage(sectionProgressPercent);
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    zIndex: 1000
+                    zIndex: 1000,
                 }}>
                     <Loader />
                 </div>
             )}
 
-            <div className="questionnaire-container">
+            <div className="questionnaire-container" >
                 <div className="category-card">
                     <Card title={"Categories"} variant="outlined">
                         <List
@@ -931,7 +906,9 @@ setSectionProgressPercentage(sectionProgressPercent);
                             </div>
                         }
                         extra={
-                            <div style={{ textAlign: "center", display: "flex", gap: "10px", alignItems: 'center' }}>
+                            <div style={{ textAlign: "center", display: "flex", gap: "10px", alignItems: 'center',
+                                pointerEvents: mode === 'view' ? 'none' : 'auto'
+                             }}>
                                 <Tooltip title="Upload">
                                     <Upload
                                         showUploadList={false}
@@ -955,14 +932,13 @@ setSectionProgressPercentage(sectionProgressPercent);
 
                             </div >
                         }
-                        // bordered
                     >
                         {
                             questions?.question.map((q: any, idx: any) => {
 
 
                                 return (
-                                    <div key={`${questions.key}-${idx}`}>
+                                    <div key={`${questions.key}-${idx}`} style={{pointerEvents: mode === 'view' ? 'none' : 'auto'}}>
                                         {renderQuestionInput(activeCategory, questions.key, q, idx, questions.question, questions.section)}
                                     </div>
                                 );

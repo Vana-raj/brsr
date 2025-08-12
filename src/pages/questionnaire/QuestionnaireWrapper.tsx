@@ -29,11 +29,13 @@ interface Category {
 const QuestionnaireWrapper: React.FC<QuestionnaireWrapperProps> = ({addData, putdata, selectedindex, editOnly, setSectionProgressPercentage, setSectionBProgressPercentage, setSectionCProgressPercentage,singledata}) => {
   const { mode, section } = useParams();
 
-  const isEditMode = mode === 'edit';
+  const isEditMode = mode === 'edit'
+  const isViewMode = mode === 'view'
+
   const commonProps = {
     putdata: putdata,
     selectedindex:selectedindex,
-    editOnly: isEditMode,
+    editOnly: mode === 'edit' ? isEditMode : isViewMode,
     addData:addData,
     setSectionProgressPercentage:setSectionProgressPercentage,
     setSectionBProgressPercentage:setSectionBProgressPercentage,

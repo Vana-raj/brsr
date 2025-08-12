@@ -1,22 +1,23 @@
 import { useEffect, useState } from "react";
 import InputField from "../inputfield/CustomInputField";
 import './InputTable.scss';
-
-const TableInput = ({ columns, value = {}, onChange, className = "custom-table" }: any) => {
-    const [data, setData] = useState<any>(value || {});
-
+ 
+const TableInput = ({ columns, value = [], onChange, className = "custom-table" }: any) => {
+    const [data, setData] = useState<string[]>(value);
+ 
     useEffect(() => {
-        if (value && typeof value === 'object') {
+        if (Array.isArray(value)) {
             setData(value);
         }
     }, [value]);
-
-    const handleCellChange = (field: string, newValue: string) => {
-        const newData = { ...data, [field]: newValue };
+ 
+    const handleCellChange = (index: number, newValue: string) => {
+        const newData = [...data];
+        newData[index] = newValue;
         setData(newData);
         onChange && onChange(newData);
     };
-
+ 
     return (
         <div className="table-input-container">
             <table className={className}>
@@ -32,8 +33,8 @@ const TableInput = ({ columns, value = {}, onChange, className = "custom-table" 
                         {columns?.map((col: string, colIndex: number) => (
                             <td key={colIndex}>
                                 <InputField
-                                    value={data[col] || ""}
-                                    onChange={(e: any) => handleCellChange(col, e.target.value)}
+                                    value={data[colIndex] || ""}
+                                    onChange={(e: any) => handleCellChange(colIndex, e.target.value)}
                                 />
                             </td>
                         ))}
@@ -43,5 +44,5 @@ const TableInput = ({ columns, value = {}, onChange, className = "custom-table" 
         </div>
     );
 };
-
+ 
 export default TableInput;
