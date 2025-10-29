@@ -434,7 +434,7 @@ const questionKey = generateQuestionKey(section, key, questionIndex);
       indexName:selectedindex
     };
   
-    const response = await fetch(`http://192.168.2.27:1000/edit_pdf_report_put`, {
+    const response = await fetch(`http://127.0.0.1:1000/edit_pdf_report_put`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -461,7 +461,7 @@ const questionKey = generateQuestionKey(section, key, questionIndex);
         sectionfind: "section_c" ,
         brsrfilename:brsrFilename
       };
-      const response = await fetch('http://192.168.2.27:1000/submit/', {
+      const response = await fetch('http://127.0.0.1:1000/submit/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -494,7 +494,7 @@ const questionKey = generateQuestionKey(section, key, questionIndex);
                formData.append('file', file.originFileObj || file);
                formData.append('questionKey', questionKey);
                formData.append('principleKey',principleKey );
-               const response = await fetch('http://192.168.2.27:1000/extract/', {
+               const response = await fetch('http://127.0.0.1:1000/extract/', {
                    method: 'POST',
                    body: formData,
                });

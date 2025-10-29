@@ -122,7 +122,7 @@ const Report: React.FC = () => {
   const navigate = useNavigate();
   const handleEdit = async (index:any) => {
   try {
-    const response = await fetch(`http://192.168.2.27:1000/edit_pdf_report_get/${encodeURIComponent(index.name)}`, {
+    const response = await fetch(`http://127.0.0.1:1000/edit_pdf_report_get/${encodeURIComponent(index.name)}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -146,7 +146,7 @@ const Report: React.FC = () => {
 
   const handleView = async (index:any) => {
   try {
-    const response = await fetch(`http://192.168.2.27:1000/edit_pdf_report_get/${encodeURIComponent(index.name)}`, {
+    const response = await fetch(`http://127.0.0.1:1000/edit_pdf_report_get/${encodeURIComponent(index.name)}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -170,7 +170,7 @@ const Report: React.FC = () => {
 console.log("sinf",singledata);
 const handleDelete=async (index:any)=>{
   try {
-    const response = await fetch(`http://192.168.2.27:1000/delete_pdf_report/${encodeURIComponent(index.name)}`, {
+    const response = await fetch(`http://127.0.0.1:1000/delete_pdf_report/${encodeURIComponent(index.name)}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -191,7 +191,7 @@ const handleDelete=async (index:any)=>{
 const handlePdf = async (index: any) => {
 
   try {
-    const response = await fetch(`http://192.168.2.27:1000/download_pdf_report/${encodeURIComponent(index.name)}`, {
+    const response = await fetch(`http://127.0.0.1:1000/download_pdf_report/${encodeURIComponent(index.name)}`, {
       method: "GET",
     });
 
